@@ -10,9 +10,9 @@
     <button type="submit">
         <Magnify class="text-main-gray" size="1.75rem"/>
     </button>
-    <button class="flex gap-1 items-center text-accent-green font-semibold h-8 px-2">
+    <button class="flex gap-1 items-center text-main-app font-semibold h-8 px-4">
         <Plus class="" />
-        <p>Dodaj filtr</p>
+        Dodaj filtr
     </button>
     <!-- TODO: applied filters rendered here -->
 </form>

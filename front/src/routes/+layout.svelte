@@ -48,7 +48,7 @@
             </li> <!-- information -->
         </ul>
     </nav>
-    <div class="ml-20">
+    <div class="ml-20 relative">
         <slot />
     </div>
 </div>
