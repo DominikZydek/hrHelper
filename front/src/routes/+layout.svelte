@@ -15,37 +15,36 @@
     <nav class="fixed h-full w-20 bg-main-app flex flex-col items-center py-5">
         <img class="h-10 w-10" src="favicon.png" alt="logo">
         <ul class="flex flex-col items-center justify-end h-full w-full">
-            <li class="p-4 w-full {path === 'employee-records' ? 'bg-auxiliary-darkblue' : ''}">
-                <a class="flex flex-col gap-1 items-center text-center group" href="/employee-records">
-                    <AccountGroup class="text-main-white" size="2rem" />
-                    <p class="text-white text-xs hidden group-hover:block">Pracownicy</p>
+            <li class="px-4 py-6 w-full relative {path === 'employee-records' ? 'bg-auxiliary-darkblue' : ''}">
+                <a class="flex flex-col items-center justify-center h-8 group" href="/employee-records">
+                    <AccountGroup class="text-main-white absolute group-hover:-translate-y-3 transition-transform" size="2rem" />
+                    <p class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity">Pracownicy</p>
                 </a>
-
-            </li> <!-- employee records -->
-            <li class="p-4 w-full {path === 'employee-documents' ? 'bg-auxiliary-darkblue' : ''}">
-                <a class="flex flex-col gap-1 items-center text-center group" href="/employee-documents">
-                    <FileDocumentMultiple class="text-main-white" size="2rem" />
-                    <p class="text-white text-xs hidden group-hover:block">Dokumentacja</p>
+             </li> <!-- employee records -->
+             <li class="px-4 py-6 w-full relative {path === 'employee-documents' ? 'bg-auxiliary-darkblue' : ''}">
+                <a class="flex flex-col items-center justify-center h-8 group" href="/employee-documents">
+                    <FileDocumentMultiple class="text-main-white absolute group-hover:-translate-y-3 transition-transform" size="2rem" />
+                    <p class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity">Dokumentacja</p>
                 </a>
-            </li> <!-- employee documents -->
-            <li class="p-4 w-full {path === 'leave-management' ? 'bg-auxiliary-darkblue' : ''}">
-                <a class="flex flex-col gap-1 items-center text-center group" href="/leave-management">
-                    <CalendarMultiselect class="text-main-white" size="2rem" />
-                    <p class="text-white text-xs hidden group-hover:block">Nieobecności</p>
+             </li> <!-- employee documents -->
+             <li class="px-4 py-6 w-full relative {path === 'leave-management' ? 'bg-auxiliary-darkblue' : ''}">
+                <a class="flex flex-col items-center justify-center h-8 group" href="/leave-management">
+                    <CalendarMultiselect class="text-main-white absolute group-hover:-translate-y-3 transition-transform" size="2rem" />
+                    <p class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity">Nieobecności</p>
                 </a>
-            </li> <!-- leave management -->
-            <li class="p-4 w-full {path === 'recruitment' ? 'bg-auxiliary-darkblue' : ''}">
-                <a class="flex flex-col gap-1 items-center text-center group" href="/recruitment">
-                    <AccountMultiplePlus class="text-main-white" size="2rem" />
-                    <p class="text-white text-xs hidden group-hover:block">Rekrutacje</p>
+             </li> <!-- leave management -->
+             <li class="px-4 py-6 w-full relative {path === 'recruitment' ? 'bg-auxiliary-darkblue' : ''}">
+                <a class="flex flex-col items-center justify-center h-8 group" href="/recruitment">
+                    <AccountMultiplePlus class="text-main-white absolute group-hover:-translate-y-3 transition-transform" size="2rem" />
+                    <p class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity">Rekrutacje</p>
                 </a>
-            </li> <!-- recruitment -->
-            <li class="p-4 w-full {path === 'information' ? 'bg-auxiliary-darkblue' : ''}">
-                <a class="flex flex-col gap-1 items-center text-center group" href="/information">
-                    <NewspaperVariantMultiple class="text-main-white" size="2rem" />
-                    <p class="text-white text-xs hidden group-hover:block">Informacje</p>
+             </li> <!-- recruitment -->
+             <li class="px-4 py-6 w-full relative {path === 'information' ? 'bg-auxiliary-darkblue' : ''}">
+                <a class="flex flex-col items-center justify-center h-8 group" href="/information">
+                    <NewspaperVariantMultiple class="text-main-white absolute group-hover:-translate-y-3 transition-transform" size="2rem" />
+                    <p class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity">Informacje</p>
                 </a>
-            </li> <!-- information -->
+             </li> <!-- information -->
         </ul>
     </nav>
     <div class="ml-20 relative">
