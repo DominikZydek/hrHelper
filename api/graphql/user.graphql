@@ -1,0 +1,30 @@
+type User {
+    id: ID!
+    first_name: String!
+    last_name: String!
+    sex: Sex!
+    email: String!
+    birth_date: Date!
+    phone_number: String!
+    address: Address!
+    job_title: String!
+    supervisor: User
+    approval_process: ApprovalProcess!
+    type_of_employment: String!
+    paid_time_off_days: Int!
+    working_time: Float!
+    employed_from: Date!
+    employed_to: Date
+    health_check_expired_by: Date!
+    health_and_safety_training_expired_by: Date!
+}
+
+enum Sex {
+    M
+    F
+    X
+}
+
+type Query {
+    users: [User!]! @all
+}

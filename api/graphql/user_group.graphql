@@ -1,0 +1,5 @@
+type UserGroup {
+    id: ID!
+    user: User!
+    group: Group!
+}

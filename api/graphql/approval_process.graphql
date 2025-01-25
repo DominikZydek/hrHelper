@@ -1,0 +1,4 @@
+type ApprovalProcess {
+    id: ID!
+    dummy: String!
+}
