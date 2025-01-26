@@ -41,7 +41,7 @@
                         <td class="w-1/2 text-main-black font-semibold">
                             {#if user.sex === 'M'}
                                 Mężczyzna
-                            {:else if user.sex === 'K'}
+                            {:else if user.sex === 'F'}
                                 Kobieta
                             {:else if user.sex === 'X'}
                                 Inna
@@ -80,11 +80,17 @@
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">PRZEŁOŻONY</th>
-                        <td class="w-1/2 text-main-black font-semibold">{user.supervisor.first_name} {user.supervisor.last_name}</td>
+                        <td class="w-1/2 text-main-black font-semibold">
+                            {#if user.supervisor}
+                                {user.supervisor.first_name} {user.supervisor.last_name}
+                            {:else}
+                                Brak
+                            {/if}
+                        </td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">ZESPOŁY</th>
-                        <td class="w-1/2 text-main-black font-semibold">
+                        <td class="w-1/2 text-main-black font-semibold flex gap-2">
                             {#each user.groups as group}
                                 <GroupBadge {group} />
                             {/each}

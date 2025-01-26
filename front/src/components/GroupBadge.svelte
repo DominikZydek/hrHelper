@@ -1,16 +1,9 @@
 <script>
     export let group
-
-    const iconImport = async (iconName) => {
-        return (await import(`../node_modules/svelte-material-icons/${iconName}.svelte`)).default
-    }
-
-    let IconComponent
-    $: iconImport(group.icon_name).then(component => {
-        IconComponent = component
-    })
+    import { icons } from '../stores/icons.js'
 </script>
 
-<div>
-    <svelte:component this={IconComponent} class="text-main-gray" size="2rem"/>
+<div class="flex items-center gap-1 rounded-3xl border border-main-black text-sm py-1 px-2">
+    <svelte:component this={$icons[group.icon_name]} />
+    <p>{group.name}</p>
 </div>

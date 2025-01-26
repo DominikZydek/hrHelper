@@ -1,4 +1,6 @@
 <script>
+    import GroupBadge from "./GroupBadge.svelte";
+
     export let data
     export let onClick
 </script>
@@ -15,7 +17,11 @@
             </div>
             <div class="w-1/2">
                 <p>{user.job_title}</p>
-                <p>{#each user.groups as group}{group.name + " "}{/each}</p>
+                <div class="flex gap-2">
+                    {#each user.groups as group}
+                    <GroupBadge {group} />
+                    {/each}
+                </div>
                 <p>{user.employed_from}</p>
             </div>
         </li>
