@@ -1,4 +1,5 @@
 type Group {
     id: ID!
     name: String!
+    icon_name: String!
 }

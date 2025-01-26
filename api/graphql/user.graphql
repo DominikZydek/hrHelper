@@ -10,6 +10,7 @@ type User {
     job_title: String!
     supervisor: User
     approval_process: ApprovalProcess!
+    groups: [Group!]!
     type_of_employment: String!
     paid_time_off_days: Int!
     working_time: Float!
@@ -26,5 +27,5 @@ enum Sex {
 }
 
 type Query {
-    users: [User!]! @all
+    users: [User!]! @field(resolver: "App\\GraphQL\\Queries\\UserResolver@users")
 }

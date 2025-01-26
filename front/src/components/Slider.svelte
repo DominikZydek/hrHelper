@@ -1,8 +1,9 @@
 <script>
     import Pencil from 'svelte-material-icons/Pencil.svelte'
     import Close from 'svelte-material-icons/Close.svelte'
+    import GroupBadge from "./GroupBadge.svelte";
 
-    export let employee
+    export let user
     export let showSlider
     export let toggleSlider
 </script>
@@ -16,7 +17,7 @@
                     Edytuj
                 </button>
                 <img class="h-8 w-8" src="favicon.png" alt="">
-                <p class="font-semibold">{employee.firstName} {employee.lastName}</p>
+                <p class="font-semibold">{user.first_name} {user.last_name}</p>
             </div>
             <button on:click={() => toggleSlider()}>
                 <Close class="text-main-gray" size="2rem"/>
@@ -29,33 +30,41 @@
                     <tbody>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">IMIĘ</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.firstName}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.first_name}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">NAZWISKO</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.lastName}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.last_name}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">PŁEĆ</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.sex}</td>
+                        <td class="w-1/2 text-main-black font-semibold">
+                            {#if user.sex === 'M'}
+                                Mężczyzna
+                            {:else if user.sex === 'K'}
+                                Kobieta
+                            {:else if user.sex === 'X'}
+                                Inna
+                            {/if}
+                        </td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">ADRES E-MAIL</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.email}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.email}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">DATA URODZENIA</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.birthDate}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.birth_date}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">NUMER TELEFONU</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.phoneNumber}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.phone_number}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">ADRES ZAMIESZKANIA</th>
                         <td class="w-1/2 text-main-black font-semibold">
-                            {employee.address.streetName} {employee.address.number}
-                            {employee.address.postalCode} {employee.address.city}
+                            {user.address.street_name} {user.address.street_number}
+                            {user.address.postal_code} {user.address.city}
                         </td>
                     </tr>
                     </tbody>
@@ -67,19 +76,23 @@
                     <tbody>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">STANOWISKO</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.jobTitle}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.job_title}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">PRZEŁOŻONY</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.reportsTo}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.supervisor.first_name} {user.supervisor.last_name}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">ZESPOŁY</th>
-                        <td class="w-1/2 text-main-black font-semibold">{#each employee.groups as group}{group.name + " "}{/each}</td>
+                        <td class="w-1/2 text-main-black font-semibold">
+                            {#each user.groups as group}
+                                <GroupBadge {group} />
+                            {/each}
+                        </td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">PROCES AKCEPTACJI</th>
-                        <td class="w-1/2 text-main-black font-semibold">XXX</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.approval_process.dummy}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -90,15 +103,15 @@
                     <tbody>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">RODZAJ UMOWY</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.typeOfEmployment} ({employee.paidTimeOffDays} dni)</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.type_of_employment} ({user.paid_time_off_days} dni)</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">WYMIAR PRACY</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.workingTime} etatu</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.working_time} etatu</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">DATA ROZPOCZĘCIA UMOWY</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.employedFrom}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.employed_from}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -109,15 +122,15 @@
                     <tbody>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">DATA ZAKOŃCZENIA UMOWY</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.employedTo || 'Brak'}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.employed_to || 'Brak'}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">DATA WAŻNOŚCI BADAŃ LEKARSKICH</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.healthCheckExpiredBy}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.health_check_expired_by}</td>
                     </tr>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">DATA WAŻNOŚCI SZKOLENIA BHP</th>
-                        <td class="w-1/2 text-main-black font-semibold">{employee.healthAndSafetyTrainingExpiredBy}</td>
+                        <td class="w-1/2 text-main-black font-semibold">{user.health_and_safety_training_expired_by}</td>
                     </tr>
                     </tbody>
                 </table>

@@ -4,19 +4,19 @@
 </script>
 
 <ul class="flex flex-col divide-y divide-main-gray">
-    {#each data.employees as employee}
-        <li class="flex mx-10 py-6 items-center cursor-pointer" on:click={() => onClick(employee)}>
+    {#each data.users as user}
+        <li class="flex mx-10 py-6 items-center cursor-pointer" on:click={() => onClick(user)}>
             <div class="flex items-center gap-5 w-1/2">
                 <img class="h-16 w-16" src="favicon.png" alt="">
                 <div>
-                    <p>{employee.firstName} {employee.lastName}</p>
-                    <p>{employee.email}</p>
+                    <p>{user.first_name} {user.last_name}</p>
+                    <p>{user.email}</p>
                 </div>
             </div>
             <div class="w-1/2">
-                <p>{employee.jobTitle}</p>
-                <p>{#each employee.groups as group}{group.name + " "}{/each}</p>
-                <p>{employee.employedSince}</p>
+                <p>{user.job_title}</p>
+                <p>{#each user.groups as group}{group.name + " "}{/each}</p>
+                <p>{user.employed_from}</p>
             </div>
         </li>
     {/each}
