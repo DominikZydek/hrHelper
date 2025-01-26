@@ -19,6 +19,6 @@
 
 <div class="px-10">
     <Searchbar placeholderText="Szukaj pracownika..." />
-    <EmployeeList {data} {onClick}/>
-    <Slider {showSlider} {toggleSlider} user={selectedUser}/>
+    <EmployeeList users={data.users} {onClick}/>
+    <Slider {showSlider} {toggleSlider} user={selectedUser} allUsers={data.users} groups={data.groups}/>
 </div>

@@ -26,6 +26,6 @@ enum Sex {
     X
 }
 
-type Query {
+extend type Query {
     users: [User!]! @field(resolver: "App\\GraphQL\\Queries\\UserResolver@users")
 }

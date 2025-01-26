@@ -1,12 +1,12 @@
 <script>
     import GroupBadge from "./GroupBadge.svelte";
 
-    export let data
+    export let users
     export let onClick
 </script>
 
 <ul class="flex flex-col divide-y divide-main-gray">
-    {#each data.users as user}
+    {#each users as user}
         <li class="flex mx-10 py-6 items-center cursor-pointer" on:click={() => onClick(user)}>
             <div class="flex items-center gap-5 w-1/2">
                 <img class="h-16 w-16" src="favicon.png" alt="">

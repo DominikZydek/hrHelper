@@ -3,3 +3,7 @@ type Group {
     name: String!
     icon_name: String!
 }
+
+extend type Query {
+    groups: [Group!]! @all
+}

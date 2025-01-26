@@ -40,6 +40,11 @@ export const load = async({ request, fetch }) => {
             employed_to,
             health_check_expired_by,
             health_and_safety_training_expired_by
+          },
+          groups {
+            id,
+            name,
+            icon_name
           }
         }
     `
