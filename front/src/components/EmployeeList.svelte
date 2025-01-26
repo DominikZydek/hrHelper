@@ -22,7 +22,7 @@
                     <GroupBadge {group} />
                     {/each}
                 </div>
-                <p>{user.employed_from}</p>
+                <p>W firmie od: {user.employed_from}</p>
             </div>
         </li>
     {/each}
