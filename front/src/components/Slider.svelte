@@ -23,7 +23,6 @@
 
 {#if showSlider}
     {#if !showEditMode}
-        <!-- TODO: all dates should be rendered according to user settings -->
         <div class="flex flex-col gap-5 right-0 top-0 h-screen w-1/3 fixed bg-main-white border px-10 py-5 shadow-xl">
             <div class="flex justify-between">
                 <div class="flex gap-2 items-center">
@@ -70,7 +69,9 @@
                         </tr>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">DATA URODZENIA</th>
-                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.birth_date}</td>
+                            <td class="w-1/2 text-main-black font-semibold pl-5">
+                                {new Date(user.birth_date).toLocaleDateString()}
+                            </td>
                         </tr>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">NUMER TELEFONU</th>
@@ -133,7 +134,9 @@
                         </tr>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">DATA ROZPOCZĘCIA UMOWY</th>
-                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.employed_from}</td>
+                            <td class="w-1/2 text-main-black font-semibold pl-5">
+                                {new Date(user.employed_from).toLocaleDateString()}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -144,15 +147,21 @@
                         <tbody>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">DATA ZAKOŃCZENIA UMOWY</th>
-                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.employed_to || 'Brak'}</td>
+                            <td class="w-1/2 text-main-black font-semibold pl-5">
+                                {user.employed_to ? new Date(user.employed_to).toLocaleDateString() : 'Brak'}
+                            </td>
                         </tr>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">DATA WAŻNOŚCI BADAŃ LEKARSKICH</th>
-                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.health_check_expired_by}</td>
+                            <td class="w-1/2 text-main-black font-semibold pl-5">
+                                {new Date(user.health_check_expired_by).toLocaleDateString()}
+                            </td>
                         </tr>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">DATA WAŻNOŚCI SZKOLENIA BHP</th>
-                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.health_and_safety_training_expired_by}</td>
+                            <td class="w-1/2 text-main-black font-semibold pl-5">
+                                {new Date(user.health_and_safety_training_expired_by).toLocaleDateString()}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
