@@ -2,6 +2,7 @@
     import Check from 'svelte-material-icons/Check.svelte'
     import Close from 'svelte-material-icons/Close.svelte'
     import GroupBadge from "./GroupBadge.svelte";
+    import MultiSelect from './MultiSelect.svelte'
 
     export let user
     export let showEditMode
@@ -200,19 +201,20 @@
                             <label for="groups">ZESPOŁY</label>
                         </th>
                         <td class="w-1/2 text-main-black font-semibold pl-5">
-                            <!-- TODO: make into a dropdown using Choices.js-->
-                            <select
-                                    class="w-full"
+                            <MultiSelect
+                                    options={groups.map(group => ({
+                                                value: group.id,
+                                                name: group.name,
+                                                icon_name: group.icon_name
+                                            }))}
+                                    selected={user.groups.map(g => g.id)}
                                     name="groups"
                                     id="groups"
-                                    multiple>
-                                {#each groups as group}
-                                    <option value={group.id}
-                                            selected={user.groups.some(g => g.id === group.id)}>
-                                        {group.name}
-                                    </option>
-                                {/each}
-                            </select>
+                                    placeholder="Wybierz grupy"
+                                    onChange={(values) => {
+                                                user.groups = groups.filter(g => values.includes(g.id))
+                                             }}
+                            />
                         </td>
                     </tr>
                     <tr>
