@@ -23,6 +23,7 @@
 
 {#if showSlider}
     {#if !showEditMode}
+        <!-- TODO: all dates should be rendered according to user settings -->
         <div class="flex flex-col gap-5 right-0 top-0 h-screen w-1/3 fixed bg-main-white border px-10 py-5 shadow-xl">
             <div class="flex justify-between">
                 <div class="flex gap-2 items-center">

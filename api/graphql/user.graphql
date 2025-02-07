@@ -11,7 +11,7 @@ type User {
     supervisor: User
     approval_process: ApprovalProcess!
     groups: [Group!]!
-    type_of_employment: String!
+    type_of_employment: TypeOfEmployment!
     paid_time_off_days: Int!
     working_time: Float!
     employed_from: Date!
@@ -24,6 +24,11 @@ enum Sex {
     M
     F
     X
+}
+
+enum TypeOfEmployment {
+    UoP
+    B2B
 }
 
 extend type Query {

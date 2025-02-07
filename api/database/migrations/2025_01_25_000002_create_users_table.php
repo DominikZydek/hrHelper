@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('job_title');
             $table->foreignId('supervisor_id')->nullable()->constrained('users');
             $table->foreignId('approval_process_id')->constrained('approval_processes');
-            $table->string('type_of_employment');
+            $table->enum('type_of_employment', ['UoP', 'B2B']);
             $table->integer('paid_time_off_days');
             $table->float('working_time');
             $table->date('employed_from');

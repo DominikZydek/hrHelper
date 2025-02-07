@@ -9,6 +9,22 @@
     export let onSave
     export let allUsers
     export let groups
+
+    // adjusts width of an input element to its value dynamically
+    const adjustWidth = (node) => {
+        const setWidth = () => {
+            node.style.width = (node.value.length + 0.5) + 'ch'
+        }
+
+        setWidth()
+        node.addEventListener('input', setWidth)
+
+        return {
+            destroy() {
+                node.removeEventListener('input', setWidth)
+            }
+        }
+    }
 </script>
 
 {#if showEditMode}
@@ -110,27 +126,30 @@
                         <th class="w-1/2 font-bold text-main-gray">
                             <label for="street_name">ADRES ZAMIESZKANIA</label>
                         </th>
-                        <!-- TODO: this needs to be fixed -->
                         <td class="w-1/2 text-main-black font-semibold pl-5">
                             <input class=""
                                    name="street_name"
                                    id="street_name"
                                    type="text"
+                                   use:adjustWidth
                                    value={user.address.street_name}>
                             <input class=""
                                    name="street_number"
                                    id="street_number"
                                    type="text"
+                                   use:adjustWidth
                                    value={user.address.street_number}>
                             <input class=""
                                    name="postal_code"
                                    id="postal_code"
                                    type="text"
+                                   use:adjustWidth
                                    value={user.address.postal_code}>
                             <input class=""
                                    name="city"
                                    id="city"
                                    type="text"
+                                   use:adjustWidth
                                    value={user.address.city}>
                         </td>
                     </tr>
@@ -181,7 +200,7 @@
                             <label for="groups">ZESPOŁY</label>
                         </th>
                         <td class="w-1/2 text-main-black font-semibold pl-5">
-                            <!-- TODO: make into a dropdown -->
+                            <!-- TODO: make into a dropdown using Choices.js-->
                             <select
                                     class="w-full"
                                     name="groups"
@@ -214,16 +233,17 @@
                             <label for="type_of_employment">RODZAJ UMOWY</label>
                         </th>
                         <td class="w-1/2 text-main-black font-semibold pl-5">
-                            <!-- TODO: make type_of_employment and style it -->
-                            <input class=""
-                                   name="type_of_employment"
-                                   id="type_of_employment"
-                                   type="text"
-                                   value={user.type_of_employment}>
+                            <select class="w-1/2"
+                                    name="type_of_employment"
+                                    id="type_of_employment">
+                                <option value="UoP" selected={user.type_of_employment === 'UoP'}>UoP</option>
+                                <option value="B2B" selected={user.type_of_employment === 'B2B'}>B2B</option>
+                            </select>
                             (<input class=""
                                    name="paid_time_off_days"
                                    id="paid_time_off_days"
                                    type="text"
+                                   use:adjustWidth
                                    value={user.paid_time_off_days}> dni)
                         </td>
                     </tr>
@@ -236,6 +256,7 @@
                                    name="working_time"
                                    id="working_time"
                                    type="text"
+                                   use:adjustWidth
                                    value={user.working_time}> etatu
                         </td>
                     </tr>
