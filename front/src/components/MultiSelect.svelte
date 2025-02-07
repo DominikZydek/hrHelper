@@ -35,7 +35,7 @@
     $: selectedOptions = options.filter(option => selected.includes(option.value))
 </script>
 
-<div class="relative" use:clickOutside={() => isOpen = false}>
+<div class="relative" use:clickOutside on:clickoutside={() => isOpen = false}>
     <div
             class="flex flex-wrap gap-2 min-h-[2.5rem] w-full border p-2 cursor-pointer"
             on:click={toggleDropdown}
