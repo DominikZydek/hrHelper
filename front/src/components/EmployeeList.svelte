@@ -22,7 +22,7 @@
                     <GroupBadge {group} />
                     {/each}
                 </div>
-                <p>W firmie od: {user.employed_from}</p>
+                <p>W firmie od: {new Date(user.employed_from).toLocaleDateString()}</p>
             </div>
         </li>
     {/each}
