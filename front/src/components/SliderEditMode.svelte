@@ -45,6 +45,7 @@
             </button>
         </div>
         <form id="update_user" action="?/updateUser" method="POST" class="flex flex-col gap-5">
+            <input id="id" name="id" type="hidden" value={user.id}>
             <div>
                 <p class="font-semibold text-xl text-main-app">Dane pracownika</p>
                 <table class="text-left w-full">
@@ -227,6 +228,7 @@
                         <th class="w-1/2 font-bold text-main-gray">
                             <label for="approval_process">PROCES AKCEPTACJI</label>
                         </th>
+                        <!-- TODO: implement actual approval process -->
                         <td class="w-1/2 text-main-black font-semibold pl-5">{user.approval_process.dummy}</td>
                     </tr>
                     </tbody>

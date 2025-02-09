@@ -34,3 +34,28 @@ enum TypeOfEmployment {
 extend type Query {
     users: [User!]! @field(resolver: "App\\GraphQL\\Queries\\UserResolver@users")
 }
+
+extend type Mutation {
+    updateUser(
+        id: ID!,
+        first_name: String!,
+        last_name: String!,
+        sex: Sex!,
+        email: String!,
+        birth_date: Date!,
+        phone_number: String!,
+        street_name: String!,
+        street_number: String!,
+        postal_code: String!,
+        city: String!,
+        job_title: String!,
+        groups: [String]!,
+        type_of_employment: String!,
+        paid_time_off_days: Int!,
+        working_time: Float!,
+        employed_from: Date!,
+        employed_to: Date,
+        health_check_expired_by: Date!,
+        health_and_safety_training_expired_by: Date!
+    ) : User! @field(resolver: "App\\GraphQL\\Mutations\\UserMutator@updateUser")
+}
