@@ -60,3 +60,11 @@ export const load = async({ request, fetch }) => {
 
     return res.data
 }
+
+export const actions = {
+    updateUser: async ({ request }) => {
+        const formData = await request.formData()
+
+        console.log(formData)
+    }
+}

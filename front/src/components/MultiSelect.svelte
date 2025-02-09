@@ -47,6 +47,7 @@
                 <div class="flex items-center gap-1">
                     <GroupBadge group={option} />
                     <button
+                            type="button"
                             class="ml-1"
                             on:click|stopPropagation={() => selectOption(option)}>
                         <Close class="text-main-black"/>
@@ -67,6 +68,7 @@
 
             {#each filteredOptions as option}
                 <button
+                        type="button"
                         class="p-2 hover:bg-gray-100 w-full text-left"
                         class:bg-gray-50={selected.includes(option.value)}
                         on:click={() => selectOption(option)}

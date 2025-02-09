@@ -32,7 +32,7 @@
     <div class="flex flex-col gap-5 right-0 top-0 h-screen w-1/3 fixed bg-main-white border px-10 py-5 shadow-xl">
         <div class="flex justify-between">
             <div class="flex gap-2 items-center">
-                <button on:click={() => toggleEditMode()}
+                <button type="submit" form="update_user"
                         class="flex gap-1 items-center bg-accent-green text-main-white font-semibold h-8 px-4">
                     <Check class="" />
                     Zapisz zmiany
@@ -44,7 +44,7 @@
                 <Close class="text-main-gray" size="2rem"/>
             </button>
         </div>
-        <form action="" class="flex flex-col gap-5">
+        <form id="update_user" action="?/updateUser" method="POST" class="flex flex-col gap-5">
             <div>
                 <p class="font-semibold text-xl text-main-app">Dane pracownika</p>
                 <table class="text-left w-full">
@@ -201,6 +201,12 @@
                             <label for="groups">ZESPOŁY</label>
                         </th>
                         <td class="w-1/2 text-main-black font-semibold pl-5">
+                            <input
+                                    type="hidden"
+                                    id="groups"
+                                    name="groups"
+                                    value={JSON.stringify(user.groups.map(g => g.id))}
+                            />
                             <MultiSelect
                                     options={groups.map(group => ({
                                                 value: group.id,
