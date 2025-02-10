@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApprovalProcess extends Model
 {
-    protected $fillable = [
-        'dummy'
-    ];
-
     public function user()
     {
         return $this->hasOne(User::class);
+    }
+
+    public function steps()
+    {
+        return $this->hasMany(ApprovalStep::class)->orderBy('order');
     }
 }

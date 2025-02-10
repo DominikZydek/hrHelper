@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('approval_processes', function (Blueprint $table) {
+        Schema::create('approval_steps', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('approval_process_id')->constrained('approval_processes')->onDelete('cascade');
+            $table->integer('order');
+            $table->foreignId('approver_id')->constrained('users');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('approval_processes');
+        Schema::dropIfExists('approval_steps');
     }
 };

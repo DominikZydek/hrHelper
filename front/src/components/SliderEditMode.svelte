@@ -244,7 +244,7 @@
                             <label for="approval_process">PROCES AKCEPTACJI</label>
                         </th>
                         <!-- TODO: implement actual approval process -->
-                        <td class="w-1/2 text-main-black font-semibold pl-5">{user.approval_process.dummy}</td>
+<!--                        <td class="w-1/2 text-main-black font-semibold pl-5">{user.approval_process.dummy}</td>-->
                     </tr>
                     </tbody>
                 </table>

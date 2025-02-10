@@ -1,5 +1,5 @@
 import { API_URL } from '$env/static/private'
-import { z } from 'zod'
+import {date, z} from 'zod'
 import {superValidate} from "sveltekit-superforms";
 import {zod} from "sveltekit-superforms/adapters";
 import { fail } from "sveltekit-superforms";
@@ -34,10 +34,10 @@ export const load = async({ request, fetch }) => {
               name,
               icon_name
             },
-            approval_process {
-              id,
-              dummy
-            },
+            #approval_process {
+              #id,
+              #dummy
+            #},
             type_of_employment,
             paid_time_off_days,
             working_time,

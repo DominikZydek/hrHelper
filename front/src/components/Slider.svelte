@@ -129,7 +129,7 @@
                         </tr>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">PROCES AKCEPTACJI</th>
-                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.approval_process.dummy}</td>
+<!--                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.approval_process.dummy}</td>-->
                         </tr>
                         </tbody>
                     </table>
