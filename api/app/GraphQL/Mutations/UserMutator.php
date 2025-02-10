@@ -24,6 +24,7 @@ class UserMutator
                 'birth_date' => $args['birth_date'],
                 'phone_number' => $args['phone_number'],
                 'job_title' => $args['job_title'],
+                'supervisor_id' => $args['supervisor'],
                 'type_of_employment' => $args['type_of_employment'],
                 'paid_time_off_days' => $args['paid_time_off_days'],
                 'working_time' => $args['working_time'],

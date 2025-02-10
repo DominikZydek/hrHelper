@@ -88,6 +88,7 @@ const schema = z.object({
         },
         z.array(z.string())
     ),
+    supervisor: z.number().int().nullable(),
     type_of_employment: z.string(),
     paid_time_off_days: z.number().int(),
     working_time: z.number(),
@@ -110,14 +111,14 @@ export const actions = {
         }
 
         let { id, first_name, last_name, sex, email, birth_date, phone_number, street_name, street_number, postal_code,
-            city, job_title, groups, type_of_employment, paid_time_off_days, working_time, employed_from, employed_to,
+            city, job_title, groups, supervisor, type_of_employment, paid_time_off_days, working_time, employed_from, employed_to,
             health_check_expired_by, health_and_safety_training_expired_by } = form.data
 
         const query = `
                 mutation UpdateUser($id: ID!, $first_name: String!, $last_name: String!, $sex: Sex!, 
                     $email: String!, $birth_date: Date!, $phone_number: String!, $street_name: String!, 
                     $street_number: String!, $postal_code: String!, $city: String!, $job_title: String!, 
-                    $groups: [String]!, $type_of_employment: String!, $paid_time_off_days: Int!, 
+                    $groups: [String]!, $supervisor: ID, $type_of_employment: TypeOfEmployment!, $paid_time_off_days: Int!, 
                     $working_time: Float!, $employed_from: Date!, $employed_to: Date, 
                     $health_check_expired_by: Date!, $health_and_safety_training_expired_by: Date!) {
                         updateUser(
@@ -134,6 +135,7 @@ export const actions = {
                             city: $city
                             job_title: $job_title
                             groups: $groups
+                            supervisor: $supervisor
                             type_of_employment: $type_of_employment
                             paid_time_off_days: $paid_time_off_days
                             working_time: $working_time
@@ -148,7 +150,7 @@ export const actions = {
 
         const variables = {
             id, first_name, last_name, sex, email, birth_date, phone_number, street_name,
-            street_number, postal_code, city, job_title, groups, type_of_employment,
+            street_number, postal_code, city, job_title, groups, supervisor, type_of_employment,
             paid_time_off_days, working_time, employed_from, employed_to,
             health_check_expired_by, health_and_safety_training_expired_by
         }
