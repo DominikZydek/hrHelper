@@ -22,6 +22,7 @@ export const load = async({ request, fetch }) => {
               postal_code,
               city
             },
+            role,
             job_title,
             supervisor {
               id,
@@ -77,6 +78,7 @@ const schema = z.object({
     street_number: z.string(),
     postal_code: z.string().regex(/^\d{2}-\d{3}$/),
     city: z.string(),
+    role: z.string(),
     job_title: z.string(),
     groups: z.preprocess(
         (val) => {
@@ -111,15 +113,15 @@ export const actions = {
         }
 
         let { id, first_name, last_name, sex, email, birth_date, phone_number, street_name, street_number, postal_code,
-            city, job_title, groups, supervisor, type_of_employment, paid_time_off_days, working_time, employed_from, employed_to,
+            city, role, job_title, groups, supervisor, type_of_employment, paid_time_off_days, working_time, employed_from, employed_to,
             health_check_expired_by, health_and_safety_training_expired_by } = form.data
 
         const query = `
                 mutation UpdateUser($id: ID!, $first_name: String!, $last_name: String!, $sex: Sex!, 
                     $email: String!, $birth_date: Date!, $phone_number: String!, $street_name: String!, 
-                    $street_number: String!, $postal_code: String!, $city: String!, $job_title: String!, 
-                    $groups: [String]!, $supervisor: ID, $type_of_employment: TypeOfEmployment!, $paid_time_off_days: Int!, 
-                    $working_time: Float!, $employed_from: Date!, $employed_to: Date, 
+                    $street_number: String!, $postal_code: String!, $city: String!, $role: Role!,
+                    $job_title: String!, $groups: [String]!, $supervisor: ID, $type_of_employment: TypeOfEmployment!,
+                    $paid_time_off_days: Int!, $working_time: Float!, $employed_from: Date!, $employed_to: Date, 
                     $health_check_expired_by: Date!, $health_and_safety_training_expired_by: Date!) {
                         updateUser(
                             id: $id
@@ -133,6 +135,7 @@ export const actions = {
                             street_number: $street_number
                             postal_code: $postal_code
                             city: $city
+                            role: $role
                             job_title: $job_title
                             groups: $groups
                             supervisor: $supervisor
@@ -150,7 +153,7 @@ export const actions = {
 
         const variables = {
             id, first_name, last_name, sex, email, birth_date, phone_number, street_name,
-            street_number, postal_code, city, job_title, groups, supervisor, type_of_employment,
+            street_number, postal_code, city, role, job_title, groups, supervisor, type_of_employment,
             paid_time_off_days, working_time, employed_from, employed_to,
             health_check_expired_by, health_and_safety_training_expired_by
         }

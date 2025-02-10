@@ -23,6 +23,7 @@ class UserMutator
                 'email' => $args['email'],
                 'birth_date' => $args['birth_date'],
                 'phone_number' => $args['phone_number'],
+                'role' => $args['role'],
                 'job_title' => $args['job_title'],
                 'supervisor_id' => $args['supervisor'],
                 'type_of_employment' => $args['type_of_employment'],

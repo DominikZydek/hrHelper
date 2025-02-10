@@ -164,6 +164,21 @@
                     <tbody>
                     <tr>
                         <th class="w-1/2 font-bold text-main-gray">
+                            <label for="role">ROLA</label>
+                        </th>
+                        <td class="w-1/2 text-main-black font-semibold pl-5">
+                            <select class="w-full"
+                                    name="role"
+                                    id="role">
+                                <option value="employee" selected={user.role === 'EMPLOYEE'}>Pracownik</option>
+                                <option value="supervisor" selected={user.role === 'SUPERVISOR'}>Przełożony</option>
+                                <option value="hr" selected={user.role === 'HR'}>Kadry</option>
+                                <option value="admin" selected={user.role === 'ADMIN'}>Administrator</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="w-1/2 font-bold text-main-gray">
                             <label for="job_title">STANOWISKO</label>
                         </th>
                         <td class="w-1/2 text-main-black font-semibold pl-5">
@@ -243,10 +258,10 @@
                             <label for="type_of_employment">RODZAJ UMOWY</label>
                         </th>
                         <td class="w-1/2 text-main-black font-semibold pl-5">
-                            <select class="w-1/2"
+                            <select class=""
                                     name="type_of_employment"
                                     id="type_of_employment">
-                                <option value="UoP" selected={user.type_of_employment === 'UoP'}>UoP</option>
+                                <option value="UoP" selected={user.type_of_employment === 'UOP'}>Umowa o pracę</option>
                                 <option value="B2B" selected={user.type_of_employment === 'B2B'}>B2B</option>
                             </select>
                             (<input class=""

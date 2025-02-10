@@ -92,6 +92,20 @@
                     <table class="text-left w-full">
                         <tbody>
                         <tr>
+                            <th class="w-1/2 font-bold text-main-gray">ROLA</th>
+                            <td class="w-1/2 text-main-black font-semibold pl-5">
+                                {#if user.role === 'EMPLOYEE'}
+                                    Pracownik
+                                {:else if user.role === 'SUPERVISOR'}
+                                    Przełożony
+                                {:else if user.role === 'HR'}
+                                    Kadry
+                                {:else if user.role === 'ADMIN'}
+                                    Administrator
+                                {/if}
+                            </td>
+                        </tr>
+                        <tr>
                             <th class="w-1/2 font-bold text-main-gray">STANOWISKO</th>
                             <td class="w-1/2 text-main-black font-semibold pl-5">{user.job_title}</td>
                         </tr>
@@ -126,7 +140,12 @@
                         <tbody>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">RODZAJ UMOWY</th>
-                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.type_of_employment} ({user.paid_time_off_days} dni)</td>
+                            <td class="w-1/2 text-main-black font-semibold pl-5">
+                                {#if user.type_of_employment === 'UOP'}
+                                    Umowa o pracę
+                                {:else if user.type_of_employment === 'B2B'}
+                                    B2B
+                                {/if} ({user.paid_time_off_days} dni)</td>
                         </tr>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">WYMIAR PRACY</th>

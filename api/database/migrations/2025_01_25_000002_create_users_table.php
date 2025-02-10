@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->string('phone_number');
             $table->foreignId('address_id')->constrained('addresses');
+            $table->enum('role', ['employee', 'supervisor', 'hr', 'admin']);
             $table->string('job_title');
             $table->foreignId('supervisor_id')->nullable()->constrained('users');
             $table->foreignId('approval_process_id')->constrained('approval_processes');

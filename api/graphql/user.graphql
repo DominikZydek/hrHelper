@@ -7,6 +7,7 @@ type User {
     birth_date: Date!
     phone_number: String!
     address: Address!
+    role: Role!
     job_title: String!
     supervisor: User
     approval_process: ApprovalProcess!
@@ -24,6 +25,13 @@ enum Sex {
     M
     F
     X
+}
+
+enum Role {
+    employee
+    supervisor
+    hr
+    admin
 }
 
 enum TypeOfEmployment {
@@ -48,6 +56,7 @@ extend type Mutation {
         street_number: String!,
         postal_code: String!,
         city: String!,
+        role: Role!,
         job_title: String!,
         groups: [String]!,
         supervisor: ID,
