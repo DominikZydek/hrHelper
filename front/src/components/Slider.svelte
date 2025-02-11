@@ -1,8 +1,11 @@
 <script>
     import Pencil from 'svelte-material-icons/Pencil.svelte'
     import Close from 'svelte-material-icons/Close.svelte'
+    import Eye from 'svelte-material-icons/Eye.svelte'
     import GroupBadge from "./GroupBadge.svelte";
     import SliderEditMode from "./SliderEditMode.svelte";
+    import Popup from "./Popup.svelte";
+    import ApprovalProcess from "./ApprovalProcess.svelte";
 
     export let user
     export let showSlider
@@ -13,6 +16,11 @@
     let showEditMode = false
     const toggleEditMode = () => {
         showEditMode = !showEditMode
+    }
+
+    let showPopup = false
+    const togglePopup = () => {
+        showPopup = !showPopup
     }
 
     const onSave = (updatedUser) => {
@@ -129,7 +137,13 @@
                         </tr>
                         <tr>
                             <th class="w-1/2 font-bold text-main-gray">PROCES AKCEPTACJI</th>
-<!--                            <td class="w-1/2 text-main-black font-semibold pl-5">{user.approval_process.dummy}</td>-->
+                            <td class="w-1/2 text-main-black font-semibold pl-5">
+                                <button on:click={() => togglePopup()}
+                                        class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4">
+                                    <Eye class="" />
+                                    Zobacz
+                                </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -187,7 +201,12 @@
                 </div>
             </div>
         </div>
+        {#if showPopup}
+            <Popup {showPopup} {togglePopup} title="Proces akceptacji">
+                <ApprovalProcess {user}/>
+            </Popup>
+        {/if}
     {:else}
-        <SliderEditMode {user} {showEditMode} {toggleEditMode} {onSave} {allUsers} {groups}/>
+        <SliderEditMode {user} {toggleEditMode} {onSave} {allUsers} {groups}/>
     {/if}
 {/if}

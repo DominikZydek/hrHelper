@@ -34,10 +34,22 @@ export const load = async({ request, fetch }) => {
               name,
               icon_name
             },
-            #approval_process {
-              #id,
-              #dummy
-            #},
+            approval_process {
+                steps {
+                    order,
+                    approver {
+                        id,
+                        first_name,
+                        last_name,
+                        email,
+                        job_title,
+                        groups {
+                            icon_name,
+                            name
+                        }
+                    }
+                }
+            },
             type_of_employment,
             paid_time_off_days,
             working_time,

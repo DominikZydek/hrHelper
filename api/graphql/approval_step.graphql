@@ -1,0 +1,6 @@
+type ApprovalStep {
+    id: ID!
+    approval_process: ApprovalProcess!
+    order: Int!
+    approver: User!
+}

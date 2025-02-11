@@ -1,4 +1,4 @@
 type ApprovalProcess {
     id: ID!
-    dummy: String!
+    steps: [ApprovalStep!]!
 }
