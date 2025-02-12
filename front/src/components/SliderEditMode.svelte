@@ -5,7 +5,7 @@
     import GroupBadge from "./GroupBadge.svelte";
     import MultiSelect from './MultiSelect.svelte'
     import Popup from "./Popup.svelte";
-    import ApprovalProcess from "./ApprovalProcess.svelte";
+    import ApprovalProcessEditMode from "./ApprovalProcessEditMode.svelte";
 
     export let user
     export let toggleEditMode
@@ -358,6 +358,6 @@
 </div>
 {#if showPopup}
     <Popup {showPopup} {togglePopup} title="Proces akceptacji">
-        <ApprovalProcess {user}/>
+        <ApprovalProcessEditMode {user} {allUsers}/>
     </Popup>
 {/if}

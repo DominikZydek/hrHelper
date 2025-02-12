@@ -35,6 +35,7 @@ export const load = async({ request, fetch }) => {
               icon_name
             },
             approval_process {
+                id,
                 steps {
                     order,
                     approver {
@@ -78,7 +79,7 @@ export const load = async({ request, fetch }) => {
     return res.data
 }
 
-const schema = z.object({
+const userSchema = z.object({
     id: z.number().int(),
     first_name: z.string(),
     last_name: z.string(),
@@ -112,11 +113,21 @@ const schema = z.object({
     health_and_safety_training_expired_by: z.date().transform(date => date.toISOString().split('T')[0]),
 })
 
+const approvalProcessSchema = z.object({
+    formData: z.object({
+        approval_process: z.number().int(),
+        steps: z.array(z.object({
+            order: z.number().int(),
+            approver: z.number().int()
+        }))
+    })
+})
+
 
 
 export const actions = {
     updateUser: async ({ request, fetch }) => {
-        const form = await superValidate(request, zod(schema))
+        const form = await superValidate(request, zod(userSchema))
 
         console.log(form)
 
@@ -183,5 +194,14 @@ export const actions = {
 
         return { form }
 
+    },
+    updateApprovalProcess: async ({ request, fetch }) => {
+        const form = await superValidate(request, zod(approvalProcessSchema))
+
+        console.dir(form, {depth: null})
+
+        if (!form.valid) {
+            return fail(400, { form })
+        }
     }
 }
