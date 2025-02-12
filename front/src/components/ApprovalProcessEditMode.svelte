@@ -56,6 +56,7 @@
         user = user
     }
 
+    // TODO: this whole form is broken, fix this
     const { form, enhance } = superForm({
         formData: {
             approval_process: Number(user.approval_process.id),
@@ -68,6 +69,15 @@
         dataType: 'json'
     })
 
+    // reactive form data
+    $: formValue = JSON.stringify({
+                        approval_process: Number(user.approval_process.id),
+                        steps: user.approval_process.steps.map(step => ({
+                            order: step.order,
+                            approver: Number(step.approver.id)
+                        }))
+    })
+
 </script>
 
 <form method="POST" action="?/updateApprovalProcess" use:enhance
@@ -76,13 +86,7 @@
     <input
             type="hidden"
             name="formData"
-            value={JSON.stringify({
-                        approval_process: Number(user.approval_process.id),
-                        steps: user.approval_process.steps.map(step => ({
-                            order: step.order,
-                            approver: Number(step.approver.id)
-                        }))
-                    })}
+            value={formValue}
     />
 
     <!-- first step -->

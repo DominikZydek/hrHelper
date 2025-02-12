@@ -203,5 +203,7 @@ export const actions = {
         if (!form.valid) {
             return fail(400, { form })
         }
+
+        return { form }
     }
 }
