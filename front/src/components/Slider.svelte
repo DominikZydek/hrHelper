@@ -31,8 +31,8 @@
 
 {#if showSlider}
     {#if !showEditMode}
-        <div class="flex flex-col gap-5 right-0 top-0 h-screen w-1/3 fixed bg-main-white border px-10 py-5 shadow-xl">
-            <div class="flex justify-between">
+        <div class="flex flex-col gap-5 right-0 top-0 h-screen w-1/3 fixed bg-main-white border px-10 py-5 shadow-xl overflow-scroll">
+            <div class="flex justify-between sticky top-0 bg-main-white">
                 <div class="flex gap-2 items-center">
                     <button on:click={() => toggleEditMode()}
                             class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4">

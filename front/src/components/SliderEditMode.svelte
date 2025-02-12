@@ -1,8 +1,11 @@
 <script>
     import Check from 'svelte-material-icons/Check.svelte'
     import Close from 'svelte-material-icons/Close.svelte'
+    import Pencil from 'svelte-material-icons/Pencil.svelte'
     import GroupBadge from "./GroupBadge.svelte";
     import MultiSelect from './MultiSelect.svelte'
+    import Popup from "./Popup.svelte";
+    import ApprovalProcess from "./ApprovalProcess.svelte";
 
     export let user
     export let toggleEditMode
@@ -25,10 +28,15 @@
             }
         }
     }
+
+    let showPopup = false
+    const togglePopup = () => {
+        showPopup = !showPopup
+    }
 </script>
 
-<div class="flex flex-col gap-5 right-0 top-0 h-screen w-1/3 fixed bg-main-white border px-10 py-5 shadow-xl">
-    <div class="flex justify-between">
+<div class="flex flex-col gap-5 right-0 top-0 h-screen w-1/3 fixed bg-main-white border px-10 py-5 shadow-xl overflow-scroll">
+    <div class="flex justify-between sticky top-0 bg-main-white">
         <div class="flex gap-2 items-center">
             <button type="submit" form="update_user"
                     class="flex gap-1 items-center bg-accent-green text-main-white font-semibold h-8 px-4">
@@ -241,7 +249,13 @@
                     <th class="w-1/2 font-bold text-main-gray">
                         <label for="approval_process">PROCES AKCEPTACJI</label>
                     </th>
-                    <!-- TODO: implement actual approval process -->
+                    <td class="w-1/2 text-main-black font-semibold pl-5">
+                        <button on:click={() => togglePopup()} type="button"
+                                class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4">
+                            <Pencil class="" />
+                            Edytuj
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -342,3 +356,8 @@
         </div>
     </form>
 </div>
+{#if showPopup}
+    <Popup {showPopup} {togglePopup} title="Proces akceptacji">
+        <ApprovalProcess {user}/>
+    </Popup>
+{/if}

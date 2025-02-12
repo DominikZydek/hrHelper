@@ -6,16 +6,19 @@
     export let title
 </script>
 
-<div use:lockScroll class="fixed top-0 left-0 w-screen h-screen bg-main-black/75 flex items-center justify-center">
+<div use:lockScroll class="fixed top-0 left-0 w-screen h-screen bg-main-black/75 flex items-center justify-center p-4">
     <div use:clickOutside
          on:clickoutside={() => togglePopup()}
-         class="bg-main-white w-[1080px] h-[720px] p-2.5">
-        <div class="flex justify-between">
-            <p class="text-xl">{title}</p>
-            <button on:click={() => togglePopup()}>
+         class="bg-main-white min-w-[800px] max-w-5xl max-h-[90vh] rounded-lg p-6 overflow-auto">
+        <div class="flex justify-between items-center mb-4">
+            <p class="text-xl font-medium">{title}</p>
+            <button
+                    on:click={() => togglePopup()}>
                 <Close class="text-main-gray" size="2rem"/>
             </button>
         </div>
-        <slot />
+        <div class="w-full">
+            <slot />
+        </div>
     </div>
 </div>
