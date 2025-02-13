@@ -27,13 +27,13 @@
         const newSteps = [...user.approval_process.steps]
 
         newSteps.splice(newStepPosition, 0, {
-            order: newStepPosition,
+            order: newStepPosition + 1,
             approver: selectedUser
         })
 
         // update next steps' order
         for (let i = newStepPosition + 1; i < newSteps.length; i++) {
-            newSteps[i].order = i
+            newSteps[i].order = i + 1
         }
 
         user.approval_process.steps = newSteps
@@ -46,19 +46,19 @@
 
     const removeStep = (orderToRemove) => {
         const newSteps = user.approval_process.steps
-            .filter((step, index) => index !== orderToRemove)
+            .filter(step => step.order !== orderToRemove)
             .map((step, newIndex) => ({
                 ...step,
-                order: newIndex
+                order: newIndex + 1
             }));
 
         user.approval_process.steps = newSteps
         user = user
     }
 
-    // TODO: this whole form is broken, fix this
+    // declare expected data structure
     const { form, enhance } = superForm({
-        formData: {
+        data: {
             approval_process: Number(user.approval_process.id),
             steps: user.approval_process.steps.map(step => ({
                 order: step.order,
@@ -70,25 +70,18 @@
     })
 
     // reactive form data
-    $: formValue = JSON.stringify({
-                        approval_process: Number(user.approval_process.id),
-                        steps: user.approval_process.steps.map(step => ({
-                            order: step.order,
-                            approver: Number(step.approver.id)
-                        }))
-    })
+    $: $form = {
+        approval_process: Number(user.approval_process.id),
+            steps: user.approval_process.steps.map(step => ({
+            order: step.order,
+            approver: Number(step.approver.id)
+        }))
+    }
 
 </script>
 
 <form method="POST" action="?/updateApprovalProcess" use:enhance
       class="flex flex-col w-full">
-
-    <input
-            type="hidden"
-            name="formData"
-            value={formValue}
-    />
-
     <!-- first step -->
     <div class="flex items-center">
         <div class="flex items-center justify-center w-16">

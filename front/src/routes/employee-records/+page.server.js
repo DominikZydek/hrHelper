@@ -114,13 +114,11 @@ const userSchema = z.object({
 })
 
 const approvalProcessSchema = z.object({
-    formData: z.object({
-        approval_process: z.number().int(),
-        steps: z.array(z.object({
-            order: z.number().int(),
-            approver: z.number().int()
-        }))
-    })
+    approval_process: z.number().int(),
+    steps: z.array(z.object({
+        order: z.number().int(),
+        approver: z.number().int()
+    }))
 })
 
 
