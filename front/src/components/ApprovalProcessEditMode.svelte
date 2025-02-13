@@ -1,50 +1,81 @@
 <script>
     import Circle from 'svelte-material-icons/Circle.svelte'
     import DotsVertical from 'svelte-material-icons/DotsVertical.svelte'
+    import DotsHorizontal from 'svelte-material-icons/DotsHorizontal.svelte'
     import Check from 'svelte-material-icons/Check.svelte'
     import CircleOutline from 'svelte-material-icons/CircleOutline.svelte'
     import Plus from 'svelte-material-icons/Plus.svelte'
     import Delete from 'svelte-material-icons/Delete.svelte'
+    import Pencil from 'svelte-material-icons/Pencil.svelte'
     import GroupBadge from "./GroupBadge.svelte";
     import Popup from "./Popup.svelte";
     import EmployeeList from "./EmployeeList.svelte";
     import {superForm} from "sveltekit-superforms";
+    import Dropdown from "./Dropdown.svelte";
 
     export let user
     export let allUsers
 
-    let showEmployeeList = false
     let newStepPosition = null
+    let editingStep = null
+
+    let openDropdownId = null
+    const toggleOptions = (stepOrder) => {
+        openDropdownId = openDropdownId === stepOrder ? null : stepOrder
+    }
+
+    let showEmployeeList = false
     const toggleEmployeeList = () => {
         showEmployeeList = !showEmployeeList
+        if (!showEmployeeList) {
+            editingStep = null
+        }
     }
     const onAddStepClick = (position) => {
         newStepPosition = position
+        editingStep = null
+        toggleEmployeeList()
+    }
+
+    const onEditStepClick = (step) => {
+        toggleOptions()
+        editingStep = step
+        newStepPosition = null
         toggleEmployeeList()
     }
 
     const onSelectUser = (selectedUser) => {
-        const newSteps = [...user.approval_process.steps]
+        if (editingStep) {
+            // update existing step
+            const newSteps = user.approval_process.steps.map(step =>
+                step.order === editingStep.order
+                    ? { ...step, approver: selectedUser }
+                    : step
+            )
+            user.approval_process.steps = newSteps
+        } else {
+            // add a new step
+            const newSteps = [...user.approval_process.steps]
+            newSteps.splice(newStepPosition, 0, {
+                order: newStepPosition + 1,
+                approver: selectedUser
+            })
 
-        newSteps.splice(newStepPosition, 0, {
-            order: newStepPosition + 1,
-            approver: selectedUser
-        })
-
-        // update next steps' order
-        for (let i = newStepPosition + 1; i < newSteps.length; i++) {
-            newSteps[i].order = i + 1
+            // update next steps' order
+            for (let i = newStepPosition + 1; i < newSteps.length; i++) {
+                newSteps[i].order = i + 1
+            }
+            user.approval_process.steps = newSteps
         }
 
-        user.approval_process.steps = newSteps
         user = user
-
-        // close popup
         toggleEmployeeList()
         newStepPosition = null
+        editingStep = null
     }
 
     const removeStep = (orderToRemove) => {
+        toggleOptions()
         const newSteps = user.approval_process.steps
             .filter(step => step.order !== orderToRemove)
             .map((step, newIndex) => ({
@@ -95,7 +126,7 @@
                         <p>{user.first_name} {user.last_name}</p>
                         <p>{user.email}</p>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right mr-12">
                         <p>{user.job_title}</p>
                         <div class="flex gap-2 justify-end">
                             {#each user.groups as group}
@@ -136,19 +167,40 @@
                             <p>{step.approver.first_name} {step.approver.last_name}</p>
                             <p>{step.approver.email}</p>
                         </div>
-                        <div class="flex items-center">
-                            <button on:click={() => removeStep(step.order)} type="button"
-                                    class="flex gap-1 items-center bg-accent-red text-main-white font-semibold h-8 px-4">
-                                <Delete class="" />
-                                Usuń krok
-                            </button>
-                        </div>
-                        <div class="text-right">
-                            <p>{step.approver.job_title}</p>
-                            <div class="flex gap-2 justify-end">
-                                {#each step.approver.groups as group}
-                                    <GroupBadge {group} />
-                                {/each}
+                        <div class="flex gap-4">
+                            <div class="text-right">
+                                <p>{step.approver.job_title}</p>
+                                <div class="flex gap-2 justify-end">
+                                    {#each step.approver.groups as group}
+                                        <GroupBadge {group} />
+                                    {/each}
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <button type="button" on:click={() => toggleOptions(step.order)}>
+                                    <DotsHorizontal class="text-main-gray" size="2rem"/>
+                                </button>
+                                {#if openDropdownId === step.order}
+                                    <Dropdown toggleDropdown={toggleOptions}>
+                                        <div class="flex flex-col py-2">
+                                            <button
+                                                    on:click={() => onEditStepClick(step)}
+                                                    type="button"
+                                                    class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app">
+                                                <Pencil size="1.25rem" />
+                                                <span>Edytuj krok</span>
+                                            </button>
+
+                                            <button
+                                                    on:click={() => removeStep(step.order)}
+                                                    type="button"
+                                                    class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red">
+                                                <Delete size="1.25rem" />
+                                                <span>Usuń krok</span>
+                                            </button>
+                                        </div>
+                                    </Dropdown>
+                                {/if}
                             </div>
                         </div>
                     </div>
@@ -190,21 +242,42 @@
                                 {user.approval_process.steps[user.approval_process.steps.length - 1].approver.email}
                             </p>
                         </div>
-                        <div class="flex items-center">
-                            <button on:click={() => removeStep(user.approval_process.steps[user.approval_process.steps.length - 1].order)} type="button"
-                                    class="flex gap-1 items-center bg-accent-red text-main-white font-semibold h-8 px-4">
-                                <Delete class="" />
-                                Usuń krok
-                            </button>
-                        </div>
-                        <div class="text-right">
-                            <p>
-                                {user.approval_process.steps[user.approval_process.steps.length - 1].approver.job_title}
-                            </p>
-                            <div class="flex gap-2 justify-end">
-                                {#each user.approval_process.steps[user.approval_process.steps.length - 1].approver.groups as group}
-                                    <GroupBadge {group} />
-                                {/each}
+                        <div class="flex gap-4">
+                            <div class="text-right">
+                                <p>
+                                    {user.approval_process.steps[user.approval_process.steps.length - 1].approver.job_title}
+                                </p>
+                                <div class="flex gap-2 justify-end">
+                                    {#each user.approval_process.steps[user.approval_process.steps.length - 1].approver.groups as group}
+                                        <GroupBadge {group} />
+                                    {/each}
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <button type="button" on:click={() => toggleOptions(user.approval_process.steps[user.approval_process.steps.length - 1].order)}>
+                                    <DotsHorizontal class="text-main-gray" size="2rem"/>
+                                </button>
+                                {#if openDropdownId === user.approval_process.steps[user.approval_process.steps.length - 1].order}
+                                    <Dropdown toggleDropdown={toggleOptions}>
+                                        <div class="flex flex-col py-2">
+                                            <button
+                                                    on:click={() => onEditStepClick(user.approval_process.steps[user.approval_process.steps.length - 1])}
+                                                    type="button"
+                                                    class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app">
+                                                <Pencil size="1.25rem" />
+                                                <span>Edytuj krok</span>
+                                            </button>
+
+                                            <button
+                                                    on:click={() => removeStep(user.approval_process.steps[user.approval_process.steps.length - 1].order)}
+                                                    type="button"
+                                                    class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red">
+                                                <Delete size="1.25rem" />
+                                                <span>Usuń krok</span>
+                                            </button>
+                                        </div>
+                                    </Dropdown>
+                                {/if}
                             </div>
                         </div>
                     </div>
