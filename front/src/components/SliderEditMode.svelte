@@ -358,6 +358,6 @@
 </div>
 {#if showPopup}
     <Popup {showPopup} {togglePopup} title="Proces akceptacji">
-        <ApprovalProcessEditMode {user} {allUsers}/>
+        <ApprovalProcessEditMode {togglePopup} {user} {allUsers}/>
     </Popup>
 {/if}

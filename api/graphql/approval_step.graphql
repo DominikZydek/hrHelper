@@ -4,3 +4,8 @@ type ApprovalStep {
     order: Int!
     approver: User!
 }
+
+input ApprovalStepInput {
+    order: Int!,
+    approver_id: ID!
+}

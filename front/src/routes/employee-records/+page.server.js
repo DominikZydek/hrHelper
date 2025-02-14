@@ -114,10 +114,10 @@ const userSchema = z.object({
 })
 
 const approvalProcessSchema = z.object({
-    approval_process: z.number().int(),
+    id: z.number().int(),
     steps: z.array(z.object({
         order: z.number().int(),
-        approver: z.number().int()
+        approver_id: z.number().int()
     }))
 })
 
@@ -201,6 +201,31 @@ export const actions = {
         if (!form.valid) {
             return fail(400, { form })
         }
+
+        let { id, steps } = form.data
+
+        const query = `
+        mutation UpdateApprovalProcess($id: ID!, $steps: [ApprovalStepInput!]!) {
+            updateApprovalProcess(
+                id: $id
+                steps: $steps
+            ) {
+                id
+            }
+        }`
+
+        const variables = { id, steps }
+
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ query, variables })
+        }).then(res => res.json())
+
+        console.log(res)
 
         return { form }
     }

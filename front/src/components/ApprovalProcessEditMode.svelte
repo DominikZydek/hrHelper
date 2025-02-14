@@ -15,6 +15,7 @@
 
     export let user
     export let allUsers
+    export let togglePopup
 
     let newStepPosition = null
     let editingStep = null
@@ -90,27 +91,29 @@
     // declare expected data structure
     const { form, enhance } = superForm({
         data: {
-            approval_process: Number(user.approval_process.id),
+            id: Number(user.approval_process.id),
             steps: user.approval_process.steps.map(step => ({
                 order: step.order,
-                approver: Number(step.approver.id)
+                approver_id: Number(step.approver.id)
             }))
         }
     }, {
-        dataType: 'json'
+        dataType: 'json',
+        onSubmit: () => togglePopup()
     })
 
     // reactive form data
     $: $form = {
-        approval_process: Number(user.approval_process.id),
-            steps: user.approval_process.steps.map(step => ({
+        id: Number(user.approval_process.id),
+        steps: user.approval_process.steps.map(step => ({
             order: step.order,
-            approver: Number(step.approver.id)
+            approver_id: Number(step.approver.id)
         }))
     }
 
 </script>
 
+<!-- TODO: this form has to be submitted alongside updateUser form, not before !!! -->
 <form method="POST" action="?/updateApprovalProcess" use:enhance
       class="flex flex-col w-full">
     <!-- first step -->

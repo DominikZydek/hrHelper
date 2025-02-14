@@ -2,3 +2,10 @@ type ApprovalProcess {
     id: ID!
     steps: [ApprovalStep!]!
 }
+
+extend type Mutation {
+    updateApprovalProcess(
+        id: ID!,
+        steps: [ApprovalStepInput!]!
+    ) : ApprovalProcess! @field(resolver: "App\\GraphQL\\Mutations\\ApprovalProcessMutator@updateApprovalProcess")
+}
