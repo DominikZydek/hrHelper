@@ -12,10 +12,16 @@
     import EmployeeList from "./EmployeeList.svelte";
     import {superForm} from "sveltekit-superforms";
     import Dropdown from "./Dropdown.svelte";
+    import Searchbar from "./Searchbar.svelte";
 
     export let user
     export let allUsers
     export let togglePopup
+
+    let displayedUsers = allUsers
+    const handleFilteredDataChange = (filteredData) => {
+        displayedUsers = filteredData
+    }
 
     let newStepPosition = null
     let editingStep = null
@@ -298,7 +304,9 @@
 </form>
 
 {#if showEmployeeList}
+    <!-- TODO: this popup is changing w and h while searching -->
     <Popup title="Wybierz pracownika" togglePopup={() => toggleEmployeeList()}>
-        <EmployeeList users={allUsers} onClick={onSelectUser}/>
+        <Searchbar placeholderText="Szukaj pracownika..." searchData={allUsers} onFilteredDataChange={handleFilteredDataChange}/>
+        <EmployeeList users={displayedUsers} onClick={onSelectUser}/>
     </Popup>
 {/if}
