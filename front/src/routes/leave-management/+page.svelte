@@ -1,3 +1,0 @@
-<div>
-    Leave management
-</div>

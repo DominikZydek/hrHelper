@@ -15,6 +15,9 @@ export default {
         'auxiliary-blue' : '#DBEAFE',
         'auxiliary-gray' : '#F3F4F6',
         'auxiliary-darkblue' : '#1E3A8A'
+      },
+      fontFamily : {
+        'poppins' : ['Poppins', 'sans-serif']
       }
     }
   },

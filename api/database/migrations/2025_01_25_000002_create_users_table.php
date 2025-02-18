@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('organization_id')->constrained('organizations');
+            $table->string('password');
             $table->string('first_name');
             $table->string('last_name');
             $table->enum('sex', ['M', 'F', 'X']);
-            $table->string('email')->unique();
+            $table->string('email');
             $table->date('birth_date');
             $table->string('phone_number');
             $table->foreignId('address_id')->constrained('addresses');
@@ -32,6 +34,8 @@ return new class extends Migration
             $table->date('health_check_expired_by');
             $table->date('health_and_safety_training_expired_by');
             $table->timestamps();
+
+            $table->unique(['organization_id', 'email']);
         });
     }
 

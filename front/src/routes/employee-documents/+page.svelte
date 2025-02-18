@@ -1,3 +1,0 @@
-<div>
-    Employee documents
-</div>

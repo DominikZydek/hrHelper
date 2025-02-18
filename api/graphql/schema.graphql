@@ -1,5 +1,6 @@
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
+#import organization.graphql
 #import address.graphql
 #import approval_process.graphql
 #import user.graphql

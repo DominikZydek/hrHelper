@@ -39,7 +39,7 @@
                         <Pencil class="" />
                         Edytuj
                     </button>
-                    <img class="h-8 w-8" src="favicon.png" alt="">
+                    <img class="h-8 w-8" src="/favicon.png" alt="">
                     <p class="font-semibold">{user.first_name} {user.last_name}</p>
                 </div>
                 <button on:click={() => toggleSlider()}>

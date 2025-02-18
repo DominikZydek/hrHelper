@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -15,6 +16,8 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Marek',
                 'last_name' => 'Jankowski',
                 'sex' => 'M',
@@ -35,6 +38,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-01-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Andrzej',
                 'last_name' => 'Siwy',
                 'sex' => 'M',
@@ -55,6 +60,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-01-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Jan',
                 'last_name' => 'Kowalski',
                 'sex' => 'M',
@@ -75,6 +82,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2021-06-11'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Anna',
                 'last_name' => 'Nowak',
                 'sex' => 'F',
@@ -95,6 +104,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-03-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Piotr',
                 'last_name' => 'Wiśniewski',
                 'sex' => 'M',
@@ -115,6 +126,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-06-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Maria',
                 'last_name' => 'Wiśniewska',
                 'sex' => 'F',
@@ -135,6 +148,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-01-15'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Tomasz',
                 'last_name' => 'Lewandowski',
                 'sex' => 'M',
@@ -155,6 +170,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-03-15'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Karolina',
                 'last_name' => 'Dąbrowska',
                 'sex' => 'F',
@@ -175,6 +192,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-01-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Michał',
                 'last_name' => 'Zieliński',
                 'sex' => 'M',
@@ -195,6 +214,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-09-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Aleksandra',
                 'last_name' => 'Wojciechowska',
                 'sex' => 'F',
@@ -215,6 +236,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-07-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Marcin',
                 'last_name' => 'Kaczmarek',
                 'sex' => 'M',
@@ -235,6 +258,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-03-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Magdalena',
                 'last_name' => 'Szymańska',
                 'sex' => 'F',
@@ -255,6 +280,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2023-11-15'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Krzysztof',
                 'last_name' => 'Wójcik',
                 'sex' => 'M',
@@ -275,6 +302,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-01-15'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Natalia',
                 'last_name' => 'Kamińska',
                 'sex' => 'F',
@@ -295,6 +324,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-04-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Adam',
                 'last_name' => 'Piotrowski',
                 'sex' => 'M',
@@ -315,6 +346,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-06-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Monika',
                 'last_name' => 'Pawlak',
                 'sex' => 'F',
@@ -335,6 +368,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2023-09-15'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Łukasz',
                 'last_name' => 'Michalski',
                 'sex' => 'M',
@@ -355,6 +390,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-03-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Agnieszka',
                 'last_name' => 'Grabowska',
                 'sex' => 'F',
@@ -375,6 +412,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2023-09-01'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Rafał',
                 'last_name' => 'Jankowski',
                 'sex' => 'M',
@@ -395,6 +434,8 @@ class UserSeeder extends Seeder
                 'health_and_safety_training_expired_by' => '2024-05-15'
             ],
             [
+                'organization_id' => 1,
+                'password' => bcrypt('password'),
                 'first_name' => 'Katarzyna',
                 'last_name' => 'Adamczyk',
                 'sex' => 'F',

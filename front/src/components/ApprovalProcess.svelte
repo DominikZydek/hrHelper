@@ -14,7 +14,7 @@
             <Circle class="text-main-black" size="2rem" />
         </div>
         <div class="flex items-center gap-5 flex-1">
-            <img class="h-16 w-16" src="favicon.png" alt="">
+            <img class="h-16 w-16" src="/favicon.png" alt="">
             <div class="flex-1">
                 <div class="flex justify-between items-start">
                     <div>
@@ -49,7 +49,7 @@
                 <CircleOutline class="text-main-black" size="2rem" />
             </div>
             <div class="flex items-center gap-5 flex-1">
-                <img class="h-16 w-16" src="favicon.png" alt="">
+                <img class="h-16 w-16" src="/favicon.png" alt="">
                 <div class="flex-1">
                     <div class="flex justify-between items-start">
                         <div>
@@ -85,7 +85,7 @@
                 <Check class="text-main-black" size="2rem" />
             </div>
             <div class="flex items-center gap-5 flex-1">
-                <img class="h-16 w-16" src="favicon.png" alt="">
+                <img class="h-16 w-16" src="/favicon.png" alt="">
                 <div class="flex-1">
                     <div class="flex justify-between items-start">
                         <div>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     protected $fillable = [
+        'organization_id', 'password',
         'first_name', 'last_name', 'sex', 'email', 'birth_date', 'phone_number',
         'address_id', 'role', 'job_title', 'supervisor_id', 'approval_process_id', 'type_of_employment',
         'paid_time_off_days', 'working_time', 'employed_from', 'employed_to',
@@ -43,6 +44,10 @@ class User extends Model
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'user_groups');
+    }
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'organization_id');
     }
 }
 
