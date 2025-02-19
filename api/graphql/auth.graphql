@@ -1,0 +1,11 @@
+extend type Mutation {
+    login(
+        organization_alias: String!
+        email: String!
+        password: String!
+    ) : User @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@login")
+}
+
+extend type Query {
+    me: User! @auth
+}

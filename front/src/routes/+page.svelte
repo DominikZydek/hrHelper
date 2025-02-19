@@ -1,4 +1,12 @@
 <script>
+    import {onMount} from "svelte";
+    import {PUBLIC_API_URL} from "$env/static/public";
+
+    onMount(async () => {
+        await fetch(`${PUBLIC_API_URL}/sanctum/csrf-cookie`, {
+            credentials: 'include'
+        });
+    });
 </script>
 
 <div class="w-screen h-screen flex">
@@ -12,7 +20,7 @@
     </div>
     <div class="w-1/3 flex items-center justify-center">
         <!-- TODO: implement backend or this !!! -->
-        <form method="POST" action="?/login" class="flex flex-col">
+        <form method="POST" class="flex flex-col">
             <div class="flex gap-2 items-center">
                 <img class="h-12 w-12" src="/favicon.png" alt="logo">
                 <p class="text-4xl font-poppins">hrHelper</p>

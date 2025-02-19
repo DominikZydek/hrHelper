@@ -11,7 +11,7 @@ const schema = z.object({
 })
 
 export const actions = {
-    login: async ({ request, fetch }) => {
+    default: async ({ request, fetch }) => {
         const form = await superValidate(request, zod(schema))
 
         console.log(form)
@@ -19,5 +19,35 @@ export const actions = {
         if (!form.valid) {
             return fail(400, {form})
         }
+
+        let { organization_alias, email, password } = form.data
+
+        const query = `
+                mutation Login($organization_alias: String!, $email: String!, $password: String!) {
+                    login(
+                        organization_alias: $organization_alias
+                        email: $email
+                        password: $password
+                    ) {
+                        id
+                    }
+                }`
+
+        const variables = {
+            organization_alias, email, password
+        }
+
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ query, variables })
+        }).then(res => res.json())
+
+        console.log(res)
+
+        return { form }
     }
 }
