@@ -6,6 +6,7 @@ use App\Models\Organization;
 use App\Models\User;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthMutator
 {
@@ -38,6 +39,14 @@ class AuthMutator
 
         // get authenticated user
         $user = Auth::user();
+
+        Log::info('Credentials:', $credentials);
+        $success = Auth::attempt($credentials);
+        Log::info('Auth attempt result:', ['success' => $success]);
+        Log::info('Auth check:', ['logged_in' => Auth::check()]);
+
+        Log::info('Session ID after login:', ['id' => session()->getId()]);
+        Log::info('Session data:', session()->all());
 
         return $user;
     }

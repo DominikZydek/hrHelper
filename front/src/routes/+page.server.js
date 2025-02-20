@@ -1,8 +1,9 @@
-import { API_URL } from '$env/static/private'
+import {API_URL, FRONTEND_URL} from '$env/static/private'
 import {date, z} from 'zod'
 import {superValidate} from "sveltekit-superforms";
 import {zod} from "sveltekit-superforms/adapters";
 import { fail } from "sveltekit-superforms";
+import {redirect} from "@sveltejs/kit";
 
 const schema = z.object({
     organization_alias: z.string(),
@@ -45,6 +46,11 @@ export const actions = {
             credentials: 'include',
             body: JSON.stringify({ query, variables })
         }).then(res => res.json())
+
+        if (res.data.login) {
+            console.log(res.data.login)
+            throw redirect(303, `${FRONTEND_URL}/home`)
+        }
 
         console.log(res)
 

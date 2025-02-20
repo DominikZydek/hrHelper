@@ -2,7 +2,6 @@ import { parse } from 'cookie';
 import { redirect } from '@sveltejs/kit';
 import {API_URL, FRONTEND_URL} from '$env/static/private';
 
-// TODO: THIS IS SERIOUSLY WRONG
 export const handleFetch = async ({ event, request, fetch }) => {
     const isApiRequest = true //request.url.startsWith('http://localhost');
 
@@ -59,8 +58,15 @@ export const handle = async ({ event, resolve }) => {
 
     const query = `{
         me {
-            id,
+            id
+            email
             role
+            organization {
+                id
+                name
+            }
+            first_name
+            last_name
         }
     }`;
 

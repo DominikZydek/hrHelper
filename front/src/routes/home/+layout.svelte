@@ -12,7 +12,7 @@
 
 <div class="h-screen">
     <nav class="fixed h-full w-20 bg-main-app flex flex-col items-center py-5">
-        <img class="h-10 w-10" src="/favicon.png" alt="logo">
+        <a href="/home"><img class="h-10 w-10" src="/favicon.png" alt="logo"></a>
         <ul class="flex flex-col items-center justify-end h-full w-full">
             <li class="px-4 py-6 w-full relative {path === 'employee-records' ? 'bg-auxiliary-darkblue' : ''}">
                 <a class="flex flex-col items-center justify-center h-8 group" href="/home/employee-records">
