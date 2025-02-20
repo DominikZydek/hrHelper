@@ -2,9 +2,10 @@ import { API_URL } from '$env/static/private'
 import {date, z} from 'zod'
 import {superValidate} from "sveltekit-superforms";
 import {zod} from "sveltekit-superforms/adapters";
-import { fail } from "sveltekit-superforms";
+import { fail } from "@sveltejs/kit";
 
 export const load = async({ request, fetch }) => {
+    // TODO: make it retrieve appropriate data (belonging to the same organization as locals.user),
     const query = `
         {
           users {

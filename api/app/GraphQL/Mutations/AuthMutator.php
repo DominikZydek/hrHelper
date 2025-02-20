@@ -15,7 +15,7 @@ class AuthMutator
         // find organization
         $organization = Organization::where('alias', $args['organization_alias'])->first();
         if (!$organization) {
-            throw new Error('Organization not found');
+            throw new Error('Podany alias nie istnieje');
         }
 
         // find user
@@ -23,7 +23,7 @@ class AuthMutator
             ->where('organization_id', $organization->id)
             ->first();
         if (!$user) {
-            throw new Error('User not found in this organization');
+            throw new Error('Błędne dane logowania');
         }
 
         // attempt to login
@@ -34,19 +34,11 @@ class AuthMutator
         ];
 
         if (!Auth::attempt($credentials)) {
-            throw new Error('Invalid credentials');
+            throw new Error('Błędne dane logowania');
         }
 
         // get authenticated user
         $user = Auth::user();
-
-        Log::info('Credentials:', $credentials);
-        $success = Auth::attempt($credentials);
-        Log::info('Auth attempt result:', ['success' => $success]);
-        Log::info('Auth check:', ['logged_in' => Auth::check()]);
-
-        Log::info('Session ID after login:', ['id' => session()->getId()]);
-        Log::info('Session data:', session()->all());
 
         return $user;
     }

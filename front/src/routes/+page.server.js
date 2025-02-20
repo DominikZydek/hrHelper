@@ -1,15 +1,20 @@
 import {API_URL, FRONTEND_URL} from '$env/static/private'
 import {date, z} from 'zod'
-import {superValidate} from "sveltekit-superforms";
+import {message, superValidate} from "sveltekit-superforms";
 import {zod} from "sveltekit-superforms/adapters";
-import { fail } from "sveltekit-superforms";
-import {redirect} from "@sveltejs/kit";
+import {redirect, fail} from "@sveltejs/kit";
 
 const schema = z.object({
     organization_alias: z.string(),
     email: z.string().email(),
     password: z.string()
 })
+
+export const load = async () => {
+    const form = await superValidate(zod(schema))
+
+    return { form }
+};
 
 export const actions = {
     default: async ({ request, fetch }) => {
@@ -47,12 +52,15 @@ export const actions = {
             body: JSON.stringify({ query, variables })
         }).then(res => res.json())
 
-        if (res.data.login) {
-            console.log(res.data.login)
-            throw redirect(303, `${FRONTEND_URL}/home`)
+        console.log(res)
+
+        if (res.errors) {
+            return message(form, res.errors[0].message || 'Błąd logowania')
         }
 
-        console.log(res)
+        if (res.data.login) {
+            throw redirect(303, `${FRONTEND_URL}/home`)
+        }
 
         return { form }
     }
