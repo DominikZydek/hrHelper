@@ -1,7 +1,7 @@
 <script>
     import EmployeeList from "../../../components/EmployeeList.svelte";
     import Searchbar from "../../../components/Searchbar.svelte";
-    import Slider from "../../../components/Slider.svelte";
+    import EmployeeDrawer from "../../../components/EmployeeDrawer.svelte";
 
     export let data
 
@@ -11,12 +11,12 @@
     let selectedUser = null
     const onClick = (user) => {
         selectedUser = user
-        toggleSlider()
+        toggleDrawer()
     }
 
-    let showSlider = false
-    const toggleSlider = () => {
-        showSlider = !showSlider
+    let showDrawer = false
+    const toggleDrawer = () => {
+        showDrawer = !showDrawer
     }
 
     const handleFilteredDataChange = (filteredData) => {
@@ -27,5 +27,9 @@
 <div class="px-10">
     <Searchbar placeholderText="Szukaj pracownika..." searchData={allUsers} onFilteredDataChange={handleFilteredDataChange}/>
     <EmployeeList users={displayedUsers} {onClick}/>
-    <Slider {showSlider} {toggleSlider} user={selectedUser} {allUsers} groups={data.groups}/>
+    {#if selectedUser}
+        {#if showDrawer}
+            <EmployeeDrawer {toggleDrawer} user={selectedUser} {allUsers} groups={data.groups} />
+        {/if}
+    {/if}
 </div>
