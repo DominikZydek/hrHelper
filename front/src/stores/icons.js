@@ -16,6 +16,11 @@ import ShieldAccount from 'svelte-material-icons/ShieldAccount.svelte'
 import Cellphone from 'svelte-material-icons/Cellphone.svelte'
 import Security from 'svelte-material-icons/Security.svelte'
 import Briefcase from 'svelte-material-icons/Briefcase.svelte'
+import PencilOutline from 'svelte-material-icons/PencilOutline.svelte'
+import ProgressClock from 'svelte-material-icons/ProgressClock.svelte'
+import CheckboxMarkedCircleOutline from 'svelte-material-icons/CheckboxMarkedCircleOutline.svelte'
+import CloseCircleOutline from 'svelte-material-icons/CloseCircleOutline.svelte'
+import BlockHelper from 'svelte-material-icons/BlockHelper.svelte'
 
 export const icons = writable({
     Laptop,
@@ -34,5 +39,10 @@ export const icons = writable({
     ShieldAccount,
     Cellphone,
     Security,
-    Briefcase
+    Briefcase,
+    PencilOutline,
+    ProgressClock,
+    CheckboxMarkedCircleOutline,
+    CloseCircleOutline,
+    BlockHelper
 })

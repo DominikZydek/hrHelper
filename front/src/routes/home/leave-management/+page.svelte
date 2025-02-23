@@ -3,6 +3,7 @@
     import DayGrid from '@event-calendar/day-grid'
     import Popup from "../../../components/Popup.svelte";
     import ApprovalProcess from "../../../components/ApprovalProcess.svelte";
+    import LeaveRequestDetails from "../../../components/LeaveRequestDetails.svelte";
 
     export let data
 
@@ -26,10 +27,10 @@
         showPopup = !showPopup
     }
 
-    let selectedRequest = null
-    const onClick = (request) => {
-        selectedRequest = request
-        console.log(request)
+    let selectedLeaveRequest = null
+    const onClick = (leaveRequest) => {
+        selectedLeaveRequest = leaveRequest
+        console.log(leaveRequest)
         togglePopup()
     }
 
@@ -92,7 +93,8 @@
                     }
                 ]
             },
-            current_approval_step: 1
+            current_approval_step: 1,
+            approval_steps_history: []
         },
         {
             id: 2,
@@ -133,7 +135,21 @@
                     }
                 ]
             },
-            current_approval_step: 1
+            current_approval_step: 1,
+            approval_steps_history: [
+                {
+                    step: 1,
+                    status: 'APPROVED',
+                    comment: 'Zatwierdzam urlop na żądanie',
+                    date: '2025-02-23T08:15:00Z',
+                    approver: {
+                        id: 5,
+                        first_name: 'Basia',
+                        last_name: 'Kowalska',
+                        email: 'basia.kowalska@company.com'
+                    }
+                }
+            ]
         },
         {
             id: 3,
@@ -174,7 +190,21 @@
                     }
                 ]
             },
-            current_approval_step: 2
+            current_approval_step: 2,
+            approval_steps_history: [
+                {
+                    step: 1,
+                    status: 'APPROVED',
+                    comment: 'Zatwierdzam urlop okolicznościowy',
+                    date: '2025-03-10T11:20:00Z',
+                    approver: {
+                        id: 5,
+                        first_name: 'Basia',
+                        last_name: 'Kowalska',
+                        email: 'basia.kowalska@company.com'
+                    }
+                }
+            ]
         },
         {
             id: 4,
@@ -224,7 +254,21 @@
                     }
                 ]
             },
-            current_approval_step: 1
+            current_approval_step: 1,
+            approval_steps_history: [
+                {
+                    step: 1,
+                    status: 'REJECTED',
+                    comment: 'Brak dostępnego zastępstwa - zastępująca osoba odrzuciła prośbę',
+                    date: '2025-03-28T10:15:00Z',
+                    approver: {
+                        id: 5,
+                        first_name: 'Basia',
+                        last_name: 'Kowalska',
+                        email: 'basia.kowalska@company.com'
+                    }
+                }
+            ]
         },
         {
             id: 5,
@@ -274,277 +318,10 @@
                     }
                 ]
             },
-            current_approval_step: 1
-        },
-        {
-            id: 6,
-            leave_type: {
-                id: 1,
-                name: 'Urlop wypoczynkowy',
-                limit_per_year: 26,
-                requires_replacement: true,
-                min_notice_days: 3,
-                can_be_cancelled: true
-            },
-            date_from: '2025-07-01',
-            date_to: '2025-07-21',
-            days_count: 15,
-            reason: 'Urlop letni',
-            comment: null,
-            status: 'DRAFT',
-            replacement: null,
-            approval_process: {
-                steps: [
-                    {
-                        order: 1,
-                        approver: {
-                            id: 5,
-                            first_name: 'Basia',
-                            last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
-                        }
-                    },
-                    {
-                        order: 2,
-                        approver: {
-                            id: 8,
-                            first_name: 'Michał',
-                            last_name: 'Kowalski',
-                            email: 'michal.kowalski@company.com'
-                        }
-                    },
-                    {
-                        order: 3,
-                        approver: {
-                            id: 11,
-                            first_name: 'Marek',
-                            last_name: 'Jankowski',
-                            email: 'marek.jankowski@company.com'
-                        }
-                    }
-                ]
-            },
-            current_approval_step: null
-        },
-        {
-            id: 7,
-            leave_type: {
-                id: 2,
-                name: 'Urlop na żądanie',
-                limit_per_year: 4,
-                requires_replacement: true,
-                min_notice_days: 0,
-                can_be_cancelled: false
-            },
-            date_from: '2025-08-05',
-            date_to: '2025-08-05',
-            days_count: 1,
-            reason: 'Ważne sprawy rodzinne',
-            comment: 'Pilne',
-            status: 'APPROVED',
-            replacement: {
-                user: {
-                    id: 7,
-                    first_name: 'Marcin',
-                    last_name: 'Wojciechowski',
-                    email: 'marcin.wojciechowski@company.com'
-                },
-                status: 'ACCEPTED',
-                comment: 'Ok'
-            },
-            approval_process: {
-                steps: [
-                    {
-                        order: 1,
-                        approver: {
-                            id: 5,
-                            first_name: 'Basia',
-                            last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
-                        }
-                    }
-                ]
-            },
-            current_approval_step: 1
-        },
-        {
-            id: 8,
-            leave_type: {
-                id: 1,
-                name: 'Urlop wypoczynkowy',
-                limit_per_year: 26,
-                requires_replacement: true,
-                min_notice_days: 3,
-                can_be_cancelled: true
-            },
-            date_from: '2025-09-15',
-            date_to: '2025-09-26',
-            days_count: 10,
-            reason: 'Wyjazd do Włoch',
-            comment: null,
-            status: 'CANCELLED',
-            replacement: {
-                user: {
-                    id: 8,
-                    first_name: 'Agnieszka',
-                    last_name: 'Dąbrowska',
-                    email: 'agnieszka.dabrowska@company.com'
-                },
-                status: 'ACCEPTED',
-                comment: 'Potwierdzam'
-            },
-            approval_process: {
-                steps: [
-                    {
-                        order: 1,
-                        approver: {
-                            id: 5,
-                            first_name: 'Basia',
-                            last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
-                        }
-                    },
-                    {
-                        order: 2,
-                        approver: {
-                            id: 8,
-                            first_name: 'Michał',
-                            last_name: 'Kowalski',
-                            email: 'michal.kowalski@company.com'
-                        }
-                    }
-                ]
-            },
-            current_approval_step: 2
-        },
-        {
-            id: 9,
-            leave_type: {
-                id: 4,
-                name: 'Urlop szkoleniowy',
-                limit_per_year: 6,
-                requires_replacement: true,
-                min_notice_days: 5,
-                can_be_cancelled: true
-            },
-            date_from: '2025-10-10',
-            date_to: '2025-10-11',
-            days_count: 2,
-            reason: 'Konferencja JS',
-            comment: 'Konferencja w Krakowie',
-            status: 'APPROVED',
-            replacement: {
-                user: {
-                    id: 9,
-                    first_name: 'Kamil',
-                    last_name: 'Witkowski',
-                    email: 'kamil.witkowski@company.com'
-                },
-                status: 'ACCEPTED',
-                comment: 'Zgadzam się'
-            },
-            approval_process: {
-                steps: [
-                    {
-                        order: 1,
-                        approver: {
-                            id: 5,
-                            first_name: 'Basia',
-                            last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
-                        }
-                    },
-                    {
-                        order: 2,
-                        approver: {
-                            id: 8,
-                            first_name: 'Michał',
-                            last_name: 'Kowalski',
-                            email: 'michal.kowalski@company.com'
-                        }
-                    }
-                ]
-            },
-            current_approval_step: 2
-        },
-        {
-            id: 10,
-            leave_type: {
-                id: 1,
-                name: 'Urlop wypoczynkowy',
-                limit_per_year: 26,
-                requires_replacement: true,
-                min_notice_days: 3,
-                can_be_cancelled: true
-            },
-            date_from: '2025-12-23',
-            date_to: '2025-12-31',
-            days_count: 7,
-            reason: 'Urlop świąteczny',
-            comment: null,
-            status: 'IN_PROGRESS',
-            replacement: {
-                user: {
-                    id: 10,
-                    first_name: 'Monika',
-                    last_name: 'Lewandowska',
-                    email: 'monika.lewandowska@company.com'
-                },
-                status: 'ACCEPTED',
-                comment: 'Potwierdzam zastępstwo'
-            },
-            approval_process: {
-                steps: [
-                    {
-                        order: 1,
-                        approver: {
-                            id: 5,
-                            first_name: 'Basia',
-                            last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
-                        }
-                    },
-                    {
-                        order: 2,
-                        approver: {
-                            id: 8,
-                            first_name: 'Michał',
-                            last_name: 'Kowalski',
-                            email: 'michal.kowalski@company.com'
-                        }
-                    },
-                    {
-                        order: 3,
-                        approver: {
-                            id: 11,
-                            first_name: 'Marek',
-                            last_name: 'Jankowski',
-                            email: 'marek.jankowski@company.com'
-                        }
-                    }
-                ]
-            },
-            current_approval_step: 2
+            current_approval_step: 1,
+            approval_steps_history: []
         }
     ];
-
-    // TODO: this is for tests
-    $: componentReadySelectedRequest = {
-        first_name: data.user.first_name,
-        last_name: data.user.last_name,
-        email: data.user.email,
-        groups: data.user.groups,
-        approval_process: {
-            ...selectedRequest?.approval_process,
-            steps: selectedRequest?.approval_process?.steps?.map(step => ({
-                ...step,
-                approver: {
-                    ...step.approver,
-                    groups: data.user.groups
-                }
-            }))
-        }
-    }
 </script>
 
 <div class="w-full h-full flex">
@@ -552,7 +329,7 @@
         <p class="font-semibold text-2xl text-main-app">Twoje wnioski urlopowe</p>
         <ul class="flex flex-col divide-y divide-main-gray">
             {#each leaveRequests as leaveRequest}
-                <li on:click={() => onClick(leaveRequest)}>
+                <li class="cursor-pointer" on:click={() => onClick(leaveRequest)}>
                     <p>{leaveRequest.leave_type.name}</p>
                     <p>{leaveRequest.reason}</p>
                     <p>{new Date(leaveRequest.date_from).toLocaleDateString()} - {new Date(leaveRequest.date_to).toLocaleDateString()}</p>
@@ -568,6 +345,6 @@
 </div>
 {#if showPopup}
     <Popup {togglePopup} title="Szczegóły wniosku">
-        <ApprovalProcess user={componentReadySelectedRequest}/>
+        <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={data.user}/>
     </Popup>
 {/if}
