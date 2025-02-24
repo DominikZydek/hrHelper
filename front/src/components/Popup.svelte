@@ -12,10 +12,13 @@
          class="bg-main-white max-w-5xl max-h-[90vh] rounded-lg p-6 overflow-auto">
         <div class="flex justify-between items-center mb-4">
             <p class="text-xl font-medium">{title}</p>
-            <button
-                    on:click={() => togglePopup()}>
-                <Close class="text-main-gray" size="2rem"/>
-            </button>
+            <div class="flex items-center gap-2">
+                <slot name="header-right"/>
+                <button
+                        on:click={() => togglePopup()}>
+                    <Close class="text-main-gray" size="2rem"/>
+                </button>
+            </div>
         </div>
         <div class="w-full">
             <slot />

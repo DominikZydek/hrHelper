@@ -16,9 +16,7 @@
     let userTrigger = null
     let approverTriggers = {}
 
-    // TODO: pointerenter and pointerleave don't work very well, look up other options
     const onUserHoverStart = (user) => {
-        if (hoveredUser?.id === user.id) return
         hoveredUser = user
         toggleDropdown(user.id)
     }
@@ -184,7 +182,27 @@
 
         {#if  hoveredUser?.id === user.id && userTrigger}
             <Dropdown triggerElement={userTrigger} toggleDropdown={() => toggleDropdown(user.id)}>
-                <p>{user.first_name} {user.last_name}</p>
+                <div class="p-4">
+                    <div class="flex items-center gap-5 flex-1">
+                        <img class="h-16 w-16" src="/favicon.png" alt="">
+                        <div class="flex-1">
+                            <div class="flex gap-10 items-start">
+                                <div>
+                                    <p>{user.first_name} {user.last_name}</p>
+                                    <p>{user.email}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p>{user.job_title}</p>
+                                    <div class="flex gap-2 justify-end">
+                                        {#each user.groups as group}
+                                            <GroupBadge {group} />
+                                        {/each}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </Dropdown>
         {/if}
 
@@ -215,7 +233,27 @@
             {#if hoveredUser?.id === step.approver.id && approverTriggers[step.approver.id]}
                 <Dropdown triggerElement={approverTriggers[step.approver.id]}
                           toggleDropdown={() => toggleDropdown(step.approver.id)}>
-                    <p>{step.approver.first_name} {step.approver.last_name}</p>
+                    <div class="p-4">
+                        <div class="flex items-center gap-5 flex-1">
+                            <img class="h-16 w-16" src="/favicon.png" alt="">
+                            <div class="flex-1">
+                                <div class="flex gap-10 items-start">
+                                    <div>
+                                        <p>{step.approver.first_name} {step.approver.last_name}</p>
+                                        <p>{step.approver.email}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p>{step.approver.job_title}</p>
+                                        <div class="flex gap-2 justify-end">
+                                            {#each step.approver.groups as group}
+                                                <GroupBadge {group} />
+                                            {/each}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </Dropdown>
             {/if}
 

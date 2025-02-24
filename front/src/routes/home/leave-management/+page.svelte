@@ -4,6 +4,8 @@
     import Popup from "../../../components/Popup.svelte";
     import ApprovalProcess from "../../../components/ApprovalProcess.svelte";
     import LeaveRequestDetails from "../../../components/LeaveRequestDetails.svelte";
+    import DotsHorizontal from 'svelte-material-icons/DotsHorizontal.svelte'
+    import Dropdown from "../../../components/Dropdown.svelte";
 
     export let data
 
@@ -26,6 +28,13 @@
     const togglePopup = () => {
         showPopup = !showPopup
     }
+
+    let showOptions = false
+    const toggleOptions = () => {
+        showOptions = !showOptions
+    }
+
+    let optionButton = null
 
     let selectedLeaveRequest = null
     const onClick = (leaveRequest) => {
@@ -430,6 +439,35 @@
 </div>
 {#if showPopup}
     <Popup {togglePopup} title="Szczegóły wniosku">
+        <svelte:fragment slot="header-right">
+            <button type="button" bind:this={optionButton} on:click={() => toggleOptions()}>
+                <DotsHorizontal class="text-main-gray" size="2rem"/>
+            </button>
+        </svelte:fragment>
+        {#if showOptions}
+            <Dropdown triggerElement={optionButton} toggleDropdown={toggleOptions}>
+                <div class="flex flex-col py-2">
+                    <button
+                            type="button"
+                            class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app">
+                        <DotsHorizontal size="1.25rem" />
+                        <span>Pokaż historię wniosku</span>
+                    </button>
+                    <button
+                            type="button"
+                            class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-orange">
+                        <DotsHorizontal size="1.25rem" />
+                        <span>Edytuj wniosek</span>
+                    </button>
+                    <button
+                            type="button"
+                            class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray">
+                        <DotsHorizontal size="1.25rem" />
+                        <span>Wycofaj wniosek</span>
+                    </button>
+                </div>
+            </Dropdown>
+        {/if}
         <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={data.user} allUsers={data.users}/>
     </Popup>
 {/if}
