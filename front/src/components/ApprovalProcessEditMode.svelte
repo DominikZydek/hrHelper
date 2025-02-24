@@ -26,6 +26,8 @@
     let newStepPosition = null
     let editingStep = null
 
+    let dropdownTriggers = {}
+
     let openDropdownId = null
     const toggleOptions = (stepOrder) => {
         openDropdownId = openDropdownId === stepOrder ? null : stepOrder
@@ -186,11 +188,12 @@
                                 </div>
                             </div>
                             <div class="relative">
-                                <button type="button" on:click={() => toggleOptions(step.order)}>
+                                <button type="button" bind:this={dropdownTriggers[step.order]}
+                                        on:click={() => toggleOptions(step.order)}>
                                     <DotsHorizontal class="text-main-gray" size="2rem"/>
                                 </button>
                                 {#if openDropdownId === step.order}
-                                    <Dropdown toggleDropdown={toggleOptions}>
+                                    <Dropdown triggerElement={dropdownTriggers[step.order]} toggleDropdown={toggleOptions}>
                                         <div class="flex flex-col py-2">
                                             <button
                                                     on:click={() => onEditStepClick(step)}
@@ -263,11 +266,12 @@
                                 </div>
                             </div>
                             <div class="relative">
-                                <button type="button" on:click={() => toggleOptions(user.approval_process.steps[user.approval_process.steps.length - 1].order)}>
+                                <button type="button" bind:this={dropdownTriggers[user.approval_process.steps[user.approval_process.steps.length - 1].order]}
+                                        on:click={() => toggleOptions(user.approval_process.steps[user.approval_process.steps.length - 1].order)}>
                                     <DotsHorizontal class="text-main-gray" size="2rem"/>
                                 </button>
                                 {#if openDropdownId === user.approval_process.steps[user.approval_process.steps.length - 1].order}
-                                    <Dropdown toggleDropdown={toggleOptions} position="top-left">
+                                    <Dropdown triggerElement={dropdownTriggers[user.approval_process.steps[user.approval_process.steps.length - 1].order]} toggleDropdown={toggleOptions}>
                                         <div class="flex flex-col py-2">
                                             <button
                                                     on:click={() => onEditStepClick(user.approval_process.steps[user.approval_process.steps.length - 1])}

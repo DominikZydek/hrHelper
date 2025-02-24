@@ -16,6 +16,9 @@
         openDropdownId = openDropdownId === id ? null : id
     }
 
+    let rejectionTrigger = null
+    let replacementTrigger = null
+
     $: rejectionStep = leaveRequest.status === 'REJECTED'
         ? leaveRequest.approval_steps_history.find(step => step.status === 'REJECTED')
         : null
@@ -54,7 +57,8 @@
            <svelte:component size="1.75rem" this={$icons[statusIcons[leaveRequest.status]]} />
            {#if leaveRequest.status === 'REJECTED' && rejectionStep.comment}
                <div class="text-main-black">
-                   <button type="button" class="flex items-center" on:click={() => toggleDropdown('rejection')}>
+                   <button type="button" bind:this={rejectionTrigger} class="flex items-center"
+                           on:click={() => toggleDropdown('rejection')}>
                        {#if openDropdownId !== 'rejection'}
                            <ChevronDown class="text-main-gray" size="1.75rem"/>
                        {:else}
@@ -62,29 +66,31 @@
                        {/if}
                    </button>
                    {#if openDropdownId === 'rejection'}
-                       <Dropdown toggleDropdown={() => toggleDropdown('rejection')}>
-                           <p class="font-semibold">Wniosek odrzucony przez:</p>
-                           <div class="flex items-center gap-5 flex-1">
-                               <img class="h-16 w-16" src="/favicon.png" alt="">
-                               <div class="flex-1">
-                                   <div class="flex gap-10 items-start">
-                                       <div>
-                                           <p>{rejectionStep.approver.first_name} {rejectionStep.approver.last_name}</p>
-                                           <p>{rejectionStep.approver.email}</p>
-                                       </div>
-                                       <div class="text-right">
-                                           <p>{rejectionStep.approver.job_title}</p>
-                                           <div class="flex gap-2 justify-end">
-                                               {#each rejectionStep.approver.groups as group}
-                                                   <GroupBadge {group} />
-                                               {/each}
+                       <Dropdown triggerElement={rejectionTrigger} toggleDropdown={() => toggleDropdown('rejection')}>
+                           <div class="p-4">
+                               <p class="font-semibold">Wniosek odrzucony przez:</p>
+                               <div class="flex items-center gap-5 flex-1">
+                                   <img class="h-16 w-16" src="/favicon.png" alt="">
+                                   <div class="flex-1">
+                                       <div class="flex gap-10 items-start">
+                                           <div>
+                                               <p>{rejectionStep.approver.first_name} {rejectionStep.approver.last_name}</p>
+                                               <p>{rejectionStep.approver.email}</p>
+                                           </div>
+                                           <div class="text-right">
+                                               <p>{rejectionStep.approver.job_title}</p>
+                                               <div class="flex gap-2 justify-end">
+                                                   {#each rejectionStep.approver.groups as group}
+                                                       <GroupBadge {group} />
+                                                   {/each}
+                                               </div>
                                            </div>
                                        </div>
                                    </div>
                                </div>
+                               <p class="font-semibold">Powód odrzucenia: </p>
+                               <p>{rejectionStep.comment}</p>
                            </div>
-                           <p class="font-semibold">Powód odrzucenia: </p>
-                           <p>{rejectionStep.comment}</p>
                        </Dropdown>
                    {/if}
                </div>
@@ -104,7 +110,8 @@
                     </p>
                     <svelte:component size="1.5rem" this={$icons[statusIcons[leaveRequest.replacement.status]]} />
                     <div class="text-main-black">
-                        <button type="button" class="flex items-center" on:click={() => toggleDropdown('replacement')}>
+                        <button type="button" bind:this={replacementTrigger} class="flex items-center"
+                                on:click={() => toggleDropdown('replacement')}>
                             {#if openDropdownId !== 'replacement'}
                                 <ChevronDown class="text-main-gray" size="1.5rem"/>
                             {:else}
@@ -112,31 +119,33 @@
                             {/if}
                         </button>
                         {#if openDropdownId === 'replacement'}
-                            <Dropdown toggleDropdown={() => toggleDropdown('replacement')}>
-                                <p class="font-semibold">Osoba wyznaczona do zastępstwa:</p>
-                                <div class="flex items-center gap-5 flex-1">
-                                    <img class="h-16 w-16" src="/favicon.png" alt="">
-                                    <div class="flex-1">
-                                        <div class="flex gap-10 items-start">
-                                            <div>
-                                                <p>{leaveRequest.replacement.user.first_name} {leaveRequest.replacement.user.last_name}</p>
-                                                <p>{leaveRequest.replacement.user.email}</p>
-                                            </div>
-                                            <div class="text-right">
-                                                <p>{leaveRequest.replacement.user.job_title}</p>
-                                                <div class="flex gap-2 justify-end">
-                                                    {#each leaveRequest.replacement.user.groups as group}
-                                                        <GroupBadge {group} />
-                                                    {/each}
+                            <Dropdown triggerElement={replacementTrigger} toggleDropdown={() => toggleDropdown('replacement')}>
+                                <div class="p-4">
+                                    <p class="font-semibold">Osoba wyznaczona do zastępstwa:</p>
+                                    <div class="flex items-center gap-5 flex-1">
+                                        <img class="h-16 w-16" src="/favicon.png" alt="">
+                                        <div class="flex-1">
+                                            <div class="flex gap-10 items-start">
+                                                <div>
+                                                    <p>{leaveRequest.replacement.user.first_name} {leaveRequest.replacement.user.last_name}</p>
+                                                    <p>{leaveRequest.replacement.user.email}</p>
+                                                </div>
+                                                <div class="text-right">
+                                                    <p>{leaveRequest.replacement.user.job_title}</p>
+                                                    <div class="flex gap-2 justify-end">
+                                                        {#each leaveRequest.replacement.user.groups as group}
+                                                            <GroupBadge {group} />
+                                                        {/each}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    {#if leaveRequest.replacement.comment}
+                                        <p class="font-semibold">Komentarz: </p>
+                                        <p>{leaveRequest.replacement.comment}</p>
+                                    {/if}
                                 </div>
-                                {#if leaveRequest.replacement.comment}
-                                    <p class="font-semibold">Komentarz: </p>
-                                    <p>{leaveRequest.replacement.comment}</p>
-                                {/if}
                             </Dropdown>
                         {/if}
                     </div>
