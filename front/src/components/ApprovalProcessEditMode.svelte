@@ -267,12 +267,12 @@
                                     <DotsHorizontal class="text-main-gray" size="2rem"/>
                                 </button>
                                 {#if openDropdownId === user.approval_process.steps[user.approval_process.steps.length - 1].order}
-                                    <Dropdown toggleDropdown={toggleOptions}>
+                                    <Dropdown toggleDropdown={toggleOptions} position="top-left">
                                         <div class="flex flex-col py-2">
                                             <button
                                                     on:click={() => onEditStepClick(user.approval_process.steps[user.approval_process.steps.length - 1])}
                                                     type="button"
-                                                    class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app">
+                                                    class="flex items-center gap-2 px-4 py-2 w-48 hover:bg-auxiliary-gray text-left text-main-app">
                                                 <Pencil size="1.25rem" />
                                                 <span>Edytuj krok</span>
                                             </button>
@@ -280,7 +280,7 @@
                                             <button
                                                     on:click={() => removeStep(user.approval_process.steps[user.approval_process.steps.length - 1].order)}
                                                     type="button"
-                                                    class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red">
+                                                    class="flex items-center gap-2 px-4 py-2 w-48 hover:bg-auxiliary-gray text-left text-accent-red">
                                                 <Delete size="1.25rem" />
                                                 <span>Usuń krok</span>
                                             </button>

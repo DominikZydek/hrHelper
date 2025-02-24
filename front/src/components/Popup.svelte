@@ -9,7 +9,7 @@
 <div use:lockScroll class="fixed top-0 left-0 w-screen h-screen bg-main-black/75 flex items-center justify-center p-4">
     <div use:clickOutside
          on:clickoutside={() => togglePopup()}
-         class="bg-main-white min-w-[800px] max-w-5xl max-h-[90vh] rounded-lg p-6 overflow-auto">
+         class="bg-main-white max-w-5xl max-h-[90vh] rounded-lg p-6 overflow-auto">
         <div class="flex justify-between items-center mb-4">
             <p class="text-xl font-medium">{title}</p>
             <button

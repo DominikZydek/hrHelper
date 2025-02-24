@@ -57,9 +57,14 @@
                     id: 2,
                     first_name: 'Anna',
                     last_name: 'Nowak',
-                    email: 'anna.nowak@company.com'
+                    email: 'anna.nowak@company.com',
+                    groups: [
+                        { icon_name: 'ChartGantt', name: 'Management' },
+                        { icon_name: 'Briefcase', name: 'Board' }
+                    ],
+                    job_title: 'HR Manager'
                 },
-                status: 'ACCEPTED',
+                status: 'APPROVED',
                 comment: 'Ok, zastąpię'
             },
             approval_process: {
@@ -70,7 +75,12 @@
                             id: 5,
                             first_name: 'Basia',
                             last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
+                            email: 'basia.kowalska@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     },
                     {
@@ -79,7 +89,12 @@
                             id: 8,
                             first_name: 'Michał',
                             last_name: 'Kowalski',
-                            email: 'michal.kowalski@company.com'
+                            email: 'michal.kowalski@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     },
                     {
@@ -88,7 +103,12 @@
                             id: 11,
                             first_name: 'Marek',
                             last_name: 'Jankowski',
-                            email: 'marek.jankowski@company.com'
+                            email: 'marek.jankowski@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     }
                 ]
@@ -117,9 +137,14 @@
                     id: 3,
                     first_name: 'Piotr',
                     last_name: 'Wiśniewski',
-                    email: 'piotr.wisniewski@company.com'
+                    email: 'piotr.wisniewski@company.com',
+                    groups: [
+                        { icon_name: 'ChartGantt', name: 'Management' },
+                        { icon_name: 'Briefcase', name: 'Board' }
+                    ],
+                    job_title: 'HR Manager'
                 },
-                status: 'ACCEPTED',
+                status: 'APPROVED',
                 comment: 'Potwierdzam zastępstwo'
             },
             approval_process: {
@@ -130,7 +155,12 @@
                             id: 5,
                             first_name: 'Basia',
                             last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
+                            email: 'basia.kowalska@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     }
                 ]
@@ -146,7 +176,12 @@
                         id: 5,
                         first_name: 'Basia',
                         last_name: 'Kowalska',
-                        email: 'basia.kowalska@company.com'
+                        email: 'basia.kowalska@company.com',
+                        groups: [
+                            { icon_name: 'ChartGantt', name: 'Management' },
+                            { icon_name: 'Briefcase', name: 'Board' }
+                        ],
+                        job_title: 'HR Manager'
                     }
                 }
             ]
@@ -176,7 +211,12 @@
                             id: 5,
                             first_name: 'Basia',
                             last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
+                            email: 'basia.kowalska@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     },
                     {
@@ -185,7 +225,12 @@
                             id: 8,
                             first_name: 'Michał',
                             last_name: 'Kowalski',
-                            email: 'michal.kowalski@company.com'
+                            email: 'michal.kowalski@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     }
                 ]
@@ -201,7 +246,12 @@
                         id: 5,
                         first_name: 'Basia',
                         last_name: 'Kowalska',
-                        email: 'basia.kowalska@company.com'
+                        email: 'basia.kowalska@company.com',
+                        groups: [
+                            { icon_name: 'ChartGantt', name: 'Management' },
+                            { icon_name: 'Briefcase', name: 'Board' }
+                        ],
+                        job_title: 'HR Manager'
                     }
                 }
             ]
@@ -227,7 +277,12 @@
                     id: 4,
                     first_name: 'Tomasz',
                     last_name: 'Kowalczyk',
-                    email: 'tomasz.kowalczyk@company.com'
+                    email: 'tomasz.kowalczyk@company.com',
+                    groups: [
+                        { icon_name: 'ChartGantt', name: 'Management' },
+                        { icon_name: 'Briefcase', name: 'Board' }
+                    ],
+                    job_title: 'HR Manager'
                 },
                 status: 'REJECTED',
                 comment: 'Nie mogę w tym terminie'
@@ -240,7 +295,12 @@
                             id: 5,
                             first_name: 'Basia',
                             last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
+                            email: 'basia.kowalska@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     },
                     {
@@ -249,7 +309,12 @@
                             id: 8,
                             first_name: 'Michał',
                             last_name: 'Kowalski',
-                            email: 'michal.kowalski@company.com'
+                            email: 'michal.kowalski@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     }
                 ]
@@ -265,7 +330,12 @@
                         id: 5,
                         first_name: 'Basia',
                         last_name: 'Kowalska',
-                        email: 'basia.kowalska@company.com'
+                        email: 'basia.kowalska@company.com',
+                        groups: [
+                            { icon_name: 'ChartGantt', name: 'Management' },
+                            { icon_name: 'Briefcase', name: 'Board' }
+                        ],
+                        job_title: 'HR Manager'
                     }
                 }
             ]
@@ -291,9 +361,14 @@
                     id: 6,
                     first_name: 'Katarzyna',
                     last_name: 'Zielińska',
-                    email: 'katarzyna.zielinska@company.com'
+                    email: 'katarzyna.zielinska@company.com',
+                    groups: [
+                        { icon_name: 'ChartGantt', name: 'Management' },
+                        { icon_name: 'Briefcase', name: 'Board' }
+                    ],
+                    job_title: 'HR Manager'
                 },
-                status: 'PENDING',
+                status: 'IN_PROGRESS',
                 comment: null
             },
             approval_process: {
@@ -304,7 +379,12 @@
                             id: 5,
                             first_name: 'Basia',
                             last_name: 'Kowalska',
-                            email: 'basia.kowalska@company.com'
+                            email: 'basia.kowalska@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     },
                     {
@@ -313,7 +393,12 @@
                             id: 8,
                             first_name: 'Michał',
                             last_name: 'Kowalski',
-                            email: 'michal.kowalski@company.com'
+                            email: 'michal.kowalski@company.com',
+                            groups: [
+                                { icon_name: 'ChartGantt', name: 'Management' },
+                                { icon_name: 'Briefcase', name: 'Board' }
+                            ],
+                            job_title: 'HR Manager'
                         }
                     }
                 ]
