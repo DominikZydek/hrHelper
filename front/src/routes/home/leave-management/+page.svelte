@@ -430,6 +430,6 @@
 </div>
 {#if showPopup}
     <Popup {togglePopup} title="Szczegóły wniosku">
-        <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={data.user}/>
+        <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={data.user} allUsers={data.users}/>
     </Popup>
 {/if}

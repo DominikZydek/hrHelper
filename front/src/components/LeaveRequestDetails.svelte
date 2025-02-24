@@ -10,6 +10,22 @@
     import Dropdown from "./Dropdown.svelte";
     export let leaveRequest
     export let user
+    export let allUsers
+
+    let hoveredUser = null
+    let userTrigger = null
+    let approverTriggers = {}
+
+    // TODO: pointerenter and pointerleave don't work very well, look up other options
+    const onUserHoverStart = (user) => {
+        if (hoveredUser?.id === user.id) return
+        hoveredUser = user
+        toggleDropdown(user.id)
+    }
+    const onUserHoverEnd = () => {
+        hoveredUser = null
+        openDropdownId = null
+    }
 
     let openDropdownId = null
     const toggleDropdown = (id) => {
@@ -154,25 +170,55 @@
         {/if}
     </div>
     <div class="flex">
-        <div class="flex flex-col items-center w-48">
+        <div class="flex flex-col items-center w-48"
+             bind:this={userTrigger}
+             on:pointerenter={() => onUserHoverStart(user)}
+             on:pointerleave={() => onUserHoverEnd()}>
             <img class="h-10 w-10" src="/favicon.png" alt="">
             <p>{user.first_name} {user.last_name}</p>
+            <div class="flex gap-2 text-accent-green items-center">
+                <p class="font-semibold">Wysłany</p>
+                <svelte:component size="1.5rem" this={$icons[statusIcons['APPROVED']]} />
+            </div>
         </div>
+
+        {#if  hoveredUser?.id === user.id && userTrigger}
+            <Dropdown triggerElement={userTrigger} toggleDropdown={() => toggleDropdown(user.id)}>
+                <p>{user.first_name} {user.last_name}</p>
+            </Dropdown>
+        {/if}
+
         {#each leaveRequest.approval_process.steps as step}
-            <div class="flex flex-col items-center w-48">
+            {@const stepHistory = leaveRequest.approval_steps_history.find(history => history.step === step.order)}
+            {@const isCurrentStep = leaveRequest.current_approval_step === step.order}
+
+            <div class="flex flex-col items-center w-48"
+                 bind:this={approverTriggers[step.approver.id]}
+                 on:pointerenter={() => onUserHoverStart(step.approver)}
+                 on:pointerleave={() => onUserHoverEnd()} >
                 <img class="h-10 w-10" src="/favicon.png" alt="">
                 <p>{step.approver.first_name} {step.approver.last_name}</p>
+
+                {#if stepHistory}
+                    <div class="flex gap-2 {statusClasses[stepHistory.status]} items-center">
+                        <p class="font-semibold">{statusMessages[stepHistory.status]}</p>
+                        <svelte:component size="1.5rem" this={$icons[statusIcons[stepHistory.status]]} />
+                    </div>
+                {:else if isCurrentStep}
+                    <div class="flex gap-2 text-accent-orange items-center">
+                        <p class="font-semibold">Oczekuje</p>
+                        <svelte:component size="1.5rem" this={$icons[statusIcons['IN_PROGRESS']]} />
+                    </div>
+                {/if}
             </div>
-        {/each}
-    </div>
-    <div class="flex">
-        <div class="flex flex-col items-center w-48">
-            <CircleOutline />
-        </div>
-        {#each leaveRequest.approval_process.steps as step}
-            <div class="flex flex-col items-center w-48">
-                <CircleOutline />
-            </div>
+
+            {#if hoveredUser?.id === step.approver.id && approverTriggers[step.approver.id]}
+                <Dropdown triggerElement={approverTriggers[step.approver.id]}
+                          toggleDropdown={() => toggleDropdown(step.approver.id)}>
+                    <p>{step.approver.first_name} {step.approver.last_name}</p>
+                </Dropdown>
+            {/if}
+
         {/each}
     </div>
 </div>
