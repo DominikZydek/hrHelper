@@ -1,0 +1,24 @@
+type LeaveRequest {
+    id: ID!
+    user: User!
+    leave_type: LeaveType!
+    approval_process: ApprovalProcess!
+    date_from: Date!
+    date_to: Date!
+    days_count: Int!
+    reason: String!
+    comment: String
+    status: LeaveRequestStatus!
+    replacement: LeaveRequestReplacement
+    current_approval_step: Int!
+    approval_steps_history: [ApprovalStepsHistory!]!
+}
+
+enum LeaveRequestStatus {
+    DRAFT
+    SENT
+    IN_PROGRESS
+    APPROVED
+    REJECTED
+    CANCELLED
+}

@@ -1,0 +1,7 @@
+type LeaveRequestReplacement {
+    id: ID!
+    leave_request: LeaveRequest!
+    user: User!
+    status: LeaveRequestStatus!
+    comment: String
+}

@@ -1,4 +1,5 @@
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 #import auth.graphql
 #import organization.graphql
@@ -8,3 +9,7 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 #import group.graphql
 #import user_group.graphql
 #import approval_step.graphql
+#import leave_type.graphql
+#import leave_request.graphql
+#import leave_request_replacement.graphql
+#import approval_steps_history.graphql

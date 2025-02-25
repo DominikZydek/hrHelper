@@ -1,0 +1,9 @@
+type ApprovalStepsHistory {
+    id: ID!
+    leave_request: LeaveRequest!
+    step: Int!
+    status: LeaveRequestStatus!
+    approver: User
+    comment: String
+    date: DateTime!
+}

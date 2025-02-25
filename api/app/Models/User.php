@@ -52,6 +52,18 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Organization::class, 'organization_id');
     }
+    public function leave_requests()
+    {
+        return $this->hasMany(LeaveRequest::class);
+    }
+    public function replacement_requests()
+    {
+        return $this->hasMany(LeaveRequest::class);
+    }
+    public function approval_history_as_approver()
+    {
+        return $this->hasMany(ApprovalStepsHistory::class, 'approver_id');
+    }
 }
 
 enum Sex: string

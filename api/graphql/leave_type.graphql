@@ -1,0 +1,12 @@
+type LeaveType {
+    id: ID!
+    name: String!
+    limit_per_year: Int!
+    requires_replacement: Boolean!
+    min_notice_days: Int!
+    can_be_cancelled: Boolean!
+}
+
+extend type Query {
+    leaveTypes: [LeaveType!]! @all
+}
