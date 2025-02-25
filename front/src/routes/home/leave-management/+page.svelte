@@ -6,6 +6,12 @@
     import LeaveRequestDetails from "../../../components/LeaveRequestDetails.svelte";
     import DotsHorizontal from 'svelte-material-icons/DotsHorizontal.svelte'
     import Dropdown from "../../../components/Dropdown.svelte";
+    import {getStatusInfo} from "../../../utils/getStatusInfo.js";
+    import {icons} from "../../../stores/icons.js";
+    import GroupBadge from "../../../components/GroupBadge.svelte";
+    import ArrowULeftTop from 'svelte-material-icons/ArrowULeftTop.svelte'
+    import History from 'svelte-material-icons/History.svelte'
+    import Pencil from 'svelte-material-icons/Pencil.svelte'
 
     export let data
 
@@ -37,6 +43,7 @@
     let optionButton = null
 
     let selectedLeaveRequest = null
+
     const onClick = (leaveRequest) => {
         selectedLeaveRequest = leaveRequest
         console.log(leaveRequest)
@@ -123,7 +130,22 @@
                 ]
             },
             current_approval_step: 1,
-            approval_steps_history: []
+            approval_steps_history: [
+                {
+                    step: 0,
+                    status: 'DRAFT',
+                    comment: 'Utworzono wniosek urlopowy',
+                    date: '2025-02-01T10:15:00Z',
+                    approver: null
+                },
+                {
+                    step: 0,
+                    status: 'SENT',
+                    comment: 'Wysłano wniosek do akceptacji',
+                    date: '2025-02-02T09:30:00Z',
+                    approver: null
+                }
+            ]
         },
         {
             id: 2,
@@ -176,6 +198,20 @@
             },
             current_approval_step: 1,
             approval_steps_history: [
+                {
+                    step: 0,
+                    status: 'DRAFT',
+                    comment: 'Utworzono wniosek urlopowy',
+                    date: '2025-02-23T07:45:00Z',
+                    approver: null
+                },
+                {
+                    step: 0,
+                    status: 'SENT',
+                    comment: 'Wysłano wniosek do akceptacji',
+                    date: '2025-02-23T08:00:00Z',
+                    approver: null
+                },
                 {
                     step: 1,
                     status: 'APPROVED',
@@ -246,6 +282,20 @@
             },
             current_approval_step: 2,
             approval_steps_history: [
+                {
+                    step: 0,
+                    status: 'DRAFT',
+                    comment: 'Utworzono wniosek urlopowy',
+                    date: '2025-03-08T14:20:00Z',
+                    approver: null
+                },
+                {
+                    step: 0,
+                    status: 'SENT',
+                    comment: 'Wysłano wniosek do akceptacji',
+                    date: '2025-03-09T09:45:00Z',
+                    approver: null
+                },
                 {
                     step: 1,
                     status: 'APPROVED',
@@ -331,6 +381,20 @@
             current_approval_step: 1,
             approval_steps_history: [
                 {
+                    step: 0,
+                    status: 'DRAFT',
+                    comment: 'Utworzono wniosek urlopowy',
+                    date: '2025-03-20T15:30:00Z',
+                    approver: null
+                },
+                {
+                    step: 0,
+                    status: 'SENT',
+                    comment: 'Wysłano wniosek do akceptacji',
+                    date: '2025-03-21T10:00:00Z',
+                    approver: null
+                },
+                {
                     step: 1,
                     status: 'REJECTED',
                     comment: 'Brak dostępnego zastępstwa - zastępująca osoba odrzuciła prośbę',
@@ -413,9 +477,29 @@
                 ]
             },
             current_approval_step: 1,
-            approval_steps_history: []
+            approval_steps_history: [
+                {
+                    step: 0,
+                    status: 'DRAFT',
+                    comment: 'Utworzono wniosek urlopowy',
+                    date: '2025-05-10T09:20:00Z',
+                    approver: null
+                },
+                {
+                    step: 0,
+                    status: 'SENT',
+                    comment: 'Wysłano wniosek do akceptacji',
+                    date: '2025-05-11T14:45:00Z',
+                    approver: null
+                }
+            ]
         }
     ];
+
+    let showLeaveRequestHistory = false
+    const toggleLeaveRequestHistory = () => {
+        showLeaveRequestHistory = !showLeaveRequestHistory
+    }
 </script>
 
 <div class="w-full h-full flex">
@@ -447,27 +531,70 @@
         {#if showOptions}
             <Dropdown triggerElement={optionButton} toggleDropdown={toggleOptions}>
                 <div class="flex flex-col py-2">
-                    <button
+                    <button on:click={() => toggleLeaveRequestHistory()}
                             type="button"
                             class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app">
-                        <DotsHorizontal size="1.25rem" />
+                        <History size="1.25rem" />
                         <span>Pokaż historię wniosku</span>
                     </button>
+
+                    {#if showLeaveRequestHistory}
+                        <Popup togglePopup={toggleLeaveRequestHistory} title="Historia wniosku">
+                            <ul>
+                                {#each selectedLeaveRequest.approval_steps_history as step_history}
+                                    {@const stepHistoryStatus = getStatusInfo(step_history.status)}
+                                    {@const approver = step_history.approver || data.user}
+
+                                    <li class="flex items-center gap-5 w-full">
+                                        <div class="min-w-[200px]">
+                                            <p>{new Date(step_history.date).toLocaleString()}</p>
+                                            <div class="{stepHistoryStatus.class} flex gap-2 items-center">
+                                                <p class="font-semibold">
+                                                    {stepHistoryStatus.message}
+                                                </p>
+                                                <svelte:component size="1.5rem" this={$icons[stepHistoryStatus.icon]} />
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-5 flex-1">
+                                            <img class="h-16 w-16" src="/favicon.png" alt="">
+                                            <div class="flex-1">
+                                                <div class="flex gap-10 items-start w-full">
+                                                    <div>
+                                                        <p>{approver.first_name} {approver.last_name}</p>
+                                                        <p>{approver.email}</p>
+                                                    </div>
+                                                    <div class="ml-auto">
+                                                        <p>{approver.job_title}</p>
+                                                        <div class="flex gap-2 justify-end">
+                                                            {#each approver.groups as group}
+                                                                <GroupBadge {group} />
+                                                            {/each}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {/each}
+                            </ul>
+                        </Popup>
+                    {/if}
+
                     <button
                             type="button"
                             class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-orange">
-                        <DotsHorizontal size="1.25rem" />
+                        <Pencil size="1.25rem" />
                         <span>Edytuj wniosek</span>
                     </button>
                     <button
                             type="button"
                             class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray">
-                        <DotsHorizontal size="1.25rem" />
+                        <ArrowULeftTop size="1.25rem" />
                         <span>Wycofaj wniosek</span>
                     </button>
                 </div>
             </Dropdown>
         {/if}
-        <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={data.user} allUsers={data.users}/>
+        <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={data.user}/>
     </Popup>
 {/if}

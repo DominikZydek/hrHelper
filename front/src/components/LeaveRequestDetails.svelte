@@ -8,9 +8,9 @@
     import EmployeeList from "./EmployeeList.svelte";
     import GroupBadge from "./GroupBadge.svelte";
     import Dropdown from "./Dropdown.svelte";
+    import {getStatusInfo, STATUS_ICONS} from "../utils/getStatusInfo.js";
     export let leaveRequest
     export let user
-    export let allUsers
 
     let hoveredUser = null
     let userTrigger = null
@@ -37,38 +37,17 @@
         ? leaveRequest.approval_steps_history.find(step => step.status === 'REJECTED')
         : null
 
-    $: statusMessages = {
-        'DRAFT': 'Wersja robocza',
-        'IN_PROGRESS': 'W trakcie',
-        'APPROVED': 'Zatwierdzony',
-        'REJECTED': 'Odrzucony',
-        'CANCELLED': 'Anulowany'
-    }
-
-    const statusClasses = {
-        'DRAFT': 'text-main-gray',
-        'IN_PROGRESS': 'text-accent-orange',
-        'APPROVED': 'text-accent-green',
-        'REJECTED': 'text-accent-red',
-        'CANCELLED': 'text-main-gray'
-    }
-
-    const statusIcons = {
-        'DRAFT': 'PencilOutline',
-        'IN_PROGRESS': 'ProgressClock',
-        'APPROVED': 'CheckboxMarkedCircleOutline',
-        'REJECTED': 'CloseCircleOutline',
-        'CANCELLED': 'BlockHelper'
-    }
+    $: leaveRequestStatusInfo = getStatusInfo(leaveRequest.status)
+    $: replacementStatusInfo = leaveRequest.replacement ? getStatusInfo(leaveRequest.replacement.status) : null
 </script>
 
 <div>
    <div class="relative w-full">
-       <div class="{statusClasses[leaveRequest.status]} flex gap-2 items-center">
+       <div class="{leaveRequestStatusInfo.class} flex gap-2 items-center">
            <p class="font-semibold text-lg">
-               {statusMessages[leaveRequest.status]}
+               {leaveRequestStatusInfo.message}
            </p>
-           <svelte:component size="1.75rem" this={$icons[statusIcons[leaveRequest.status]]} />
+           <svelte:component size="1.75rem" this={$icons[leaveRequestStatusInfo.icon]} />
            {#if leaveRequest.status === 'REJECTED' && rejectionStep.comment}
                <div class="text-main-black">
                    <button type="button" bind:this={rejectionTrigger} class="flex items-center"
@@ -115,14 +94,14 @@
         <p>{leaveRequest.leave_type.name}</p>
         <p>{leaveRequest.reason}</p>
         <p>{new Date(leaveRequest.date_from).toLocaleDateString()} - {new Date(leaveRequest.date_to).toLocaleDateString()} ({leaveRequest.days_count} dni)</p>
-        {#if leaveRequest.leave_type.requires_replacement && leaveRequest.replacement}
+        {#if leaveRequest.leave_type.requires_replacement && leaveRequest.replacement && replacementStatusInfo}
             <p class="inline-block">Zastępstwo: </p>
             <div class="relative inline-block">
-                <div class="{statusClasses[leaveRequest.replacement.status]} flex gap-2 items-center">
+                <div class="{replacementStatusInfo.class} flex gap-2 items-center">
                     <p class="font-semibold">
-                        {statusMessages[leaveRequest.replacement.status]}
+                        {replacementStatusInfo.message}
                     </p>
-                    <svelte:component size="1.5rem" this={$icons[statusIcons[leaveRequest.replacement.status]]} />
+                    <svelte:component size="1.5rem" this={$icons[replacementStatusInfo.icon]} />
                     <div class="text-main-black">
                         <button type="button" bind:this={replacementTrigger} class="flex items-center"
                                 on:click={() => toggleDropdown('replacement')}>
@@ -174,9 +153,9 @@
              on:pointerleave={() => onUserHoverEnd()}>
             <img class="h-10 w-10" src="/favicon.png" alt="">
             <p>{user.first_name} {user.last_name}</p>
-            <div class="flex gap-2 text-accent-green items-center">
+            <div class="flex gap-2 text-main-app items-center">
                 <p class="font-semibold">Wysłany</p>
-                <svelte:component size="1.5rem" this={$icons[statusIcons['APPROVED']]} />
+                <svelte:component size="1.5rem" this={$icons[STATUS_ICONS['SENT']]} />
             </div>
         </div>
 
@@ -209,6 +188,7 @@
         {#each leaveRequest.approval_process.steps as step}
             {@const stepHistory = leaveRequest.approval_steps_history.find(history => history.step === step.order)}
             {@const isCurrentStep = leaveRequest.current_approval_step === step.order}
+            {@const stepStatusInfo = stepHistory ? getStatusInfo(stepHistory.status) : null}
 
             <div class="flex flex-col items-center w-48"
                  bind:this={approverTriggers[step.approver.id]}
@@ -217,15 +197,15 @@
                 <img class="h-10 w-10" src="/favicon.png" alt="">
                 <p>{step.approver.first_name} {step.approver.last_name}</p>
 
-                {#if stepHistory}
-                    <div class="flex gap-2 {statusClasses[stepHistory.status]} items-center">
-                        <p class="font-semibold">{statusMessages[stepHistory.status]}</p>
-                        <svelte:component size="1.5rem" this={$icons[statusIcons[stepHistory.status]]} />
+                {#if stepHistory && stepStatusInfo}
+                    <div class="flex gap-2 {stepStatusInfo.class} items-center">
+                        <p class="font-semibold">{stepStatusInfo.message}</p>
+                        <svelte:component size="1.5rem" this={$icons[stepStatusInfo.icon]} />
                     </div>
                 {:else if isCurrentStep}
                     <div class="flex gap-2 text-accent-orange items-center">
                         <p class="font-semibold">Oczekuje</p>
-                        <svelte:component size="1.5rem" this={$icons[statusIcons['IN_PROGRESS']]} />
+                        <svelte:component size="1.5rem" this={$icons[STATUS_ICONS['IN_PROGRESS']]} />
                     </div>
                 {/if}
             </div>

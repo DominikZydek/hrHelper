@@ -21,6 +21,8 @@ import ProgressClock from 'svelte-material-icons/ProgressClock.svelte'
 import CheckboxMarkedCircleOutline from 'svelte-material-icons/CheckboxMarkedCircleOutline.svelte'
 import CloseCircleOutline from 'svelte-material-icons/CloseCircleOutline.svelte'
 import BlockHelper from 'svelte-material-icons/BlockHelper.svelte'
+import SendOutline from 'svelte-material-icons/SendOutline.svelte'
+import HelpCircleOutline from 'svelte-material-icons/HelpCircleOutline.svelte'
 
 export const icons = writable({
     Laptop,
@@ -44,5 +46,7 @@ export const icons = writable({
     ProgressClock,
     CheckboxMarkedCircleOutline,
     CloseCircleOutline,
-    BlockHelper
+    BlockHelper,
+    SendOutline,
+    HelpCircleOutline
 })
