@@ -15,6 +15,30 @@
 
     export let data
 
+    const usedPaidTimeOffDays = data.me.leave_requests
+        .filter(request =>
+            request.status === 'APPROVED' &&
+            request.leave_type.name === 'Urlop wypoczynkowy'
+        )
+        .reduce((sum, request) => sum + request.days_count, 0)
+
+    const pendingPaidTimeOffDays = data.me.leave_requests
+        .filter(request =>
+            ['SENT', 'IN_PROGRESS'].includes(request.status) &&
+            request.leave_type.name === 'Urlop wypoczynkowy'
+        )
+        .reduce((sum, request) => sum + request.days_count, 0)
+
+    const totalPaidTimeOffDays = data.me.paid_time_off_days
+
+    const availablePaidTimeOffDays = totalPaidTimeOffDays - (usedPaidTimeOffDays + pendingPaidTimeOffDays)
+
+    let paidTimeOffIndicator = null
+    let showIndicatorDropdown = false
+    const toggleIndicatorDropdown = () => {
+        showIndicatorDropdown = !showIndicatorDropdown
+    }
+
     let plugins = [DayGrid]
     let options = {
         view: 'dayGridMonth',
@@ -72,6 +96,25 @@
     <div class="flex items-center justify-center flex-1">
         <div class="w-1/2 max-w-5xl">
             <Calendar {plugins} {options} />
+            <div bind:this={paidTimeOffIndicator}
+                 on:pointerenter={() => toggleIndicatorDropdown()}
+                 on:pointerleave={() => toggleIndicatorDropdown()}
+                 class="bg-accent-green h-8 mt-8 flex">
+                <div class="bg-accent-red h-full" style="width: {usedPaidTimeOffDays/totalPaidTimeOffDays * 100}%"></div>
+                <div class="bg-accent-yellow h-full" style="width: {pendingPaidTimeOffDays/totalPaidTimeOffDays * 100}%"></div>
+            </div>
+
+            {#if showIndicatorDropdown}
+                <Dropdown toggleDropdown={toggleIndicatorDropdown} triggerElement={paidTimeOffIndicator}>
+                    <div class="p-4 font-semibold">
+                        <p>Łączny wymiar urlopu rocznego: {totalPaidTimeOffDays} dni</p>
+                        <p>Wykorzystano: {usedPaidTimeOffDays} dni</p>
+                        <p>W trakcie rozpatrywania: {pendingPaidTimeOffDays} dni</p>
+                        <p>Dostępne dni urlopowe: {availablePaidTimeOffDays} dni</p>
+                    </div>
+                </Dropdown>
+            {/if}
+
         </div>
     </div>
 </div>

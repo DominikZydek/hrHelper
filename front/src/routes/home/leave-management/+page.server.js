@@ -4,6 +4,8 @@ export const load = async({ request, fetch }) => {
     const query = `
         {
           me {
+            paid_time_off_days,
+            working_time,
             leave_requests {
               id,
               leave_type {
