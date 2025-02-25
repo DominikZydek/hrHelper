@@ -1,65 +1,75 @@
 import {API_URL} from "$env/static/private";
 
 export const load = async({ request, fetch }) => {
-    // TODO: make it retrieve appropriate data (belonging to the same organization as locals.user),
     const query = `
         {
-          users {
-            id,
-            first_name,
-            last_name,
-            sex,
-            email,
-            birth_date,
-            phone_number,
-            address {
+          me {
+            leave_requests {
               id,
-              street_name,
-              street_number,
-              postal_code,
-              city
-            },
-            role,
-            job_title,
-            supervisor {
-              id,
-              first_name,
-              last_name
-            },
-            groups {
-              id,
-              name,
-              icon_name
-            },
-            approval_process {
+              leave_type {
                 id,
+                name,
+                limit_per_year,
+                requires_replacement,
+                min_notice_days,
+                can_be_cancelled
+              },
+              date_from,
+              date_to,
+              days_count,
+              reason,
+              comment,
+              status,
+              replacement {
+                user {
+                  id,
+                  first_name,
+                  last_name,
+                  email,
+                  groups {
+                    icon_name,
+                    name
+                  },
+                  job_title
+                },
+                status,
+                comment
+              },
+              approval_process {
                 steps {
-                    order,
-                    approver {
-                        id,
-                        first_name,
-                        last_name,
-                        email,
-                        job_title,
-                        groups {
-                            icon_name,
-                            name
-                        }
-                    }
+                  order,
+                  approver {
+                    id,
+                    first_name,
+                    last_name,
+                    email,
+                    groups {
+                      icon_name,
+                      name
+                    },
+                    job_title
+                  }
                 }
-            },
-            type_of_employment,
-            paid_time_off_days,
-            working_time,
-            employed_from,
-            employed_to,
-            health_check_expired_by,
-            health_and_safety_training_expired_by
-          },
-          groups {
-            id,
-            name,
-            icon_name
+              },
+              current_approval_step,
+              approval_steps_history {
+                step,
+                status,
+                comment,
+                date,
+                approver {
+                  id,
+                  first_name,
+                  last_name,
+                  email,
+                  groups {
+                    icon_name,
+                    name
+                  },
+                  job_title
+                }
+              }
+            }
           }
         }
     `
