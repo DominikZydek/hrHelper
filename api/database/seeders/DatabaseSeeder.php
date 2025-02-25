@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             GroupSeeder::class,
             UserGroupSeeder::class,
             ApprovalStepSeeder::class,
+            LeaveTypeSeeder::class,
+            LeaveRequestSeeder::class,
+            LeaveRequestReplacementSeeder::class,
+            ApprovalStepsHistorySeeder::class,
         ]);
     }
 }
