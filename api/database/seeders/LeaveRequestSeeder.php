@@ -52,42 +52,78 @@ class LeaveRequestSeeder extends Seeder
                 'current_approval_step' => 1
             ],
 
-            // Anna Nowak (HR Specialist) - 3 wnioski
+            // Anna Nowak (HR Specialist) - 6 wniosków
             [
                 'user_id' => 4,
                 'leave_type_id' => 1, // Urlop wypoczynkowy
                 'approval_process_id' => 4, // HR Spec - zatwierdza HR Director i CEO
-                'date_from' => '2025-08-04',
-                'date_to' => '2025-08-15',
+                'date_from' => '2025-01-13',
+                'date_to' => '2025-01-24',
                 'days_count' => 10,
-                'reason' => 'Wakacje nad morzem',
+                'reason' => 'Urlop zimowy',
                 'comment' => null,
                 'status' => 'APPROVED',
                 'current_approval_step' => 2
             ],
             [
                 'user_id' => 4,
-                'leave_type_id' => 3, // Urlop okolicznościowy
+                'leave_type_id' => 2, // Urlop na żądanie
                 'approval_process_id' => 4, // HR Spec - zatwierdza HR Director i CEO
-                'date_from' => '2025-04-15',
-                'date_to' => '2025-04-16',
-                'days_count' => 2,
-                'reason' => 'Wesele brata',
-                'comment' => null,
+                'date_from' => '2025-02-14',
+                'date_to' => '2025-02-14',
+                'days_count' => 1,
+                'reason' => 'Sprawy osobiste',
+                'comment' => 'Ważna sprawa rodzinna',
                 'status' => 'APPROVED',
                 'current_approval_step' => 2
+            ],
+            [
+                'user_id' => 4,
+                'leave_type_id' => 1, // Urlop wypoczynkowy
+                'approval_process_id' => 4, // HR Spec - zatwierdza HR Director i CEO
+                'date_from' => '2025-04-14',
+                'date_to' => '2025-04-25',
+                'days_count' => 10,
+                'reason' => 'Urlop wypoczynkowy w Grecji',
+                'comment' => null,
+                'status' => 'REJECTED',
+                'current_approval_step' => 1
+            ],
+            [
+                'user_id' => 4,
+                'leave_type_id' => 1, // Urlop wypoczynkowy
+                'approval_process_id' => 4, // HR Spec - zatwierdza HR Director i CEO
+                'date_from' => '2025-06-16',
+                'date_to' => '2025-06-27',
+                'days_count' => 10,
+                'reason' => 'Wakacje nad morzem',
+                'comment' => null,
+                'status' => 'IN_PROGRESS',
+                'current_approval_step' => 1
             ],
             [
                 'user_id' => 4,
                 'leave_type_id' => 4, // Urlop szkoleniowy
                 'approval_process_id' => 4, // HR Spec - zatwierdza HR Director i CEO
-                'date_from' => '2025-09-22',
-                'date_to' => '2025-09-23',
+                'date_from' => '2025-05-15',
+                'date_to' => '2025-05-16',
                 'days_count' => 2,
-                'reason' => 'Konferencja HR',
-                'comment' => 'Konferencja w Krakowie',
-                'status' => 'IN_PROGRESS',
-                'current_approval_step' => 1
+                'reason' => 'Szkolenie z zarządzania zespołem',
+                'comment' => 'Szkolenie online w biurze',
+                'status' => 'SENT',
+                'current_approval_step' => 0
+            ],
+            [
+                'user_id' => 4,
+                'leave_type_id' => 2, // Urlop na żądanie
+                'approval_process_id' => 4, // HR Spec - zatwierdza HR Director i CEO
+                'date_from' => '2025-05-02',
+                'date_to' => '2025-05-02',
+                'days_count' => 1,
+                'reason' => 'Wizyta lekarska',
+                'comment' => null,
+                'status' => 'DRAFT',
+                'current_approval_step' => 0
             ],
 
             // Piotr Wiśniewski (Frontend Developer) - 3 wnioski

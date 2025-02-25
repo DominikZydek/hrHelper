@@ -36,13 +36,31 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Anna Nowak's replacements
             [
-                'leave_request_id' => 4, // Wakacje nad morzem
+                'leave_request_id' => 4, // Urlop zimowy
                 'user_id' => 20, // Katarzyna Adamczyk (Recruitment Specialist)
                 'status' => 'APPROVED',
-                'comment' => 'Będę dostępna w tym terminie'
+                'comment' => 'Potwierdzam zastępstwo'
             ],
             [
-                'leave_request_id' => 6, // Konferencja HR
+                'leave_request_id' => 5, // Urlop na żądanie - sprawy osobiste
+                'user_id' => 20, // Katarzyna Adamczyk (Recruitment Specialist)
+                'status' => 'APPROVED',
+                'comment' => 'OK, zastąpię'
+            ],
+            [
+                'leave_request_id' => 6, // Odrzucony wniosek na Grecję
+                'user_id' => 20, // Katarzyna Adamczyk (Recruitment Specialist)
+                'status' => 'REJECTED',
+                'comment' => 'Niestety nie mogę w tym terminie'
+            ],
+            [
+                'leave_request_id' => 7, // Wakacje nad morzem - w trakcie
+                'user_id' => 20, // Katarzyna Adamczyk (Recruitment Specialist)
+                'status' => 'IN_PROGRESS',
+                'comment' => null
+            ],
+            [
+                'leave_request_id' => 8, // Szkolenie - wysłany
                 'user_id' => 20, // Katarzyna Adamczyk (Recruitment Specialist)
                 'status' => 'IN_PROGRESS',
                 'comment' => null
@@ -50,19 +68,19 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Piotr Wiśniewski's replacements
             [
-                'leave_request_id' => 7, // Wyjazd na narty
+                'leave_request_id' => 10, // Wyjazd na narty
                 'user_id' => 15, // Adam Piotrowski (Senior Backend Developer)
                 'status' => 'APPROVED',
                 'comment' => 'Mogę zastąpić'
             ],
             [
-                'leave_request_id' => 8, // Szkolenie React
+                'leave_request_id' => 11, // Szkolenie React
                 'user_id' => 8, // Karolina Dąbrowska (Backend Developer)
                 'status' => 'REJECTED',
                 'comment' => 'Niestety w tym terminie mam zaplanowane inne zadania'
             ],
             [
-                'leave_request_id' => 9, // Urlop na żądanie - sprawy osobiste
+                'leave_request_id' => 12, // Urlop na żądanie - sprawy osobiste
                 'user_id' => 3, // Jan Kowalski (Android Developer)
                 'status' => 'APPROVED',
                 'comment' => 'Ok'
@@ -70,19 +88,19 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Tomasz Lewandowski's replacements
             [
-                'leave_request_id' => 10, // Wakacje w Hiszpanii
+                'leave_request_id' => 13, // Wakacje w Hiszpanii
                 'user_id' => 14, // Natalia Kamińska (UI Designer)
                 'status' => 'APPROVED',
                 'comment' => 'Potwierdzam zastępstwo'
             ],
             [
-                'leave_request_id' => 11, // Konferencja UX/UI
+                'leave_request_id' => 14, // Konferencja UX/UI
                 'user_id' => 14, // Natalia Kamińska (UI Designer)
                 'status' => 'APPROVED',
                 'comment' => 'Mogę zastąpić'
             ],
             [
-                'leave_request_id' => 12, // Urlop na żądanie - sprawy urzędowe
+                'leave_request_id' => 15, // Urlop na żądanie - sprawy urzędowe
                 'user_id' => 14, // Natalia Kamińska (UI Designer)
                 'status' => 'APPROVED',
                 'comment' => 'Potwierdzam'
@@ -90,19 +108,19 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Karolina Dąbrowska's replacements
             [
-                'leave_request_id' => 13, // Urlop we Włoszech
+                'leave_request_id' => 16, // Urlop we Włoszech
                 'user_id' => 15, // Adam Piotrowski (Senior Backend Developer)
                 'status' => 'IN_PROGRESS',
                 'comment' => null
             ],
             [
-                'leave_request_id' => 14, // Urlop na żądanie - sprawy osobiste
+                'leave_request_id' => 17, // Urlop na żądanie - sprawy osobiste
                 'user_id' => 15, // Adam Piotrowski (Senior Backend Developer)
                 'status' => 'APPROVED',
                 'comment' => 'Ok, mogę zastąpić'
             ],
             [
-                'leave_request_id' => 15, // Szkolenie cloud computing
+                'leave_request_id' => 18, // Szkolenie cloud computing
                 'user_id' => 15, // Adam Piotrowski (Senior Backend Developer)
                 'status' => 'IN_PROGRESS',
                 'comment' => null
@@ -110,7 +128,7 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Aleksandra Wojciechowska's replacements
             [
-                'leave_request_id' => 16, // Wakacje rodzinne
+                'leave_request_id' => 19, // Wakacje rodzinne
                 'user_id' => 3, // Jan Kowalski (Android Developer)
                 'status' => 'APPROVED',
                 'comment' => 'Potwierdzam zastępstwo'
@@ -118,13 +136,13 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Natalia Kamińska's replacements
             [
-                'leave_request_id' => 18, // Wakacje w górach
+                'leave_request_id' => 21, // Wakacje w górach
                 'user_id' => 7, // Tomasz Lewandowski (UX Designer)
                 'status' => 'REJECTED',
                 'comment' => 'Niestety nie mogę w tym terminie'
             ],
             [
-                'leave_request_id' => 19, // Konferencja projektowa
+                'leave_request_id' => 22, // Konferencja projektowa
                 'user_id' => 7, // Tomasz Lewandowski (UX Designer)
                 'status' => 'APPROVED',
                 'comment' => 'Mogę zastąpić'
@@ -132,7 +150,7 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Adam Piotrowski's replacements
             [
-                'leave_request_id' => 20, // Urlop w Chorwacji
+                'leave_request_id' => 23, // Urlop w Chorwacji
                 'user_id' => 8, // Karolina Dąbrowska (Backend Developer)
                 'status' => 'IN_PROGRESS',
                 'comment' => null
@@ -140,13 +158,13 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Łukasz Michalski's replacements
             [
-                'leave_request_id' => 22, // Urlop w Grecji
+                'leave_request_id' => 25, // Urlop w Grecji
                 'user_id' => 11, // Marcin Kaczmarek (DevOps Engineer)
                 'status' => 'IN_PROGRESS',
                 'comment' => null
             ],
             [
-                'leave_request_id' => 23, // Szkolenie z cyberbezpieczeństwa
+                'leave_request_id' => 26, // Szkolenie z cyberbezpieczeństwa
                 'user_id' => 11, // Marcin Kaczmarek (DevOps Engineer)
                 'status' => 'APPROVED',
                 'comment' => 'Potwierdzam'
@@ -154,13 +172,13 @@ class LeaveRequestReplacementSeeder extends Seeder
 
             // Rafał Jankowski's replacements
             [
-                'leave_request_id' => 24, // Urlop w Portugalii
+                'leave_request_id' => 27, // Urlop w Portugalii
                 'user_id' => 3, // Jan Kowalski (Android Developer)
                 'status' => 'APPROVED',
                 'comment' => 'Zgadzam się na zastępstwo'
             ],
             [
-                'leave_request_id' => 25, // WWDC 2025
+                'leave_request_id' => 28, // WWDC 2025
                 'user_id' => 3, // Jan Kowalski (Android Developer)
                 'status' => 'APPROVED',
                 'comment' => 'Mogę zastąpić'

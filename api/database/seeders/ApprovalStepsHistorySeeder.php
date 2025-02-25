@@ -84,14 +84,14 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-15 10:15:00'
             ],
 
-            // Anna Nowak - 4. Wakacje nad morzem
+            // Anna Nowak - 4. Urlop zimowy
             [
                 'leave_request_id' => 4,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
                 'comment' => 'Utworzono wniosek urlopowy',
-                'date' => '2025-07-01 09:30:00'
+                'date' => '2024-12-15 09:30:00'
             ],
             [
                 'leave_request_id' => 4,
@@ -99,7 +99,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'status' => 'SENT',
                 'approver_id' => null,
                 'comment' => 'Wysłano wniosek do akceptacji',
-                'date' => '2025-07-01 09:45:00'
+                'date' => '2024-12-15 09:35:00'
             ],
             [
                 'leave_request_id' => 4,
@@ -107,7 +107,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'status' => 'APPROVED',
                 'approver_id' => 6, // Maria Wiśniewska (HR Director)
                 'comment' => 'Zatwierdzam urlop',
-                'date' => '2025-07-02 11:00:00'
+                'date' => '2024-12-16 11:20:00'
             ],
             [
                 'leave_request_id' => 4,
@@ -115,17 +115,17 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'status' => 'APPROVED',
                 'approver_id' => 1, // Marek Jankowski (CEO)
                 'comment' => 'Zatwierdzam',
-                'date' => '2025-07-03 14:20:00'
+                'date' => '2024-12-18 14:30:00'
             ],
 
-            // Anna Nowak - 5. Wesele brata
+            // Anna Nowak - 5. Urlop na żądanie (14 luty)
             [
                 'leave_request_id' => 5,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
                 'comment' => 'Utworzono wniosek urlopowy',
-                'date' => '2025-04-01 13:40:00'
+                'date' => '2025-02-14 07:45:00'
             ],
             [
                 'leave_request_id' => 5,
@@ -133,15 +133,15 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'status' => 'SENT',
                 'approver_id' => null,
                 'comment' => 'Wysłano wniosek do akceptacji',
-                'date' => '2025-04-01 13:45:00'
+                'date' => '2025-02-14 07:50:00'
             ],
             [
                 'leave_request_id' => 5,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 6, // Maria Wiśniewska (HR Director)
-                'comment' => 'Zatwierdzam urlop okolicznościowy',
-                'date' => '2025-04-02 09:15:00'
+                'comment' => 'Zatwierdzam urlop na żądanie',
+                'date' => '2025-02-14 08:15:00'
             ],
             [
                 'leave_request_id' => 5,
@@ -149,17 +149,17 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'status' => 'APPROVED',
                 'approver_id' => 1, // Marek Jankowski (CEO)
                 'comment' => 'Zatwierdzam',
-                'date' => '2025-04-02 15:30:00'
+                'date' => '2025-02-14 09:15:00'
             ],
 
-            // Anna Nowak - 6. Konferencja HR
+            // Anna Nowak - 6. Odrzucony wniosek na Grecję
             [
                 'leave_request_id' => 6,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
                 'comment' => 'Utworzono wniosek urlopowy',
-                'date' => '2025-09-01 10:30:00'
+                'date' => '2025-03-10 13:20:00'
             ],
             [
                 'leave_request_id' => 6,
@@ -167,20 +167,74 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'status' => 'SENT',
                 'approver_id' => null,
                 'comment' => 'Wysłano wniosek do akceptacji',
-                'date' => '2025-09-01 10:35:00'
+                'date' => '2025-03-10 13:30:00'
             ],
             [
                 'leave_request_id' => 6,
                 'step' => 1,
-                'status' => 'IN_PROGRESS',
+                'status' => 'REJECTED',
                 'approver_id' => 6, // Maria Wiśniewska (HR Director)
-                'comment' => 'Wniosek w trakcie rozpatrywania',
-                'date' => '2025-09-02 09:15:00'
+                'comment' => 'Niestety nie możemy zaakceptować wniosku ze względu na dużą liczbę nieobecności w dziale w tym terminie',
+                'date' => '2025-03-13 09:45:00'
             ],
 
-            // Piotr Wiśniewski - 7. Wyjazd na narty
+            // Anna Nowak - 7. Wakacje nad morzem (IN_PROGRESS)
             [
                 'leave_request_id' => 7,
+                'step' => 0,
+                'status' => 'DRAFT',
+                'approver_id' => null,
+                'comment' => 'Utworzono wniosek urlopowy',
+                'date' => '2025-02-20 10:00:00'
+            ],
+            [
+                'leave_request_id' => 7,
+                'step' => 0,
+                'status' => 'SENT',
+                'approver_id' => null,
+                'comment' => 'Wysłano wniosek do akceptacji',
+                'date' => '2025-02-20 10:10:00'
+            ],
+            [
+                'leave_request_id' => 7,
+                'step' => 1,
+                'status' => 'IN_PROGRESS',
+                'approver_id' => 6, // Maria Wiśniewska (HR Director)
+                'comment' => 'Wniosek jest w trakcie rozpatrywania',
+                'date' => '2025-02-21 09:20:00'
+            ],
+
+            // Anna Nowak - 8. Szkolenie (SENT)
+            [
+                'leave_request_id' => 8,
+                'step' => 0,
+                'status' => 'DRAFT',
+                'approver_id' => null,
+                'comment' => 'Utworzono wniosek urlopowy',
+                'date' => '2025-02-25 11:30:00'
+            ],
+            [
+                'leave_request_id' => 8,
+                'step' => 0,
+                'status' => 'SENT',
+                'approver_id' => null,
+                'comment' => 'Wysłano wniosek do akceptacji',
+                'date' => '2025-02-25 11:40:00'
+            ],
+
+            // Anna Nowak - 9. Wizyta lekarska (DRAFT)
+            [
+                'leave_request_id' => 9,
+                'step' => 0,
+                'status' => 'DRAFT',
+                'approver_id' => null,
+                'comment' => 'Utworzono wniosek urlopowy',
+                'date' => '2025-02-28 15:00:00'
+            ],
+
+            // Piotr Wiśniewski - 10. Wyjazd na narty
+            [
+                'leave_request_id' => 10,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -188,7 +242,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-15 10:00:00'
             ],
             [
-                'leave_request_id' => 7,
+                'leave_request_id' => 10,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -196,7 +250,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-15 10:15:00'
             ],
             [
-                'leave_request_id' => 7,
+                'leave_request_id' => 10,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -204,9 +258,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-16 09:30:00'
             ],
 
-            // Piotr Wiśniewski - 8. Szkolenie React
+            // Piotr Wiśniewski - 11. Szkolenie React
             [
-                'leave_request_id' => 8,
+                'leave_request_id' => 11,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -214,7 +268,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-20 11:00:00'
             ],
             [
-                'leave_request_id' => 8,
+                'leave_request_id' => 11,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -222,7 +276,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-20 11:05:00'
             ],
             [
-                'leave_request_id' => 8,
+                'leave_request_id' => 11,
                 'step' => 1,
                 'status' => 'REJECTED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -230,9 +284,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-21 14:30:00'
             ],
 
-            // Piotr Wiśniewski - 9. Urlop na żądanie
+            // Piotr Wiśniewski - 12. Urlop na żądanie
             [
-                'leave_request_id' => 9,
+                'leave_request_id' => 12,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -240,7 +294,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-14 07:30:00'
             ],
             [
-                'leave_request_id' => 9,
+                'leave_request_id' => 12,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -248,7 +302,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-14 07:35:00'
             ],
             [
-                'leave_request_id' => 9,
+                'leave_request_id' => 12,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -256,9 +310,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-14 08:15:00'
             ],
 
-            // Tomasz Lewandowski - 10. Wakacje w Hiszpanii
+            // Tomasz Lewandowski - 13. Wakacje w Hiszpanii
             [
-                'leave_request_id' => 10,
+                'leave_request_id' => 13,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -266,7 +320,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-15 13:45:00'
             ],
             [
-                'leave_request_id' => 10,
+                'leave_request_id' => 13,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -274,7 +328,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-15 13:50:00'
             ],
             [
-                'leave_request_id' => 10,
+                'leave_request_id' => 13,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -282,9 +336,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-16 10:00:00'
             ],
 
-            // Tomasz Lewandowski - 11. Konferencja UX/UI
+            // Tomasz Lewandowski - 14. Konferencja UX/UI
             [
-                'leave_request_id' => 11,
+                'leave_request_id' => 14,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -292,7 +346,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-30 11:15:00'
             ],
             [
-                'leave_request_id' => 11,
+                'leave_request_id' => 14,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -300,7 +354,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-30 11:30:00'
             ],
             [
-                'leave_request_id' => 11,
+                'leave_request_id' => 14,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -308,9 +362,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-31 09:15:00'
             ],
 
-            // Tomasz Lewandowski - 12. Urlop na żądanie
+            // Tomasz Lewandowski - 15. Urlop na żądanie
             [
-                'leave_request_id' => 12,
+                'leave_request_id' => 15,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -318,7 +372,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-02 18:30:00'
             ],
             [
-                'leave_request_id' => 12,
+                'leave_request_id' => 15,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -326,7 +380,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-02 18:35:00'
             ],
             [
-                'leave_request_id' => 12,
+                'leave_request_id' => 15,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -334,9 +388,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-03 08:05:00'
             ],
 
-            // Karolina Dąbrowska - 13. Urlop we Włoszech
+            // Karolina Dąbrowska - 16. Urlop we Włoszech
             [
-                'leave_request_id' => 13,
+                'leave_request_id' => 16,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -344,7 +398,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-06-20 11:45:00'
             ],
             [
-                'leave_request_id' => 13,
+                'leave_request_id' => 16,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -352,7 +406,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-06-20 12:00:00'
             ],
             [
-                'leave_request_id' => 13,
+                'leave_request_id' => 16,
                 'step' => 1,
                 'status' => 'IN_PROGRESS',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -360,9 +414,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-06-21 09:20:00'
             ],
 
-            // Karolina Dąbrowska - 14. Urlop na żądanie
+            // Karolina Dąbrowska - 17. Urlop na żądanie
             [
-                'leave_request_id' => 14,
+                'leave_request_id' => 17,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -370,7 +424,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-28 08:00:00'
             ],
             [
-                'leave_request_id' => 14,
+                'leave_request_id' => 17,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -378,7 +432,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-28 08:05:00'
             ],
             [
-                'leave_request_id' => 14,
+                'leave_request_id' => 17,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -386,9 +440,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-28 08:30:00'
             ],
 
-            // Karolina Dąbrowska - 15. Szkolenie cloud computing
+            // Karolina Dąbrowska - 18. Szkolenie cloud computing
             [
-                'leave_request_id' => 15,
+                'leave_request_id' => 18,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -396,7 +450,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-15 10:30:00'
             ],
             [
-                'leave_request_id' => 15,
+                'leave_request_id' => 18,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -404,9 +458,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-15 10:40:00'
             ],
 
-            // Aleksandra Wojciechowska - 16. Wakacje rodzinne
+            // Aleksandra Wojciechowska - 19. Wakacje rodzinne
             [
-                'leave_request_id' => 16,
+                'leave_request_id' => 19,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -414,7 +468,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-10 13:30:00'
             ],
             [
-                'leave_request_id' => 16,
+                'leave_request_id' => 19,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -422,7 +476,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-10 13:45:00'
             ],
             [
-                'leave_request_id' => 16,
+                'leave_request_id' => 19,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -430,9 +484,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-11 09:30:00'
             ],
 
-            // Aleksandra Wojciechowska - 17. Ślub siostry
+            // Aleksandra Wojciechowska - 20. Ślub siostry
             [
-                'leave_request_id' => 17,
+                'leave_request_id' => 20,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -440,7 +494,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-10 09:45:00'
             ],
             [
-                'leave_request_id' => 17,
+                'leave_request_id' => 20,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -448,7 +502,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-10 10:00:00'
             ],
             [
-                'leave_request_id' => 17,
+                'leave_request_id' => 20,
                 'step' => 1,
                 'status' => 'IN_PROGRESS',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -456,9 +510,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-11 11:15:00'
             ],
 
-            // Natalia Kamińska - 18. Wakacje w górach
+            // Natalia Kamińska - 21. Wakacje w górach
             [
-                'leave_request_id' => 18,
+                'leave_request_id' => 21,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -466,7 +520,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-07-01 10:00:00'
             ],
             [
-                'leave_request_id' => 18,
+                'leave_request_id' => 21,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -474,7 +528,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-07-01 10:15:00'
             ],
             [
-                'leave_request_id' => 18,
+                'leave_request_id' => 21,
                 'step' => 1,
                 'status' => 'REJECTED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -482,9 +536,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-07-02 11:30:00'
             ],
 
-            // Natalia Kamińska - 19. Konferencja projektowa
+            // Natalia Kamińska - 22. Konferencja projektowa
             [
-                'leave_request_id' => 19,
+                'leave_request_id' => 22,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -492,7 +546,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-10 14:00:00'
             ],
             [
-                'leave_request_id' => 19,
+                'leave_request_id' => 22,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -500,7 +554,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-10 14:15:00'
             ],
             [
-                'leave_request_id' => 19,
+                'leave_request_id' => 22,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -508,9 +562,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-11 10:30:00'
             ],
 
-            // Adam Piotrowski - 20. Urlop w Chorwacji
+            // Adam Piotrowski - 23. Urlop w Chorwacji
             [
-                'leave_request_id' => 20,
+                'leave_request_id' => 23,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -518,7 +572,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-08-01 15:30:00'
             ],
             [
-                'leave_request_id' => 20,
+                'leave_request_id' => 23,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -526,9 +580,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-08-01 15:45:00'
             ],
 
-            // Adam Piotrowski - 21. Opieka nad dzieckiem
+            // Adam Piotrowski - 24. Opieka nad dzieckiem
             [
-                'leave_request_id' => 21,
+                'leave_request_id' => 24,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -536,7 +590,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-17 07:30:00'
             ],
             [
-                'leave_request_id' => 21,
+                'leave_request_id' => 24,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -544,7 +598,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-17 07:35:00'
             ],
             [
-                'leave_request_id' => 21,
+                'leave_request_id' => 24,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -552,9 +606,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-17 08:15:00'
             ],
 
-            // Łukasz Michalski - 22. Urlop w Grecji
+            // Łukasz Michalski - 25. Urlop w Grecji
             [
-                'leave_request_id' => 22,
+                'leave_request_id' => 25,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -562,7 +616,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-07-15 09:45:00'
             ],
             [
-                'leave_request_id' => 22,
+                'leave_request_id' => 25,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -570,7 +624,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-07-15 10:00:00'
             ],
             [
-                'leave_request_id' => 22,
+                'leave_request_id' => 25,
                 'step' => 1,
                 'status' => 'IN_PROGRESS',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -578,9 +632,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-07-16 11:30:00'
             ],
 
-            // Łukasz Michalski - 23. Szkolenie z cyberbezpieczeństwa
+            // Łukasz Michalski - 26. Szkolenie z cyberbezpieczeństwa
             [
-                'leave_request_id' => 23,
+                'leave_request_id' => 26,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -588,7 +642,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-20 13:15:00'
             ],
             [
-                'leave_request_id' => 23,
+                'leave_request_id' => 26,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -596,7 +650,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-20 13:30:00'
             ],
             [
-                'leave_request_id' => 23,
+                'leave_request_id' => 26,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -604,9 +658,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-04-21 09:00:00'
             ],
 
-            // Rafał Jankowski - 24. Urlop w Portugalii
+            // Rafał Jankowski - 27. Urlop w Portugalii
             [
-                'leave_request_id' => 24,
+                'leave_request_id' => 27,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -614,7 +668,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-25 17:00:00'
             ],
             [
-                'leave_request_id' => 24,
+                'leave_request_id' => 27,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -622,7 +676,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-25 17:10:00'
             ],
             [
-                'leave_request_id' => 24,
+                'leave_request_id' => 27,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -630,9 +684,9 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-05-26 10:00:00'
             ],
 
-            // Rafał Jankowski - 25. WWDC 2025
+            // Rafał Jankowski - 28. WWDC 2025
             [
-                'leave_request_id' => 25,
+                'leave_request_id' => 28,
                 'step' => 0,
                 'status' => 'DRAFT',
                 'approver_id' => null,
@@ -640,7 +694,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-15 11:30:00'
             ],
             [
-                'leave_request_id' => 25,
+                'leave_request_id' => 28,
                 'step' => 0,
                 'status' => 'SENT',
                 'approver_id' => null,
@@ -648,7 +702,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-15 11:45:00'
             ],
             [
-                'leave_request_id' => 25,
+                'leave_request_id' => 28,
                 'step' => 1,
                 'status' => 'APPROVED',
                 'approver_id' => 2, // Andrzej Siwy (CTO)
@@ -656,7 +710,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-02-16 09:20:00'
             ],
             [
-                'leave_request_id' => 25,
+                'leave_request_id' => 28,
                 'step' => 0,
                 'status' => 'CANCELLED',
                 'approver_id' => null,
