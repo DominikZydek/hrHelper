@@ -24,8 +24,10 @@
     }
 </script>
 
-<div class="px-10">
-    <Searchbar placeholderText="Szukaj pracownika..." searchData={allUsers} onFilteredDataChange={handleFilteredDataChange}/>
+<div class="p-8">
+    <div class="px-10">
+        <Searchbar placeholderText="Szukaj pracownika..." searchData={allUsers} onFilteredDataChange={handleFilteredDataChange}/>
+    </div>
     <EmployeeList users={displayedUsers} {onClick}/>
     {#if selectedUser}
         {#if showDrawer}

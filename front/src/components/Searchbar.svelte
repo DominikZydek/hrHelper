@@ -36,7 +36,7 @@
 
 </script>
 
-<form class="flex items-center gap-2 px-10 h-16">
+<form class="flex items-center gap-2">
     <input class="w-1/4 border h-8 px-2 rounded border-main-gray" type="text" placeholder="{placeholderText}"
            bind:value={searchTerm}>
     <button type="submit">

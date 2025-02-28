@@ -85,5 +85,7 @@ export const load = async({ request, fetch }) => {
         body: JSON.stringify({ query })
     }).then(res => res.json())
 
+    console.log(res.data.me.leave_requests)
+
     return res.data
 }
