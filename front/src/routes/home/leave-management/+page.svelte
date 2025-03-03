@@ -103,25 +103,29 @@
         <p class="text-2xl font-semibold text-main-app mb-2 px-4">Nieobecności</p>
         <button on:click={() => changeView('new-request')}
                 type="button"
-                class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl">
+                class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
+                        {currentView === 'new-request' ? 'bg-auxiliary-gray' : ''}">
             <FilePlusOutline size="1.75rem" />
             <span>Nowy wniosek</span>
         </button>
         <button on:click={() => changeView('my-requests')}
                 type="button"
-                class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl">
+                class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
+                        {currentView === 'my-requests' ? 'bg-auxiliary-gray' : ''}">
             <FileDocumentOutline size="1.75rem" />
             <span>Moje wnioski</span>
         </button>
         <button on:click={() => changeView('calendar')}
                 type="button"
-                class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl">
+                class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
+                        {currentView === 'calendar' ? 'bg-auxiliary-gray' : ''}">
             <CalendarMonth size="1.75rem" />
             <span>Kalendarz</span>
         </button>
         <button on:click={() => changeView('approvals')}
                 type="button"
-                class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl">
+                class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
+                        {currentView === 'approvals' ? 'bg-auxiliary-gray' : ''}">
             <ClockTimeFourOutline size="1.75rem" />
             <span>Wnioski do rozpatrzenia</span>
         </button>
