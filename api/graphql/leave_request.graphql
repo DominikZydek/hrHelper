@@ -22,3 +22,7 @@ enum LeaveRequestStatus {
     REJECTED
     CANCELLED
 }
+
+extend type Query {
+    leaveRequestsAwaitingApproval: [LeaveRequest!]! @field(resolver: "App\\GraphQL\\Queries\\LeaveRequestResolver@leaveRequestsAwaitingApproval")
+}

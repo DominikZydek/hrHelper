@@ -33,7 +33,7 @@ class ApprovalProcessSeeder extends Seeder
             ['id' => 17], // System Admin - zatwierdza CTO
             ['id' => 18], // Office Manager - zatwierdza HR Director i CEO
             ['id' => 19], // iOS Dev - zatwierdza CTO
-            ['id' => 20], // Recruitment Spec - zatwierdza HR Director i CEO
+            ['id' => 20], // Recruitment Spec - zatwierdza Anna Nowak (HR Specialist) i potem CEO
         ];
         DB::table('approval_processes')->insert($processes);
     }

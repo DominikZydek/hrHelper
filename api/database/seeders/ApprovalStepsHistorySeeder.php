@@ -716,7 +716,31 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'approver_id' => null,
                 'comment' => 'Wniosek anulowany przez pracownika z powodu zmiany terminu konferencji',
                 'date' => '2025-02-28 14:15:00'
-            ]
+            ],
+            [
+                'leave_request_id' => 29, // ID nowego wniosku
+                'step' => 0,
+                'status' => 'DRAFT',
+                'approver_id' => null,
+                'comment' => 'Utworzono wniosek urlopowy',
+                'date' => '2025-05-15 10:30:00'
+            ],
+            [
+                'leave_request_id' => 29,
+                'step' => 0,
+                'status' => 'SENT',
+                'approver_id' => null,
+                'comment' => 'Wysłano wniosek do akceptacji',
+                'date' => '2025-05-15 10:40:00'
+            ],
+            [
+                'leave_request_id' => 29,
+                'step' => 1,
+                'status' => 'IN_PROGRESS',
+                'approver_id' => 4, // Anna Nowak (HR Specialist)
+                'comment' => 'Wniosek w trakcie rozpatrywania',
+                'date' => '2025-05-16 09:15:00'
+            ],
         ];
 
         DB::table('approval_steps_histories')->insert($approvalStepsHistory);

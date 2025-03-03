@@ -368,6 +368,18 @@ class LeaveRequestSeeder extends Seeder
                 'comment' => 'Konferencja Apple dla developerów',
                 'status' => 'CANCELLED',
                 'current_approval_step' => 1
+            ],
+            [
+                'user_id' => 20, // Katarzyna Adamczyk (Recruitment Specialist)
+                'leave_type_id' => 1, // Urlop wypoczynkowy
+                'approval_process_id' => 20, // Recruitment Specialist - zatwierdza HR Dir i CEO
+                'date_from' => '2025-05-28',
+                'date_to' => '2025-06-05',
+                'days_count' => 7,
+                'reason' => 'Wakacje we Włoszech',
+                'comment' => null,
+                'status' => 'IN_PROGRESS',
+                'current_approval_step' => 1 // Pierwszy krok - czeka na zatwierdzenie przez Annę Nowak
             ]
         ];
 

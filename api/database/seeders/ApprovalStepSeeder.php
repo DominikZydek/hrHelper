@@ -35,8 +35,8 @@ class ApprovalStepSeeder extends Seeder
             ['approval_process_id' => 18, 'order' => 1, 'approver_id' => 6], // Office -> HR Dir
             ['approval_process_id' => 18, 'order' => 2, 'approver_id' => 1], // Office -> CEO
             ['approval_process_id' => 19, 'order' => 1, 'approver_id' => 2], // iOS -> CTO
-            ['approval_process_id' => 20, 'order' => 1, 'approver_id' => 6], // Recruit -> HR Dir
-            ['approval_process_id' => 20, 'order' => 2, 'approver_id' => 1], // Recruit -> CEO
+            ['approval_process_id' => 20, 'order' => 1, 'approver_id' => 4], // Anna Nowak (HR Specialist)
+            ['approval_process_id' => 20, 'order' => 2, 'approver_id' => 1], // Marek Jankowski (CEO)
         ];
         DB::table('approval_steps')->insert($steps);
     }
