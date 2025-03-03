@@ -182,6 +182,12 @@ class LeaveRequestReplacementSeeder extends Seeder
                 'user_id' => 3, // Jan Kowalski (Android Developer)
                 'status' => 'APPROVED',
                 'comment' => 'Mogę zastąpić'
+            ],
+            [
+                'leave_request_id' => 29, // ID nowego wniosku
+                'user_id' => 4, // Anna Nowak (HR Specialist) - osoba, która nie tylko zatwierdza, ale też zastępuje
+                'status' => 'IN_PROGRESS', // Status zastępstwa
+                'comment' => null
             ]
         ];
 

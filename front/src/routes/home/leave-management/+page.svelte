@@ -18,6 +18,9 @@
     import ClockTimeFourOutline from 'svelte-material-icons/ClockTimeFourOutline.svelte'
     import Searchbar from "../../../components/Searchbar.svelte";
     import {onMount} from "svelte";
+    import Drawer from "../../../components/Drawer.svelte";
+    import SendOutline from 'svelte-material-icons/SendOutline.svelte'
+    import EmployeeList from "../../../components/EmployeeList.svelte";
 
     export let data
 
@@ -36,10 +39,6 @@
     let calendarDisplayedRequests = [...new Map(allRequests.map(request =>
         [request.id, request]
     )).values()];
-
-    onMount(() => {
-        console.log(allRequests)
-    })
 
     const handleFilteredDataChange = (filteredData) => {
         displayedRequests = filteredData
@@ -196,6 +195,16 @@
     const changeView = (view) => {
         currentView = view
     }
+
+    let replacementSelect = null
+    let showEmployeeList = false
+    const toggleEmployeeList = () => {
+        showEmployeeList = !showEmployeeList
+    }
+    let selectedReplacement = null
+    const onSelectReplacement = (replacement) => {
+        selectedReplacement = replacement
+    }
 </script>
 
 <div class="w-full h-full flex">
@@ -236,6 +245,27 @@
             <div class="flex items-center gap-8 mb-4">
                 <p class="font-semibold text-2xl text-main-app">Nowy wniosek</p>
             </div>
+            <div class="w-3/4 max-w-5xl m-auto">
+                    <Calendar {plugins} {options} />
+                    <div bind:this={paidTimeOffIndicator}
+                         on:pointerenter={() => toggleIndicatorDropdown()}
+                         on:pointerleave={() => toggleIndicatorDropdown()}
+                         class="bg-accent-green h-8 mt-8 flex">
+                        <div class="bg-accent-red h-full" style="width: {usedPaidTimeOffDays/totalPaidTimeOffDays * 100}%"></div>
+                        <div class="bg-accent-yellow h-full" style="width: {pendingPaidTimeOffDays/totalPaidTimeOffDays * 100}%"></div>
+                    </div>
+
+                    {#if showIndicatorDropdown}
+                        <Dropdown toggleDropdown={toggleIndicatorDropdown} triggerElement={paidTimeOffIndicator}>
+                            <div class="p-4 font-semibold">
+                                <p>Łączny wymiar urlopu rocznego: {totalPaidTimeOffDays} dni</p>
+                                <p>Wykorzystano: {usedPaidTimeOffDays} dni</p>
+                                <p>W trakcie rozpatrywania: {pendingPaidTimeOffDays} dni</p>
+                                <p>Dostępne dni urlopowe: {availablePaidTimeOffDays} dni</p>
+                            </div>
+                        </Dropdown>
+                    {/if}
+                </div>
         {/if}
 
         {#if currentView === 'my-requests'}
@@ -367,6 +397,104 @@
         {/if}
 
     </div>
+
+    {#if currentView === 'new-request'}
+        <div class="flex flex-col gap-2 border py-4 shadow-xl overflow-auto">
+            <form id="" action="" method="POST" class="flex flex-col gap-5 px-4">
+                    <table class="text-left w-full">
+                        <tbody>
+                        <tr class="flex flex-col">
+                            <th class="font-bold text-main-gray">
+                                <label for="">TYP NIEOBECNOŚCI</label>
+                            </th>
+                            <td class="text-main-black font-semibold">
+                                <select class="w-full border border-main-gray rounded"
+                                       name=""
+                                       id=""
+                                       type="text">
+                                    {#each data.leaveTypes as leave_type}
+                                            <option value={leave_type.id}>{leave_type.name}</option>
+                                    {/each}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="flex flex-col">
+                            <th class="font-bold text-main-gray">
+                                <label for="">DATA ROZPOCZĘCIA NIEOBECNOŚCI</label>
+                            </th>
+                            <td class="text-main-black font-semibold">
+                                <input class="w-full border border-main-gray rounded"
+                                       name=""
+                                       id=""
+                                       type="date">
+                            </td>
+                        </tr>
+                        <tr class="flex flex-col">
+                            <th class="font-bold text-main-gray">
+                                <label for="">DATA ZAKOŃCZENIA NIEOBECNOŚCI</label>
+                            </th>
+                            <td class="text-main-black font-semibold">
+                                <input class="w-full border border-main-gray rounded"
+                                       name=""
+                                       id=""
+                                       type="date">
+                            </td>
+                        </tr>
+                        <tr class="flex flex-col">
+                            <th class="font-bold text-main-gray">
+                                <label for="">POWÓD NIEOBECNOŚCI</label>
+                            </th>
+                            <td class="text-main-black font-semibold">
+                                <textarea class="border border-main-gray rounded resize-none"
+                                          cols="35"
+                                          rows="3"
+                                          name=""
+                                          id=""></textarea>
+                            </td>
+                        </tr>
+                        <tr class="flex flex-col">
+                            <th class="font-bold text-main-gray">
+                                <label for="">KOMENTARZ</label>
+                            </th>
+                            <td class="text-main-black font-semibold">
+                                <textarea class="border border-main-gray rounded resize-none"
+                                          cols="35"
+                                          rows="3"
+                                          name=""
+                                          id=""></textarea>
+                            </td>
+                        </tr>
+                        <tr class="flex flex-col">
+                            <th class="font-bold text-main-gray">
+                                <label for="">OSOBA ZASTĘPUJĄCA</label>
+                            </th>
+                            <td class="text-main-black font-semibold">
+                                <input bind:this={replacementSelect}
+                                       on:click={() => toggleEmployeeList()}
+                                       class="w-full border border-main-gray rounded"
+                                       name=""
+                                       id=""
+                                       type="text"
+                                       value={`${selectedReplacement?.first_name} ${selectedReplacement?.last_name}` }>
+                            </td>
+                            {#if showEmployeeList}
+                                <!-- TODO: FIX THIS DROPDOWN -->
+                                <Dropdown triggerElement={replacementSelect} toggleDropdown={toggleEmployeeList}>
+                                    <EmployeeList users={data.users} onClick={onSelectReplacement} />
+                                </Dropdown>
+                            {/if}
+                        </tr>
+                        </tbody>
+                    </table>
+                <button type="submit" form=""
+                        class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4 self-start">
+                    <SendOutline />
+                    Wyślij wniosek
+                </button>
+            </form>
+        </div>
+    {/if}
+
 </div>
 {#if showPopup}
     <Popup {togglePopup} title="Szczegóły wniosku">

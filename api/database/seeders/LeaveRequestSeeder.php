@@ -302,6 +302,7 @@ class LeaveRequestSeeder extends Seeder
                 'days_count' => 10,
                 'reason' => 'Urlop wypoczynkowy w Chorwacji',
                 'comment' => null,
+                // TODO: REMOVE SENT STATUS, IN_PROGRESS COVERS IT
                 'status' => 'SENT',
                 'current_approval_step' => 0
             ],

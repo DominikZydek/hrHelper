@@ -178,8 +178,27 @@ export const load = async({ request, fetch }) => {
                   job_title
                 }
               }
-            }
-        }
+            },
+            leaveTypes {
+                id,
+                name,
+                limit_per_year,
+                requires_replacement,
+                min_notice_days,
+                can_be_cancelled
+              },
+              users {
+                id,
+                    first_name,
+                    last_name,
+                    email,
+                    groups {
+                      icon_name,
+                      name
+                    },
+                    job_title
+                  }
+          }
     `
 
     const res = await fetch(API_URL, {
