@@ -111,7 +111,9 @@
                     if (!showOnlyMyRequestsButtonActive) {
                         calendarDisplayedRequests = calendarDisplayedRequests.filter(request => !request.user)
                     } else {
-                        calendarDisplayedRequests = allRequests
+                        calendarDisplayedRequests = [...new Map(allRequests.map(request =>
+                            [request.id, request]
+                        )).values()];
                     }
 
                     showOnlyMyRequestsButtonActive = !showOnlyMyRequestsButtonActive
@@ -138,7 +140,9 @@
                     if (!showOnlyApprovedRequestsButtonActive) {
                         calendarDisplayedRequests = calendarDisplayedRequests.filter(request => !request.user && request.status === 'APPROVED')
                     } else {
-                        calendarDisplayedRequests = allRequests
+                        calendarDisplayedRequests = [...new Map(allRequests.map(request =>
+                            [request.id, request]
+                        )).values()];
                     }
 
                     showOnlyApprovedRequestsButtonActive = !showOnlyApprovedRequestsButtonActive
@@ -438,6 +442,6 @@
                 </div>
             </Dropdown>
         {/if}
-        <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={data.user}/>
+        <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={selectedLeaveRequest.user || data.user}/>
     </Popup>
 {/if}
