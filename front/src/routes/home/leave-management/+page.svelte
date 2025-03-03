@@ -132,6 +132,12 @@
     </div>
     <div class="flex-1 p-4">
 
+        {#if currentView === 'new-request'}
+            <div class="flex items-center gap-8 mb-4">
+                <p class="font-semibold text-2xl text-main-app">Nowy wniosek</p>
+            </div>
+        {/if}
+
         {#if currentView === 'my-requests'}
             <div class="flex items-center gap-8 mb-4">
                 <p class="font-semibold text-2xl text-main-app">Moje wnioski</p>
@@ -174,7 +180,10 @@
         {/if}
 
         {#if currentView === 'calendar'}
-            <div class="w-1/2 max-w-5xl">
+            <div class="flex items-center gap-8 mb-4">
+                <p class="font-semibold text-2xl text-main-app">Kalendarz</p>
+            </div>
+            <div class="w-3/4 max-w-5xl m-auto">
                 <Calendar {plugins} {options} />
                 <div bind:this={paidTimeOffIndicator}
                      on:pointerenter={() => toggleIndicatorDropdown()}
@@ -194,6 +203,12 @@
                         </div>
                     </Dropdown>
                 {/if}
+            </div>
+        {/if}
+
+        {#if currentView === 'approvals'}
+            <div class="flex items-center gap-8 mb-4">
+                <p class="font-semibold text-2xl text-main-app">Wnioski do rozpatrzenia</p>
             </div>
         {/if}
 
