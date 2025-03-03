@@ -16,6 +16,15 @@ export const STATUS_CLASSES = {
     'CANCELLED': 'text-main-gray'
 };
 
+export const STATUS_COLORS = {
+    'DRAFT': '#4B5563',
+    'SENT': '#2563EB',
+    'IN_PROGRESS': '#EA580C',
+    'APPROVED': '#059669',
+    'REJECTED': '#DC2626',
+    'CANCELLED': '#4B5563'
+};
+
 export const STATUS_ICONS = {
     'DRAFT': 'PencilOutline',
     'SENT': 'SendOutline',
@@ -29,6 +38,7 @@ export const getStatusInfo = (status) => {
     return {
         message: STATUS_MESSAGES[status] || 'Nieznany status',
         class: STATUS_CLASSES[status] || 'text-main-gray',
+        color: STATUS_COLORS[status] || '#4B5563',
         icon: STATUS_ICONS[status] || 'HelpCircleOutline'
     };
 };

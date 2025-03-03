@@ -54,12 +54,36 @@
     let plugins = [DayGrid]
     let options = {
         view: 'dayGridMonth',
-        events: [],
+        events: data.me.leave_requests.map(request => {
+            return {
+                id: request.id,
+                allDay: true,
+                start: request.date_from,
+                end: request.date_to,
+                title: `${request.leave_type.name} - ${request.reason}`,
+                backgroundColor: getStatusInfo(request.status).color
+            }
+        }),
+        eventClick: (info) => {
+            console.log(info)
+            selectedLeaveRequest = data.me.leave_requests.filter(request => info.event.id === request.id)[0]
+            togglePopup()
+        },
         locale: 'pl-PL',
         headerToolbar: {
             start: 'prev today next',
-            center: '',
+            center: 'showOnlyMyRequests showOnlyApprovedRequests',
             end: 'title'
+        },
+        customButtons: {
+            showOnlyMyRequests: {
+                text: 'Pokaż tylko moje',
+                click: () => {}
+            },
+            showOnlyApprovedRequests: {
+                text: 'Pokaż tylko zatwierdzone',
+                click: () => {}
+            }
         },
         buttonText: text => ({...text, today: 'Dziś'}),
         dayHeaderFormat: {weekday: 'long'},
