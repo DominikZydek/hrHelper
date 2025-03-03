@@ -17,11 +17,26 @@
     import CalendarMonth from 'svelte-material-icons/CalendarMonth.svelte'
     import ClockTimeFourOutline from 'svelte-material-icons/ClockTimeFourOutline.svelte'
     import Searchbar from "../../../components/Searchbar.svelte";
+    import {onMount} from "svelte";
 
     export let data
 
-    let allRequests = data.me.leave_requests
-    let displayedRequests = allRequests
+    let tableRequests = data.me.leave_requests
+    let displayedRequests = tableRequests
+
+    let allRequests = [...data.me.leave_requests]
+    data.me.groups.forEach(group => {
+        group.users.forEach(user => {
+            if (user.id !== data.me.id && user.leave_requests) {
+                allRequests = [...allRequests, ...user.leave_requests];
+            }
+        });
+    });
+    let calendarDisplayedRequests = allRequests
+
+    onMount(() => {
+        console.log(allRequests)
+    })
 
     const handleFilteredDataChange = (filteredData) => {
         displayedRequests = filteredData
@@ -51,23 +66,31 @@
         showIndicatorDropdown = !showIndicatorDropdown
     }
 
-    let plugins = [DayGrid]
-    let options = {
-        view: 'dayGridMonth',
-        events: data.me.leave_requests.map(request => {
-            return {
-                id: request.id,
+    const mapLeaveRequestsToCalendarEvents = (requests) => {
+        return requests.map(request => ({
+            id: request.id,
                 allDay: true,
                 start: request.date_from,
                 end: request.date_to,
-                title: `${request.leave_type.name} - ${request.reason}`,
+                title: `${request.user // if user is defined, it's not my request
+                ? `${request.user.first_name} ${request.user.last_name} - ${request.leave_type.name}`
+                : `${request.leave_type.name} - ${request.reason}`}`,
                 backgroundColor: getStatusInfo(request.status).color
-            }
-        }),
+        }))
+    }
+
+    let showOnlyMyRequestsButtonActive = false
+    let showOnlyApprovedRequestsButtonActive = false
+
+    let plugins = [DayGrid]
+    let options = {
+        view: 'dayGridMonth',
+        events: mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests),
         eventClick: (info) => {
-            console.log(info)
             selectedLeaveRequest = data.me.leave_requests.filter(request => info.event.id === request.id)[0]
-            togglePopup()
+            if (selectedLeaveRequest) {
+                togglePopup()
+            }
         },
         locale: 'pl-PL',
         headerToolbar: {
@@ -77,12 +100,58 @@
         },
         customButtons: {
             showOnlyMyRequests: {
-                text: 'Pokaż tylko moje',
-                click: () => {}
+                text: {html: `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 1.25rem; height: 1.25rem; vertical-align: middle; margin-right: 5px; display: inline;"><title>eye-outline</title><path d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" /></svg>
+                    <span style="vertical-align: middle">Pokaż tylko moje</span>
+                `},
+                click: () => {
+                    if (!showOnlyMyRequestsButtonActive) {
+                        calendarDisplayedRequests = calendarDisplayedRequests.filter(request => !request.user)
+                    } else {
+                        calendarDisplayedRequests = allRequests
+                    }
+
+                    showOnlyMyRequestsButtonActive = !showOnlyMyRequestsButtonActive
+
+                    options = {
+                        ...options,
+                        events: mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests),
+                        customButtons: {
+                            ...options.customButtons,
+                            showOnlyMyRequests: {
+                                ...options.customButtons.showOnlyMyRequests,
+                                active: showOnlyMyRequestsButtonActive
+                            }
+                        }
+                    }
+                }
             },
             showOnlyApprovedRequests: {
-                text: 'Pokaż tylko zatwierdzone',
-                click: () => {}
+                text: {html: `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 1.25rem; height: 1.25rem; vertical-align: middle; margin-right: 5px; display: inline;"><title>eye-outline</title><path d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" /></svg>
+                    <span style="vertical-align: middle">Pokaż tylko zatwierdzone</span>
+                `},
+                click: () => {
+                    if (!showOnlyApprovedRequestsButtonActive) {
+                        calendarDisplayedRequests = calendarDisplayedRequests.filter(request => !request.user && request.status === 'APPROVED')
+                    } else {
+                        calendarDisplayedRequests = allRequests
+                    }
+
+                    showOnlyApprovedRequestsButtonActive = !showOnlyApprovedRequestsButtonActive
+
+                    options = {
+                        ...options,
+                        events: mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests),
+                        customButtons: {
+                            ...options.customButtons,
+                            showOnlyApprovedRequests: {
+                                ...options.customButtons.showOnlyApprovedRequests,
+                                active: showOnlyApprovedRequestsButtonActive
+                            }
+                        }
+                    }
+                }
             }
         },
         buttonText: text => ({...text, today: 'Dziś'}),

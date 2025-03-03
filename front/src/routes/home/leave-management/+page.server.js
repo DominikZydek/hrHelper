@@ -4,8 +4,37 @@ export const load = async({ request, fetch }) => {
     const query = `
         {
           me {
+            id,
             paid_time_off_days,
             working_time,
+            groups {
+                name,
+                users {
+                    id,
+                    first_name,
+                    last_name,
+                    email,
+                    groups {
+                        icon_name,
+                        name
+                    },
+                    job_title,
+                    leave_requests {
+                        id,
+                        date_from,
+                        date_to,
+                        leave_type {
+                            id,
+                            name,
+                        },
+                        user {
+                            id,
+                            first_name,
+                            last_name
+                        }
+                    }
+                }
+            },
             leave_requests {
               id,
               leave_type {
@@ -85,7 +114,7 @@ export const load = async({ request, fetch }) => {
         body: JSON.stringify({ query })
     }).then(res => res.json())
 
-    console.log(res.data.me.leave_requests)
+    console.log(res.data.me)
 
     return res.data
 }
