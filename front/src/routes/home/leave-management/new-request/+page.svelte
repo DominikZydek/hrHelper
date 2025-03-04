@@ -195,6 +195,10 @@
         selectedReplacement = replacement
         toggleEmployeeList()
     }
+
+    let selectedLeaveTypeId = data.leaveTypes[0]?.id || null
+    $: selectedLeaveType = data.leaveTypes.find(type => type.id === selectedLeaveTypeId)
+    $: showReplacementSelect = selectedLeaveType?.requires_replacement === true
 </script>
 
 <div class="flex-1 p-4">
@@ -230,12 +234,13 @@
             <tbody>
             <tr class="flex flex-col">
                 <th class="font-bold text-main-gray">
-                    <label for="">TYP NIEOBECNOŚCI</label>
+                    <label for="leave_type">TYP NIEOBECNOŚCI</label>
                 </th>
                 <td class="text-main-black font-semibold">
-                    <select class="w-full border border-main-gray rounded"
-                            name=""
-                            id=""
+                    <select bind:value={selectedLeaveTypeId}
+                            class="w-full border border-main-gray rounded"
+                            name="leave_type"
+                            id="leave_type"
                             type="text">
                         {#each data.leaveTypes as leave_type}
                             <option value={leave_type.id}>{leave_type.name}</option>
@@ -245,7 +250,7 @@
             </tr>
             <tr class="flex flex-col">
                 <th class="font-bold text-main-gray">
-                    <label for="">DATA ROZPOCZĘCIA NIEOBECNOŚCI</label>
+                    <label for="date_from">DATA ROZPOCZĘCIA NIEOBECNOŚCI</label>
                 </th>
                 <td class="text-main-black font-semibold">
                     <input class="w-full border border-main-gray rounded"
@@ -256,7 +261,7 @@
             </tr>
             <tr class="flex flex-col">
                 <th class="font-bold text-main-gray">
-                    <label for="">DATA ZAKOŃCZENIA NIEOBECNOŚCI</label>
+                    <label for="date_to">DATA ZAKOŃCZENIA NIEOBECNOŚCI</label>
                 </th>
                 <td class="text-main-black font-semibold">
                     <input class="w-full border border-main-gray rounded"
@@ -267,51 +272,54 @@
             </tr>
             <tr class="flex flex-col">
                 <th class="font-bold text-main-gray">
-                    <label for="">POWÓD NIEOBECNOŚCI</label>
+                    <label for="reason">POWÓD NIEOBECNOŚCI</label>
                 </th>
                 <td class="text-main-black font-semibold">
                                 <textarea class="border border-main-gray rounded resize-none"
                                           cols="35"
                                           rows="3"
-                                          name=""
-                                          id=""></textarea>
+                                          name="reason"
+                                          id="reason"></textarea>
                 </td>
             </tr>
             <tr class="flex flex-col">
                 <th class="font-bold text-main-gray">
-                    <label for="">KOMENTARZ</label>
+                    <label for="comment">KOMENTARZ</label>
                 </th>
                 <td class="text-main-black font-semibold">
                                 <textarea class="border border-main-gray rounded resize-none"
                                           cols="35"
                                           rows="3"
-                                          name=""
-                                          id=""></textarea>
+                                          name="comment"
+                                          id="comment"></textarea>
                 </td>
             </tr>
-            <tr class="flex flex-col">
-                <th class="font-bold text-main-gray">
-                    <label for="">OSOBA ZASTĘPUJĄCA</label>
-                </th>
-                <td class="text-main-black font-semibold">
-                    <input on:click={() => toggleEmployeeList()}
-                           class="w-full border border-main-gray rounded"
-                           type="text"
-                           placeholder={selectedReplacement ? '' : 'Wybierz zastępstwo'}
-                           value={selectedReplacement
+            {#if showReplacementSelect}
+                <tr class="flex flex-col">
+                    <th class="font-bold text-main-gray">
+                        <label for="replacement_select">OSOBA ZASTĘPUJĄCA</label>
+                    </th>
+                    <td class="text-main-black font-semibold">
+                        <input on:click={() => toggleEmployeeList()}
+                               class="w-full border border-main-gray rounded"
+                               type="text"
+                               id="replacement_select"
+                               placeholder={selectedReplacement ? '' : 'Wybierz zastępstwo'}
+                               value={selectedReplacement
                                                 ? `${selectedReplacement?.first_name} ${selectedReplacement?.last_name}`
                                                 : null}>
-                    <input name="replacement"
-                           id="replacement"
-                           type="hidden"
-                           value={selectedReplacement?.id}>
-                </td>
-                {#if showEmployeeList}
-                    <Popup title="Wybierz zastępstwo" togglePopup={toggleEmployeeList}>
-                        <EmployeeList users={data.users} onClick={onSelectReplacement} />
-                    </Popup>
-                {/if}
-            </tr>
+                        <input name="replacement"
+                               id="replacement"
+                               type="hidden"
+                               value={selectedReplacement?.id}>
+                    </td>
+                    {#if showEmployeeList}
+                        <Popup title="Wybierz zastępstwo" togglePopup={toggleEmployeeList}>
+                            <EmployeeList users={data.users} onClick={onSelectReplacement} />
+                        </Popup>
+                    {/if}
+                </tr>
+            {/if}
             </tbody>
         </table>
         <button type="submit" form=""
