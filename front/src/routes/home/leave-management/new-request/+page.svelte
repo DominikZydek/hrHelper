@@ -6,10 +6,11 @@
     import SendOutline from 'svelte-material-icons/SendOutline.svelte'
     import {getStatusInfo} from "../../../../utils/getStatusInfo.js";
     import DayGrid from "@event-calendar/day-grid";
+    import Interaction from '@event-calendar/interaction'
     import {getContext} from "svelte";
 
     export let data
-    let { selectedLeaveRequest, togglePopup } = getContext('leave-management')
+    let { handleEventClick } = getContext('leave-management')
 
     let allRequests = [...data.me.leave_requests]
     data.me.groups.forEach(group => {
@@ -52,28 +53,53 @@
         return requests.map(request => ({
             id: request.id,
             allDay: true,
-            start: request.date_from,
-            end: request.date_to,
+            start: new Date(request.date_from),
+            end: new Date(request.date_to),
             title: `${request.user // if user is defined, it's not my request
                 ? `${request.user.first_name} ${request.user.last_name} - ${request.leave_type.name}`
                 : `${request.leave_type.name} - ${request.reason}`}`,
-            backgroundColor: getStatusInfo(request.status).color
+            backgroundColor: getStatusInfo(request.status).color,
+            editable: false
         }))
+    }
+
+    const handleDataCellClick = (info) => {
+        const clickedDate = info.date.toLocaleDateString('en-CA');
+
+        const dateFromInput = document.getElementById('date_from')
+        const dateToInput = document.getElementById('date_to')
+
+        if (dateFromInput.value && dateFromInput.value <= clickedDate) {
+            dateToInput.value = clickedDate
+        } else {
+            dateFromInput.value = clickedDate
+        }
+    }
+
+    const handleNewEventSelection = (info) => {
+        const dateFrom = info.start.toLocaleDateString('en-CA')
+        const dateTo = info.end.toISOString().split('T')[0] // this has to be this way since the calendar is a day ahead
+
+        const dateFromInput = document.getElementById('date_from')
+        const dateToInput = document.getElementById('date_to')
+
+        dateFromInput.value = dateFrom
+        dateToInput.value = dateTo
     }
 
     let showOnlyMyRequestsButtonActive = false
     let showOnlyApprovedRequestsButtonActive = false
 
-    let plugins = [DayGrid]
+    let plugins = [DayGrid, Interaction]
     let options = {
         view: 'dayGridMonth',
         events: mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests),
-        eventClick: (info) => {
-            selectedLeaveRequest = data.me.leave_requests.filter(request => info.event.id === request.id)[0]
-            if (selectedLeaveRequest) {
-                togglePopup()
-            }
-        },
+        eventClick: (info) => handleEventClick(info),
+        dateClick: (info) => handleDataCellClick(info),
+        selectable: true,
+        unselectAuto: false,
+        select: (info) => handleNewEventSelection(info),
+        selectBackgroundColor: '#2563EB',
         locale: 'pl-PL',
         headerToolbar: {
             start: 'prev today next',
@@ -208,8 +234,8 @@
                 </th>
                 <td class="text-main-black font-semibold">
                     <input class="w-full border border-main-gray rounded"
-                           name=""
-                           id=""
+                           name="date_from"
+                           id="date_from"
                            type="date">
                 </td>
             </tr>
@@ -219,8 +245,8 @@
                 </th>
                 <td class="text-main-black font-semibold">
                     <input class="w-full border border-main-gray rounded"
-                           name=""
-                           id=""
+                           name="date_to"
+                           id="date_to"
                            type="date">
                 </td>
             </tr>

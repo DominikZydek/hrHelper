@@ -6,7 +6,7 @@
     export let title
 </script>
 
-<div use:lockScroll class="fixed top-0 left-0 w-screen h-screen bg-main-black/75 flex items-center justify-center p-4 z-40">
+<div use:lockScroll class="fixed top-0 left-0 w-screen h-screen bg-main-black/75 flex items-center justify-center p-4 z-[9999]">
     <div use:clickOutside
          on:clickoutside={() => togglePopup()}
          class="bg-main-white max-w-5xl max-h-[90vh] rounded-lg p-6 overflow-auto">

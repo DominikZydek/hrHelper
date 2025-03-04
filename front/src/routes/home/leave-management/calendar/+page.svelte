@@ -7,7 +7,7 @@
 
     export let data
 
-    let { selectedLeaveRequest, togglePopup } = getContext('leave-management')
+    let { handleEventClick } = getContext('leave-management')
 
     let allRequests = [...data.me.leave_requests]
     data.me.groups.forEach(group => {
@@ -55,7 +55,8 @@
             title: `${request.user // if user is defined, it's not my request
                 ? `${request.user.first_name} ${request.user.last_name} - ${request.leave_type.name}`
                 : `${request.leave_type.name} - ${request.reason}`}`,
-            backgroundColor: getStatusInfo(request.status).color
+            backgroundColor: getStatusInfo(request.status).color,
+            editable: false
         }))
     }
 
@@ -66,12 +67,7 @@
     let options = {
         view: 'dayGridMonth',
         events: mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests),
-        eventClick: (info) => {
-            selectedLeaveRequest = data.me.leave_requests.filter(request => info.event.id === request.id)[0]
-            if (selectedLeaveRequest) {
-                togglePopup()
-            }
-        },
+        eventClick: (info) => handleEventClick(info),
         locale: 'pl-PL',
         headerToolbar: {
             start: 'prev today next',
