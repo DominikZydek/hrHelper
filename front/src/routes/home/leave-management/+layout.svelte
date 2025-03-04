@@ -18,19 +18,19 @@
 
     let path = $derived(page.url.pathname.split('/')[3])
 
-    let showPopup = false
+    let showPopup = $state(false)
     const togglePopup = () => {
         showPopup = !showPopup
     }
 
-    let showOptions = false
+    let showOptions = $state(false)
     const toggleOptions = () => {
         showOptions = !showOptions
     }
 
-    let optionButton = null
+    let optionButton = $state(null)
 
-    let selectedLeaveRequest = null
+    let selectedLeaveRequest = $state(null)
 
     const onClick = (leaveRequest) => {
         selectedLeaveRequest = leaveRequest
@@ -38,7 +38,7 @@
         togglePopup()
     }
 
-    let showLeaveRequestHistory = false
+    let showLeaveRequestHistory = $state(false)
     const toggleLeaveRequestHistory = () => {
         showLeaveRequestHistory = !showLeaveRequestHistory
     }
@@ -48,6 +48,8 @@
         onClick,
         togglePopup
     })
+
+    let { data } = $props()
 </script>
 
 <div class="w-full h-full flex">
@@ -84,14 +86,14 @@
 {#if showPopup}
     <Popup {togglePopup} title="Szczegóły wniosku">
         <svelte:fragment slot="header-right">
-            <button type="button" bind:this={optionButton} on:click={() => toggleOptions()}>
+            <button type="button" bind:this={optionButton} onclick={() => toggleOptions()}>
                 <DotsHorizontal class="text-main-gray" size="2rem"/>
             </button>
         </svelte:fragment>
         {#if showOptions}
             <Dropdown triggerElement={optionButton} toggleDropdown={toggleOptions}>
                 <div class="flex flex-col py-2">
-                    <button on:click={() => toggleLeaveRequestHistory()}
+                    <button onclick={() => toggleLeaveRequestHistory()}
                             type="button"
                             class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app">
                         <History size="1.25rem" />
