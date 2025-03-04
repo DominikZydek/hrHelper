@@ -2,7 +2,6 @@
 <script>
     import { clickOutside } from "../utils/clickOutside.js";
     import { getDropdownPosition } from '../utils/getDropdownPosition.js'
-    import {onDestroy} from "svelte";
 
     export let toggleDropdown
     export let triggerElement
@@ -13,10 +12,6 @@
     $: if (dropdownElement && triggerElement) {
         position = getDropdownPosition(triggerElement, dropdownElement)
     }
-
-    onDestroy(() => {
-        toggleDropdown()
-    })
 </script>
 
 <div class="fixed inset-0 z-40 pointer-events-none">
