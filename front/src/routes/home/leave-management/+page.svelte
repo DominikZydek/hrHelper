@@ -196,7 +196,6 @@
         currentView = view
     }
 
-    let replacementSelect = null
     let showEmployeeList = false
     const toggleEmployeeList = () => {
         showEmployeeList = !showEmployeeList
@@ -204,6 +203,7 @@
     let selectedReplacement = null
     const onSelectReplacement = (replacement) => {
         selectedReplacement = replacement
+        toggleEmployeeList()
     }
 </script>
 
@@ -469,19 +469,22 @@
                                 <label for="">OSOBA ZASTĘPUJĄCA</label>
                             </th>
                             <td class="text-main-black font-semibold">
-                                <input bind:this={replacementSelect}
-                                       on:click={() => toggleEmployeeList()}
+                                <input on:click={() => toggleEmployeeList()}
                                        class="w-full border border-main-gray rounded"
-                                       name=""
-                                       id=""
                                        type="text"
-                                       value={`${selectedReplacement?.first_name} ${selectedReplacement?.last_name}` }>
+                                       placeholder={selectedReplacement ? '' : 'Wybierz zastępstwo'}
+                                       value={selectedReplacement
+                                                ? `${selectedReplacement?.first_name} ${selectedReplacement?.last_name}`
+                                                : null}>
+                                <input name="replacement"
+                                       id="replacement"
+                                       type="hidden"
+                                       value={selectedReplacement?.id}>
                             </td>
                             {#if showEmployeeList}
-                                <!-- TODO: FIX THIS DROPDOWN -->
-                                <Dropdown triggerElement={replacementSelect} toggleDropdown={toggleEmployeeList}>
+                                <Popup title="Wybierz zastępstwo" togglePopup={toggleEmployeeList}>
                                     <EmployeeList users={data.users} onClick={onSelectReplacement} />
-                                </Dropdown>
+                                </Popup>
                             {/if}
                         </tr>
                         </tbody>

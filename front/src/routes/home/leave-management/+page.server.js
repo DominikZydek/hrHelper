@@ -196,7 +196,8 @@ export const load = async({ request, fetch }) => {
                       icon_name,
                       name
                     },
-                    job_title
+                    job_title,
+                    employed_from
                   }
           }
     `
