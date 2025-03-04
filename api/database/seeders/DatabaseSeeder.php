@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             LeaveRequestSeeder::class,
             LeaveRequestReplacementSeeder::class,
             ApprovalStepsHistorySeeder::class,
+            CompanyHolidaySeeder::class,
         ]);
     }
 }

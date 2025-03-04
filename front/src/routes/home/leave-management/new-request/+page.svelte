@@ -25,6 +25,8 @@
         [request.id, request]
     )).values()];
 
+    let companyHolidays = data.me.organization.holidays
+
     const usedPaidTimeOffDays = data.me.leave_requests
         .filter(request =>
             request.status === 'APPROVED' &&
@@ -63,6 +65,19 @@
         }))
     }
 
+    // TODO: These are not rendered when choosing options (only mine, only approved)
+    const mapCompanyHolidaysToCalendarEvents = (holidays) => {
+        return holidays.map(holiday => ({
+            id: holiday.id,
+            allDay: true,
+            start: holiday.date,
+            end: holiday.date,
+            title: holiday.name,
+            backgroundColor: '#2563EB',
+            editable: false
+        }))
+    }
+
     const handleDataCellClick = (info) => {
         const clickedDate = info.date.toLocaleDateString('en-CA');
 
@@ -93,7 +108,7 @@
     let plugins = [DayGrid, Interaction]
     let options = {
         view: 'dayGridMonth',
-        events: mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests),
+        events: [...mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests), ...mapCompanyHolidaysToCalendarEvents(companyHolidays)],
         eventClick: (info) => handleEventClick(info),
         dateClick: (info) => handleDataCellClick(info),
         selectable: true,

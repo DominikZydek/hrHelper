@@ -1,0 +1,12 @@
+type CompanyHoliday {
+    id: ID!
+    organization: Organization!,
+    name: String!,
+    date: Date!,
+    recurring_yearly: Boolean!
+}
+
+extend type Query {
+    company_holidays: [CompanyHoliday!]! @field(resolver: "App\\GraphQL\\Queries\\CompanyHolidayResolver@company_holidays")
+    holidays: [CompanyHoliday!]! @all
+}

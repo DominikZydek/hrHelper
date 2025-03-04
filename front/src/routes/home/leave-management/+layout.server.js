@@ -7,6 +7,12 @@ export const load = async({ request, fetch }) => {
             id,
             paid_time_off_days,
             working_time,
+            organization {
+                holidays {
+                    date,
+                    name,
+                }
+            },  
             groups {
                 name,
                 users {

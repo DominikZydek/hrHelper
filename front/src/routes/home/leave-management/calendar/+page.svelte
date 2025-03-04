@@ -3,7 +3,7 @@
     import Dropdown from "../../../../components/Dropdown.svelte";
     import {getStatusInfo} from "../../../../utils/getStatusInfo.js";
     import DayGrid from "@event-calendar/day-grid";
-    import {getContext} from "svelte";
+    import {getContext, onMount} from "svelte";
 
     export let data
 
@@ -21,6 +21,8 @@
     let calendarDisplayedRequests = [...new Map(allRequests.map(request =>
         [request.id, request]
     )).values()];
+
+    let companyHolidays = data.me.organization.holidays
 
     const usedPaidTimeOffDays = data.me.leave_requests
         .filter(request =>
@@ -60,13 +62,25 @@
         }))
     }
 
+    const mapCompanyHolidaysToCalendarEvents = (holidays) => {
+        return holidays.map(holiday => ({
+            id: holiday.id,
+            allDay: true,
+            start: holiday.date,
+            end: holiday.date,
+            title: holiday.name,
+            backgroundColor: '#2563EB',
+            editable: false
+        }))
+    }
+
     let showOnlyMyRequestsButtonActive = false
     let showOnlyApprovedRequestsButtonActive = false
 
     let plugins = [DayGrid]
     let options = {
         view: 'dayGridMonth',
-        events: mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests),
+        events: [...mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests), ...mapCompanyHolidaysToCalendarEvents(companyHolidays)],
         eventClick: (info) => handleEventClick(info),
         locale: 'pl-PL',
         headerToolbar: {

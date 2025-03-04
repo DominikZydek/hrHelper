@@ -14,4 +14,8 @@ class Organization extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function holidays() {
+        return $this->hasMany(CompanyHoliday::class);
+    }
 }

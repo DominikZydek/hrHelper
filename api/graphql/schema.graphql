@@ -13,3 +13,4 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 #import leave_request.graphql
 #import leave_request_replacement.graphql
 #import approval_steps_history.graphql
+#import company_holiday.graphql
