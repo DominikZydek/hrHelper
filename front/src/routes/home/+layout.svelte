@@ -27,7 +27,7 @@
                 </a>
              </li> <!-- employee documents -->
              <li class="px-4 py-6 w-full relative {path === 'leave-management' ? 'bg-auxiliary-darkblue' : ''}">
-                <a class="flex flex-col items-center justify-center h-8 group" href="/home/leave-management">
+                <a class="flex flex-col items-center justify-center h-8 group" href="/home/leave-management/my-requests">
                     <CalendarMultiselect class="text-main-white absolute group-hover:-translate-y-3 transition-transform" size="2rem" />
                     <p class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity">Nieobecności</p>
                 </a>
