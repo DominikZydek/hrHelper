@@ -229,7 +229,7 @@
 </div>
 
 <div class="flex flex-col gap-2 border py-4 shadow-xl overflow-auto">
-    <form id="" action="" method="POST" class="flex flex-col gap-5 px-4">
+    <form id="createLeaveRequest" action="?/createLeaveRequest" method="POST" class="flex flex-col gap-5 px-4">
         <table class="text-left w-full">
             <tbody>
             <tr class="flex flex-col">
@@ -304,6 +304,7 @@
                                class="w-full border border-main-gray rounded"
                                type="text"
                                id="replacement_select"
+                               readonly
                                placeholder={selectedReplacement ? '' : 'Wybierz zastępstwo'}
                                value={selectedReplacement
                                                 ? `${selectedReplacement?.first_name} ${selectedReplacement?.last_name}`
@@ -322,7 +323,7 @@
             {/if}
             </tbody>
         </table>
-        <button type="submit" form=""
+        <button type="submit"
                 class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4 self-start">
             <SendOutline />
             Wyślij wniosek
