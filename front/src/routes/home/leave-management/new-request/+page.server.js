@@ -10,7 +10,8 @@ const schema = z.object({
     date_to: z.date().transform(date => date.toISOString().split('T')[0]),
     reason: z.string(),
     comment: z.string().nullable(),
-    replacement: z.number().int().nullable()
+    replacement: z.number().int().nullable(),
+    save_as_draft: z.boolean()
 })
 
 export const actions = {
@@ -23,17 +24,18 @@ export const actions = {
             return fail(400, { form })
         }
 
-        let { leave_type, date_from, date_to, reason, comment, replacement } = form.data
+        let { leave_type, date_from, date_to, reason, comment, replacement, save_as_draft } = form.data
 
         const query = `
-        mutation CreateLeaveRequest($leave_type: ID!, $date_from: Date!, $date_to: Date!, $reason: String!, $comment: String, $replacement: ID) {
+        mutation CreateLeaveRequest($leave_type: ID!, $date_from: Date!, $date_to: Date!, $reason: String!, $comment: String, $replacement: ID, $save_as_draft: Boolean!) {
               createLeaveRequest(
                 leave_type: $leave_type,
                 date_from: $date_from,
                 date_to: $date_to,
                 reason: $reason,
                 comment: $comment,
-                replacement: $replacement
+                replacement: $replacement,
+                save_as_draft: $save_as_draft
               ) {
                 id
               }
@@ -41,7 +43,7 @@ export const actions = {
         `
 
         const variables = {
-            leave_type, date_from, date_to, reason, comment, replacement
+            leave_type, date_from, date_to, reason, comment, replacement, save_as_draft
         }
 
         const res = await fetch(API_URL, {

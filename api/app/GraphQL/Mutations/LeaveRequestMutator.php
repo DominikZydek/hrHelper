@@ -3,9 +3,11 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\ApprovalProcess;
+use App\Models\ApprovalStep;
 use App\Models\ApprovalStepsHistory;
 use App\Models\CompanyHoliday;
 use App\Models\LeaveRequest;
+use App\Models\LeaveRequestReplacement;
 use App\Models\LeaveType;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -122,6 +124,16 @@ class LeaveRequestMutator
                 'replacement_id' => isset($args['replacement']) ? $args['replacement'] : null,
             ]);
 
+            // create a replacement entry if replacement is mandatory
+            if ($leaveType->requires_replacement && isset($args['replacement'])) {
+                LeaveRequestReplacement::create([
+                    'leave_request_id' => $leaveRequest->id,
+                    'user_id' => $args['replacement'],
+                    'status' => 'IN_PROGRESS',
+                    'comment' => null
+                ]);
+            }
+
             // create a history entry
             ApprovalStepsHistory::create([
                 'leave_request_id' => $leaveRequest->id,
@@ -131,6 +143,24 @@ class LeaveRequestMutator
                 'comment' => null,
                 'date' => Carbon::now(),
             ]);
+
+            // if the request is meant to be sent and not saved as draft
+            if (!$args['save_as_draft']) {
+                ApprovalStepsHistory::create([
+                    'leave_request_id' => $leaveRequest->id,
+                    'step' => 1,
+                    'status' => 'IN_PROGRESS',
+                    'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail(Auth::user()->approval_process_id)->id)
+                                                 ->where('order', 1)->first()->approver_id,
+                    'comment' => null,
+                    'date' => Carbon::now(),
+                ]);
+
+                $leaveRequest->update([
+                    'status' => 'IN_PROGRESS',
+                    'current_approval_step' => 1,
+                ]);
+            }
 
             DB::commit();
 

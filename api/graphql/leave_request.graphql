@@ -35,5 +35,6 @@ extend type Mutation {
         reason: String!
         comment: String
         replacement: ID
+        save_as_draft: Boolean!
     ) : LeaveRequest! @field(resolver: "App\\GraphQL\\Mutations\\LeaveRequestMutator@createLeaveRequest")
 }

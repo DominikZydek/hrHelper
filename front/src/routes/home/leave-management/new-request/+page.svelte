@@ -199,6 +199,8 @@
     let selectedLeaveTypeId = data.leaveTypes[0]?.id || null
     $: selectedLeaveType = data.leaveTypes.find(type => type.id === selectedLeaveTypeId)
     $: showReplacementSelect = selectedLeaveType?.requires_replacement === true
+
+    let saveAsDraft = false
 </script>
 
 <div class="flex-1 p-4">
@@ -323,10 +325,18 @@
             {/if}
             </tbody>
         </table>
-        <button type="submit"
-                class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4 self-start">
-            <SendOutline />
-            Wyślij wniosek
-        </button>
+
+        <div class="flex">
+            <button type="submit"
+                    class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4">
+                <SendOutline />
+                Wyślij wniosek
+            </button>
+            <button type="submit" on:click={() => saveAsDraft = true}
+                    class="flex gap-1 items-center text-main-gray h-8 px-4">
+                Zapisz jako wersja robocza
+            </button>
+            <input type="hidden" id="save_as_draft" name="save_as_draft" value={saveAsDraft}>
+        </div>
     </form>
 </div>
