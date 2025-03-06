@@ -19,6 +19,10 @@ type User {
     working_time: Float!
     employed_from: Date!
     employed_to: Date
+    available_pto: Int!
+    pending_pto: Int!
+    transferred_pto: Int!
+    transferred_pto_expired_by: Date!
     health_check_expired_by: Date!
     health_and_safety_training_expired_by: Date!
     leave_requests: [LeaveRequest!]!

@@ -7,6 +7,10 @@ export const load = async({ request, fetch }) => {
             id,
             paid_time_off_days,
             working_time,
+            available_pto,
+            pending_pto,
+            transferred_pto,
+            transferred_pto_expired_by,
             organization {
                 holidays {
                     date,

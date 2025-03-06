@@ -17,6 +17,7 @@ class LeaveRequestMutator
 {
     public function createLeaveRequest($root, array $args)
     {
+        // TODO: change this to use new user fields (available_pto, pending_pto, transferred_pto etc.)
         try {
             DB::beginTransaction();
 

@@ -14,6 +14,7 @@ class User extends Authenticatable
         'first_name', 'last_name', 'sex', 'email', 'birth_date', 'phone_number',
         'address_id', 'role', 'job_title', 'supervisor_id', 'approval_process_id', 'type_of_employment',
         'paid_time_off_days', 'working_time', 'employed_from', 'employed_to',
+        'available_pto', 'pending_pto', 'transferred_pto', 'transferred_pto_expired_by',
         'health_check_expired_by', 'health_and_safety_training_expired_by'
     ];
 
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'birth_date' => 'date',
         'employed_from' => 'date',
         'employed_to' => 'date',
+        'transferred_pto_expired_by' => 'date',
         'health_check_expired_by' => 'date',
         'health_and_safety_training_expired_by' => 'date',
     ];

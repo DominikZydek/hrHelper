@@ -31,6 +31,10 @@ return new class extends Migration
             $table->float('working_time');
             $table->date('employed_from');
             $table->date('employed_to')->nullable();
+            $table->integer('available_pto');
+            $table->integer('pending_pto');
+            $table->integer('transferred_pto');
+            $table->date('transferred_pto_expired_by');
             $table->date('health_check_expired_by');
             $table->date('health_and_safety_training_expired_by');
             $table->timestamps();

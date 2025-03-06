@@ -22,25 +22,13 @@
         [request.id, request]
     )).values()];
 
-    let companyHolidays = data.me.organization.holidays
+    const totalPaidTimeOffDays = data.me.paid_time_off_days * data.me.working_time
 
-    const usedPaidTimeOffDays = data.me.leave_requests
-        .filter(request =>
-            request.status === 'APPROVED' &&
-            request.leave_type.name === 'Urlop wypoczynkowy'
-        )
-        .reduce((sum, request) => sum + request.days_count, 0)
+    const usedPaidTimeOffDays = totalPaidTimeOffDays - data.me.available_pto
 
-    const pendingPaidTimeOffDays = data.me.leave_requests
-        .filter(request =>
-            ['SENT', 'IN_PROGRESS'].includes(request.status) &&
-            request.leave_type.name === 'Urlop wypoczynkowy'
-        )
-        .reduce((sum, request) => sum + request.days_count, 0)
+    const pendingPaidTimeOffDays = data.me.pending_pto
 
-    const totalPaidTimeOffDays = data.me.paid_time_off_days
-
-    const availablePaidTimeOffDays = totalPaidTimeOffDays - (usedPaidTimeOffDays + pendingPaidTimeOffDays)
+    const availablePaidTimeOffDays = data.me.available_pto
 
     let paidTimeOffIndicator = null
     let showIndicatorDropdown = false

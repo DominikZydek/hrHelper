@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,12 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // TODO: Fix the seeder cuz it's baad
+        $currentYear = Carbon::now()->year;
+
+        // Ustaw datę wygaśnięcia przeniesionych dni na 30 września bieżącego roku
+        $transferredPtoExpiryDate = Carbon::createFromDate($currentYear, 9, 30)->format('Y-m-d');
+
         $users = [
             [
                 'organization_id' => 1,
@@ -34,6 +41,10 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2019-01-01',
                 'employed_to' => null,
+                'available_pto' => 26, // Pełen wymiar urlopu
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 4, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2026-01-01',
                 'health_and_safety_training_expired_by' => '2024-01-01'
             ],
@@ -56,6 +67,10 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2019-01-01',
                 'employed_to' => null,
+                'available_pto' => 26, // Pełen wymiar urlopu
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 5, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2026-01-01',
                 'health_and_safety_training_expired_by' => '2024-01-01'
             ],
@@ -78,6 +93,14 @@ class UserSeeder extends Seeder
                 'working_time' => 0.5,
                 'employed_from' => '2022-01-15',
                 'employed_to' => null,
+                // 26 dni * 0.5 etatu = 13 dni rocznie
+                // Zatwierdzone wnioski: 10 dni (wakacje) + 1 dzień (urlop na żądanie) = 11 dni
+                // W trakcie: 5 dni (szkolenie Flutter)
+                // Pozostało: 13 - 11 = 2 dni z rocznej puli
+                'available_pto' => 2, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 5, // 5 dni (szkolenie Flutter) w trakcie rozpatrywania
+                'transferred_pto' => 6, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2026-11-12',
                 'health_and_safety_training_expired_by' => '2021-06-11'
             ],
@@ -100,6 +123,15 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2021-03-01',
                 'employed_to' => null,
+                // Zatwierdzone wnioski: 10 dni (urlop zimowy) + 1 dzień (urlop na żądanie) = 11 dni
+                // Odrzucone: 10 dni (Grecja)
+                // W trakcie: 10 dni (wakacje nad morzem) + 2 dni (szkolenie) = 12 dni
+                // Wersja robocza: 1 dzień (wizyta lekarska)
+                // Pozostało: 26 - 11 = 15 dni z rocznej puli
+                'available_pto' => 15, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 12, // 12 dni w trakcie rozpatrywania
+                'transferred_pto' => 3, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-03-10',
                 'health_and_safety_training_expired_by' => '2024-03-01'
             ],
@@ -122,6 +154,13 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2023-06-01',
                 'employed_to' => '2024-05-31',
+                // Zatwierdzone wnioski: 8 dni (narty) + 1 dzień (urlop na żądanie) = 9 dni
+                // Odrzucone: 2 dni (szkolenie React)
+                // Pozostało: 20 - 9 = 11 dni z rocznej puli
+                'available_pto' => 11, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 0, // B2B nie ma przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-05-15',
                 'health_and_safety_training_expired_by' => '2024-06-01'
             ],
@@ -144,6 +183,10 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2019-01-01',
                 'employed_to' => null,
+                'available_pto' => 26, // Pełen wymiar urlopu (brak wniosków w danych)
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 7, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-12-20',
                 'health_and_safety_training_expired_by' => '2024-01-15'
             ],
@@ -166,6 +209,12 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2022-03-15',
                 'employed_to' => null,
+                // Zatwierdzone wnioski: 10 dni (Hiszpania) + 2 dni (konferencja) + 1 dzień (sprawy urzędowe) = 13 dni
+                // Pozostało: 26 - 13 = 13 dni z rocznej puli
+                'available_pto' => 13, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 2, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2026-03-10',
                 'health_and_safety_training_expired_by' => '2024-03-15'
             ],
@@ -188,6 +237,14 @@ class UserSeeder extends Seeder
                 'working_time' => 0.8,
                 'employed_from' => '2023-01-01',
                 'employed_to' => '2024-12-31',
+                // Przysługuje: 20 dni * 0.8 etatu = 16 dni
+                // Zatwierdzone wnioski: 1 dzień (urlop na żądanie)
+                // W trakcie: 10 dni (urlop we Włoszech) + 2 dni (szkolenie cloud) = 12 dni
+                // Pozostało: 16 - 1 = 15 dni z rocznej puli
+                'available_pto' => 15, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 12, // 12 dni w trakcie rozpatrywania
+                'transferred_pto' => 0, // B2B nie ma przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2024-12-25',
                 'health_and_safety_training_expired_by' => '2024-01-01'
             ],
@@ -210,6 +267,10 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2020-09-01',
                 'employed_to' => null,
+                'available_pto' => 26, // Pełen wymiar urlopu (brak wniosków w danych)
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 0, // Brak przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-09-15',
                 'health_and_safety_training_expired_by' => '2024-09-01'
             ],
@@ -232,6 +293,13 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2022-07-01',
                 'employed_to' => null,
+                // Zatwierdzone wnioski: 10 dni (wakacje rodzinne)
+                // W trakcie: 2 dni (ślub siostry)
+                // Pozostało: 26 - 10 = 16 dni z rocznej puli
+                'available_pto' => 16, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 2, // 2 dni w trakcie rozpatrywania
+                'transferred_pto' => 0, // Brak przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-06-30',
                 'health_and_safety_training_expired_by' => '2024-07-01'
             ],
@@ -254,6 +322,10 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2023-03-01',
                 'employed_to' => '2025-02-28',
+                'available_pto' => 20, // Pełen wymiar urlopu (brak wniosków w danych)
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 0, // B2B nie ma przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-02-28',
                 'health_and_safety_training_expired_by' => '2024-03-01'
             ],
@@ -276,6 +348,11 @@ class UserSeeder extends Seeder
                 'working_time' => 0.75,
                 'employed_from' => '2022-11-15',
                 'employed_to' => null,
+                // Przysługuje: 26 dni * 0.75 etatu = 19.5 dni (zaokrąglone do 20 dni)
+                'available_pto' => 20, // Pełen wymiar urlopu (brak wniosków w danych)
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 1, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2024-11-15',
                 'health_and_safety_training_expired_by' => '2023-11-15'
             ],
@@ -298,6 +375,10 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2020-01-15',
                 'employed_to' => null,
+                'available_pto' => 26, // Pełen wymiar urlopu (brak wniosków w danych)
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 3, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2026-01-15',
                 'health_and_safety_training_expired_by' => '2024-01-15'
             ],
@@ -320,6 +401,14 @@ class UserSeeder extends Seeder
                 'working_time' => 0.5,
                 'employed_from' => '2023-04-01',
                 'employed_to' => null,
+                // Przysługuje: 26 dni * 0.5 etatu = 13 dni
+                // Odrzucone wnioski: 10 dni (wakacje w górach)
+                // Zatwierdzone wnioski: 2 dni (konferencja projektowa)
+                // Pozostało: 13 - 2 = 11 dni z rocznej puli
+                'available_pto' => 11, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 0, // Brak przeniesionych dni (zatrudniona od 2023)
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-04-01',
                 'health_and_safety_training_expired_by' => '2024-04-01'
             ],
@@ -342,6 +431,13 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2021-06-01',
                 'employed_to' => '2024-05-31',
+                // Zatwierdzone wnioski: 2 dni (opieka nad dzieckiem)
+                // W trakcie: 10 dni (Chorwacja)
+                // Pozostało: 20 - 2 = 18 dni z rocznej puli
+                'available_pto' => 18, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 10, // 10 dni w trakcie rozpatrywania
+                'transferred_pto' => 0, // B2B nie ma przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-05-31',
                 'health_and_safety_training_expired_by' => '2024-06-01'
             ],
@@ -364,6 +460,11 @@ class UserSeeder extends Seeder
                 'working_time' => 0.75,
                 'employed_from' => '2022-09-15',
                 'employed_to' => null,
+                // Przysługuje: 26 dni * 0.75 etatu = 19.5 dni (zaokrąglone do 20 dni)
+                'available_pto' => 20, // Pełen wymiar urlopu (brak wniosków w danych)
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 0, // Brak przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2024-09-15',
                 'health_and_safety_training_expired_by' => '2023-09-15'
             ],
@@ -386,6 +487,13 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2020-03-01',
                 'employed_to' => null,
+                // Zatwierdzone wnioski: 5 dni (szkolenie z cyberbezpieczeństwa)
+                // W trakcie: 10 dni (urlop w Grecji)
+                // Pozostało: 26 - 5 = 21 dni z rocznej puli
+                'available_pto' => 21, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 10, // 10 dni w trakcie rozpatrywania
+                'transferred_pto' => 0, // Brak przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-03-01',
                 'health_and_safety_training_expired_by' => '2024-03-01'
             ],
@@ -408,6 +516,10 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2021-09-01',
                 'employed_to' => null,
+                'available_pto' => 26, // Pełen wymiar urlopu (brak wniosków w danych)
+                'pending_pto' => 0, // Brak wniosków w trakcie
+                'transferred_pto' => 2, // Przeniesione dni z poprzedniego roku
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2024-09-01',
                 'health_and_safety_training_expired_by' => '2023-09-01'
             ],
@@ -430,6 +542,13 @@ class UserSeeder extends Seeder
                 'working_time' => 1,
                 'employed_from' => '2022-05-15',
                 'employed_to' => '2024-05-14',
+                // Zatwierdzone wnioski: 10 dni (urlop w Portugalii)
+                // Anulowane wnioski: 5 dni (WWDC 2025)
+                // Pozostało: 20 - 10 = 10 dni z rocznej puli
+                'available_pto' => 10, // Pozostałe dni po zatwierdzonych urlopach
+                'pending_pto' => 0,
+                'transferred_pto' => 0, // B2B nie ma przeniesionych dni
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-05-14',
                 'health_and_safety_training_expired_by' => '2024-05-15'
             ],
@@ -452,6 +571,13 @@ class UserSeeder extends Seeder
                 'working_time' => 0.8,
                 'employed_from' => '2023-02-01',
                 'employed_to' => null,
+                // Przysługuje: 26 dni * 0.8 etatu = 20.8 dni (zaokrąglone do 21 dni)
+                // W trakcie: 7 dni (wakacje we Włoszech)
+                // Pozostało: 21 - 0 = 21 dni z rocznej puli, minus 7 dni w rozpatrzeniu
+                'available_pto' => 21, // Pełna pula (brak zatwierdzonych wniosków)
+                'pending_pto' => 7,
+                'transferred_pto' => 0, // Brak przeniesionych dni (zatrudniona od 2023)
+                'transferred_pto_expired_by' => $transferredPtoExpiryDate,
                 'health_check_expired_by' => '2025-02-01',
                 'health_and_safety_training_expired_by' => '2024-02-01'
             ]

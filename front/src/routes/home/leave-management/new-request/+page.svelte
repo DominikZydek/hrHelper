@@ -7,7 +7,7 @@
     import {getStatusInfo} from "../../../../utils/getStatusInfo.js";
     import DayGrid from "@event-calendar/day-grid";
     import Interaction from '@event-calendar/interaction'
-    import {getContext} from "svelte";
+    import {getContext, onMount} from "svelte";
 
     export let data
     let { handleEventClick } = getContext('leave-management')
@@ -27,23 +27,13 @@
 
     let companyHolidays = data.me.organization.holidays
 
-    const usedPaidTimeOffDays = data.me.leave_requests
-        .filter(request =>
-            request.status === 'APPROVED' &&
-            request.leave_type.name === 'Urlop wypoczynkowy'
-        )
-        .reduce((sum, request) => sum + request.days_count, 0)
+    const totalPaidTimeOffDays = data.me.paid_time_off_days * data.me.working_time
 
-    const pendingPaidTimeOffDays = data.me.leave_requests
-        .filter(request =>
-            ['SENT', 'IN_PROGRESS'].includes(request.status) &&
-            request.leave_type.name === 'Urlop wypoczynkowy'
-        )
-        .reduce((sum, request) => sum + request.days_count, 0)
+    const usedPaidTimeOffDays = totalPaidTimeOffDays - data.me.available_pto
 
-    const totalPaidTimeOffDays = data.me.paid_time_off_days
+    const pendingPaidTimeOffDays = data.me.pending_pto
 
-    const availablePaidTimeOffDays = totalPaidTimeOffDays - (usedPaidTimeOffDays + pendingPaidTimeOffDays)
+    const availablePaidTimeOffDays = data.me.available_pto
 
     let paidTimeOffIndicator = null
     let showIndicatorDropdown = false
