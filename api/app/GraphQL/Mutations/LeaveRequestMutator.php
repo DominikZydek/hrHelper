@@ -62,12 +62,12 @@ class LeaveRequestMutator
                 $currentDate->addDay();
             }
 
-            // sum this year's approved or in_progress requests of chosen type
+            // sum this year's 'active' requests of chosen type
             $startOfYear = Carbon::now()->startOfYear();
             $endOfYear = Carbon::now()->endOfYear();
             $usedLeaveDaysOfType = LeaveRequest::where('user_id', Auth::user()->id)
                 ->where('leave_type_id', $args['leave_type'])
-                ->whereIn('status', ['APPROVED', 'IN_PROGRESS'])
+                ->whereNotIn('status', ['REJECTED', 'CANCELLED'])
                 ->whereBetween('date_from', [$startOfYear, $endOfYear])
                 ->sum('days_count');
 
@@ -80,9 +80,9 @@ class LeaveRequestMutator
                 throw new \Exception("Exceeded yearly limit for this leave type. Available: {$remaining}, Used: {$usedLeaveDaysOfType}, Requested: {$daysCount}");
             }
 
-            // sum this year's approved or in_progress requests
+            // sum this year's 'active' requests
             $totalUsedLeaveDays = LeaveRequest::where('user_id', Auth::user()->id)
-                ->whereIn('status', ['APPROVED', 'IN_PROGRESS'])
+                ->whereNotIn('status', ['REJECTED', 'CANCELLED'])
                 ->whereBetween('date_from', [$startOfYear, $endOfYear])
                 ->sum('days_count');
 
