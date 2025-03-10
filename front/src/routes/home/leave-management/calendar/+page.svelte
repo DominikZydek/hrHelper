@@ -22,6 +22,8 @@
         [request.id, request]
     )).values()];
 
+    let companyHolidays = data.me.organization.holidays
+
     const totalPaidTimeOffDays = data.me.paid_time_off_days * data.me.working_time
 
     const usedPaidTimeOffDays = totalPaidTimeOffDays - data.me.available_pto
