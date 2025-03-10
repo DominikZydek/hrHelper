@@ -17,9 +17,10 @@ class LeaveRequestMutator
 {
     public function createLeaveRequest($root, array $args)
     {
-        // TODO: change this to use new user fields (available_pto, pending_pto, transferred_pto etc.)
         try {
             DB::beginTransaction();
+
+            $user = Auth::user();
 
             // get info about chosen leave type
             $leaveType = LeaveType::findOrFail($args['leave_type']);
@@ -27,8 +28,8 @@ class LeaveRequestMutator
             $dateFrom = Carbon::parse($args['date_from']);
             $dateTo = Carbon::parse($args['date_to']);
 
-            $leaveRequests = LeaveRequest::where('user_id', Auth::user()->id)->get();
-            $holidays = CompanyHoliday::where('organization_id', Auth::user()->organization_id)->get();
+            $leaveRequests = LeaveRequest::where('user_id', $user->id)->get();
+            $holidays = CompanyHoliday::where('organization_id', $user->organization_id)->get();
 
             $daysCount = 0;
             $currentDate = clone $dateFrom;
@@ -65,37 +66,35 @@ class LeaveRequestMutator
                 $currentDate->addDay();
             }
 
-            // sum this year's 'active' requests of chosen type
+            // Check if request exceeds the leave type limit
             $startOfYear = Carbon::now()->startOfYear();
             $endOfYear = Carbon::now()->endOfYear();
-            $usedLeaveDaysOfType = LeaveRequest::where('user_id', Auth::user()->id)
+
+            // Get leave requests of this type that are currently active or pending
+            $usedLeaveDaysOfType = LeaveRequest::where('user_id', $user->id)
                 ->where('leave_type_id', $args['leave_type'])
                 ->whereNotIn('status', ['REJECTED', 'CANCELLED'])
                 ->whereBetween('date_from', [$startOfYear, $endOfYear])
                 ->sum('days_count');
 
-            // check if it exceeds leaveType->limit_per_year * Auth::user()->working_time (etat)
-            $typeLimit = $leaveType->limit_per_year * Auth::user()->working_time;
-            // round up to count full days
+            // Calculate the limit for this leave type based on working time
+            $typeLimit = $leaveType->limit_per_year * $user->working_time;
             $typeLimitRounded = ceil($typeLimit);
+
             if (($usedLeaveDaysOfType + $daysCount) > $typeLimitRounded) {
                 $remaining = $typeLimitRounded - $usedLeaveDaysOfType;
                 throw new \Exception("Exceeded yearly limit for this leave type. Available: {$remaining}, Used: {$usedLeaveDaysOfType}, Requested: {$daysCount}");
             }
 
-            // sum this year's 'active' requests
-            $totalUsedLeaveDays = LeaveRequest::where('user_id', Auth::user()->id)
-                ->whereNotIn('status', ['REJECTED', 'CANCELLED'])
-                ->whereBetween('date_from', [$startOfYear, $endOfYear])
-                ->sum('days_count');
+            // Need to check total available days (not just those assigned to this leave type)
+            // First check pending + used days against total allowed
+            $totalAllowedDays = $user->paid_time_off_days * $user->working_time;
+            $usedAndPendingDays = $totalAllowedDays - $user->available_pto - $user->transferred_pto;
 
-            // check if it exceeds Auth::user()->paid_time_off_days * Auth::user()->working_time (etat)
-            $totalLimit = Auth::user()->paid_time_off_days * Auth::user()->working_time;
-            // round up to count full days
-            $totalLimitRounded = ceil($totalLimit);
-            if (($totalUsedLeaveDays + $daysCount) > $totalLimitRounded) {
-                $remaining = $totalLimitRounded - $totalUsedLeaveDays;
-                throw new \Exception("Exceeded yearly total leave limit. Available: {$remaining}, Used: {$totalUsedLeaveDays}, Requested: {$daysCount}");
+            // Then check if user has enough available days for this request
+            if (($user->available_pto + $user->transferred_pto) < $daysCount) {
+                $availableDays = $user->available_pto + $user->transferred_pto;
+                throw new \Exception("Not enough available leave days. Available: {$availableDays}, Requested: {$daysCount}");
             }
 
             // check if leaveType->min_notice_days is respected
@@ -112,9 +111,9 @@ class LeaveRequestMutator
 
             // create a leave request
             $leaveRequest = LeaveRequest::create([
-                'user_id' => Auth::user()->id,
+                'user_id' => $user->id,
                 'leave_type_id' => $args['leave_type'],
-                'approval_process_id' => Auth::user()->approval_process_id,
+                'approval_process_id' => $user->approval_process_id,
                 'date_from' => $args['date_from'],
                 'date_to' => $args['date_to'],
                 'days_count' => $daysCount,
@@ -147,12 +146,17 @@ class LeaveRequestMutator
 
             // if the request is meant to be sent and not saved as draft
             if (!$args['save_as_draft']) {
+                // Update only the pending_pto counter, not the available_pto
+                // Available PTO will be reduced only after final approval
+                $user->pending_pto += $daysCount;
+                $user->save();
+
                 ApprovalStepsHistory::create([
                     'leave_request_id' => $leaveRequest->id,
                     'step' => 1,
                     'status' => 'IN_PROGRESS',
-                    'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail(Auth::user()->approval_process_id)->id)
-                                                 ->where('order', 1)->first()->approver_id,
+                    'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail($user->approval_process_id)->id)
+                        ->where('order', 1)->first()->approver_id,
                     'comment' => null,
                     'date' => Carbon::now(),
                 ]);
