@@ -1,0 +1,13 @@
+type Permission {
+    id: ID!
+    name: String!
+    display_name: String!
+    description: String
+    roles: [Role!]!
+    users: [User!]!
+}
+
+extend type Query {
+    permissions: [Permission!]! @all
+    permission(id: ID! @eq): Permission @find
+}

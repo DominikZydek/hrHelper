@@ -9,7 +9,8 @@ type User {
     birth_date: Date!
     phone_number: String!
     address: Address!
-    role: Role!
+    roles: [Role!]!
+    permission_overrides: [PermissionOverride!]!
     job_title: String!
     supervisor: User
     approval_process: ApprovalProcess!
@@ -34,13 +35,6 @@ enum Sex {
     X
 }
 
-enum Role {
-    employee
-    supervisor
-    hr
-    admin
-}
-
 enum TypeOfEmployment {
     UoP
     B2B
@@ -63,7 +57,7 @@ extend type Mutation {
         street_number: String!,
         postal_code: String!,
         city: String!,
-        role: Role!,
+        role: Role!, # TODO: adjust for new roles/permissions system
         job_title: String!,
         groups: [String]!,
         supervisor: ID,

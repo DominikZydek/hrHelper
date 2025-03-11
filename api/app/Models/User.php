@@ -12,7 +12,7 @@ class User extends Authenticatable
     protected $fillable = [
         'organization_id', 'password',
         'first_name', 'last_name', 'sex', 'email', 'birth_date', 'phone_number',
-        'address_id', 'role', 'job_title', 'supervisor_id', 'approval_process_id', 'type_of_employment',
+        'address_id', 'job_title', 'supervisor_id', 'approval_process_id', 'type_of_employment',
         'paid_time_off_days', 'working_time', 'employed_from', 'employed_to',
         'available_pto', 'pending_pto', 'transferred_pto', 'transferred_pto_expired_by',
         'health_check_expired_by', 'health_and_safety_training_expired_by'
@@ -20,7 +20,6 @@ class User extends Authenticatable
 
     protected $casts = [
         'sex' => Sex::class,
-        'role' => Role::class,
         'type_of_employment' => TypeOfEmployment::class,
         'birth_date' => 'date',
         'employed_from' => 'date',
@@ -66,6 +65,78 @@ class User extends Authenticatable
     {
         return $this->hasMany(ApprovalStepsHistory::class, 'approver_id');
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_users');
+    }
+
+    public function permission_overrides()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_overrides')
+            ->withPivot('granted');
+    }
+
+    /**
+     * Checks if user has a specific permission
+     */
+    public function hasPermission($permissionName)
+    {
+        // 1. Check if permission is granted via override
+        $override = $this->permission_overrides()
+            ->where('permissions.name', $permissionName)
+            ->first();
+
+        if ($override) {
+            return $override->pivot->granted;
+        }
+
+        // 2. Check if permission derives from the role
+        foreach ($this->roles as $role) {
+            if ($role->permissions()->where('permissions.name', $permissionName)->exists()) {
+                return true;
+            }
+        }
+
+        // permission not found
+        return false;
+    }
+
+    /**
+     * Checks if user has any of the provided permissions
+     */
+    public function hasAnyPermission($permissionNames)
+    {
+        if (is_string($permissionNames)) {
+            $permissionNames = [$permissionNames];
+        }
+
+        foreach ($permissionNames as $permissionName) {
+            if ($this->hasPermission($permissionName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if user has all of the provided permissions
+     */
+    public function hasAllPermissions($permissionNames)
+    {
+        if (is_string($permissionNames)) {
+            $permissionNames = [$permissionNames];
+        }
+
+        foreach ($permissionNames as $permissionName) {
+            if (!$this->hasPermission($permissionName)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 enum Sex: string
@@ -73,13 +144,6 @@ enum Sex: string
     case M = 'M';
     case F = 'F';
     case X = 'X';
-}
-enum Role: string
-{
-    case EMPLOYEE = 'employee';
-    case SUPERVISOR = 'supervisor';
-    case HR = 'hr';
-    case ADMIN = 'admin';
 }
 enum TypeOfEmployment: string
 {

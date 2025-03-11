@@ -114,15 +114,16 @@
                 <table class="text-left w-full">
                     <tbody>
                     <tr>
+                        <!-- TODO: adjust for new roles/permission system -->
                         <th class="w-1/2 font-bold text-main-gray">ROLA</th>
                         <td class="w-1/2 text-main-black font-semibold pl-5">
-                            {#if user.role === 'EMPLOYEE'}
+                            {#if user.roles.some(r => r.name === 'employee')}
                                 Pracownik
-                            {:else if user.role === 'SUPERVISOR'}
+                            {:else if user.roles.some(r => r.name === 'supervisor')}
                                 Przełożony
-                            {:else if user.role === 'HR'}
+                            {:else if user.roles.some(r => r.name === 'hr')}
                                 Kadry
-                            {:else if user.role === 'ADMIN'}
+                            {:else if user.roles.some(r => r.name === 'admin')}
                                 Administrator
                             {/if}
                         </td>
@@ -339,6 +340,7 @@
                 <table class="text-left w-full">
                     <tbody>
                     <tr>
+                        <!-- TODO: adjust for new roles/permission system -->
                         <th class="w-1/2 font-bold text-main-gray">
                             <label for="role">ROLA</label>
                         </th>
@@ -346,10 +348,10 @@
                             <select class="w-full"
                                     name="role"
                                     id="role">
-                                <option value="employee" selected={user.role === 'EMPLOYEE'}>Pracownik</option>
-                                <option value="supervisor" selected={user.role === 'SUPERVISOR'}>Przełożony</option>
-                                <option value="hr" selected={user.role === 'HR'}>Kadry</option>
-                                <option value="admin" selected={user.role === 'ADMIN'}>Administrator</option>
+<!--                                <option value="employee" selected={user.role === 'EMPLOYEE'}>Pracownik</option>-->
+<!--                                <option value="supervisor" selected={user.role === 'SUPERVISOR'}>Przełożony</option>-->
+<!--                                <option value="hr" selected={user.role === 'HR'}>Kadry</option>-->
+<!--                                <option value="admin" selected={user.role === 'ADMIN'}>Administrator</option>-->
                             </select>
                         </td>
                     </tr>

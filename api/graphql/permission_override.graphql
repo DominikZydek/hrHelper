@@ -1,0 +1,10 @@
+type PermissionOverride {
+    id: ID!
+    user: User!
+    permission: Permission!
+    granted: Boolean!
+}
+
+extend type Query {
+    permission_overrides(user_id: ID! @eq): [PermissionOverride!]! @all
+}

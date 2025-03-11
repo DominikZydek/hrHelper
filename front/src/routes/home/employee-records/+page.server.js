@@ -23,7 +23,12 @@ export const load = async({ request, fetch }) => {
               postal_code,
               city
             },
-            role,
+            roles {
+                id,
+                name,
+                display_name,
+                description
+            },
             job_title,
             supervisor {
               id,
@@ -92,7 +97,7 @@ const userSchema = z.object({
     street_number: z.string(),
     postal_code: z.string().regex(/^\d{2}-\d{3}$/),
     city: z.string(),
-    role: z.string(),
+    role: z.string(), // TODO: adjust for new roles/permissions system
     job_title: z.string(),
     groups: z.preprocess(
         (val) => {
@@ -134,6 +139,7 @@ export const actions = {
             return fail(400, { form })
         }
 
+        // TODO: adjust for new roles/permissions system
         let { id, first_name, last_name, sex, email, birth_date, phone_number, street_name, street_number, postal_code,
             city, role, job_title, groups, supervisor, type_of_employment, paid_time_off_days, working_time, employed_from, employed_to,
             health_check_expired_by, health_and_safety_training_expired_by } = form.data

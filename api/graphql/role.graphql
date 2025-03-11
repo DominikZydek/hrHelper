@@ -1,0 +1,13 @@
+type Role {
+    id: ID!
+    name: String!
+    display_name: String!
+    description: String
+    permissions: [Permission!]!
+    users: [User!]!
+}
+
+extend type Query {
+    roles: [Role!]! @all
+    role(id: ID! @eq): Role @find
+}

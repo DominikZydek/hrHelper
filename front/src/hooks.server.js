@@ -75,7 +75,12 @@ export const handle = async ({ event, resolve }) => {
               postal_code,
               city
             },
-            role,
+            roles {
+                id,
+                name,
+                display_name,
+                description
+            },
             job_title,
             supervisor {
               id,
