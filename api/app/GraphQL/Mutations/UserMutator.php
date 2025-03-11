@@ -4,12 +4,25 @@ namespace App\GraphQL\Mutations;
 
 use App\Models\Address;
 use App\Models\User;
+use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserMutator
 {
     public function updateUser($root, array $args)
     {
+        $currentUser = Auth::user();
+
+        if ($currentUser->id != $args['id'] && !$currentUser->hasPermission('edit_users')) {
+            throw new Error('You do not have permission to edit users.');
+        } else if (!$currentUser->hasPermission('edit_own_profile')) {
+            throw new Error('You do not have permission to edit your own profile.');
+        }
+
+        // TODO: check permissions for managing groups, roles
+
+
         try {
             DB::beginTransaction();
 
@@ -23,7 +36,7 @@ class UserMutator
                 'email' => $args['email'],
                 'birth_date' => $args['birth_date'],
                 'phone_number' => $args['phone_number'],
-                'role' => $args['role'],
+                'role' => $args['role'], // TODO: adjust to new roles/permissions system
                 'job_title' => $args['job_title'],
                 'supervisor_id' => $args['supervisor'],
                 'type_of_employment' => $args['type_of_employment'],

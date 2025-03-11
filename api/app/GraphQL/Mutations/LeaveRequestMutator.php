@@ -10,6 +10,7 @@ use App\Models\LeaveRequest;
 use App\Models\LeaveRequestReplacement;
 use App\Models\LeaveType;
 use Carbon\Carbon;
+use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -17,10 +18,14 @@ class LeaveRequestMutator
 {
     public function createLeaveRequest($root, array $args)
     {
+        $user = Auth::user();
+
+        if (!$user->hasPermission('create_leave_requests')) {
+            throw new Error('You can not create leave requests.');
+        }
+
         try {
             DB::beginTransaction();
-
-            $user = Auth::user();
 
             // get info about chosen leave type
             $leaveType = LeaveType::findOrFail($args['leave_type']);

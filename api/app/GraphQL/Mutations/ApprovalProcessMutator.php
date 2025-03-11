@@ -3,11 +3,19 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\ApprovalProcess;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use GraphQL\Error\Error;
 
 class ApprovalProcessMutator
 {
     public function updateApprovalProcess($root, array $args) {
+
+        $user = Auth::user();
+        if (!$user->hasPermission('manage_approval_process')) {
+            throw new Error('You can not update approval process.');
+        }
+
         try {
             DB::beginTransaction();
 
