@@ -27,6 +27,8 @@ type User {
     health_check_expired_by: Date!
     health_and_safety_training_expired_by: Date!
     leave_requests: [LeaveRequest!]!
+
+    hasPermission(name: String!): Boolean! @method
 }
 
 enum Sex {
