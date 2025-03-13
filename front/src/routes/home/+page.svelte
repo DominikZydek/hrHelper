@@ -100,8 +100,8 @@
         </div>
     </div>
 
-    <!-- MAIN SECTION --> <!-- TODO: change grid to flex -->
-    <div class="mt-5 grid grid-cols-6 grid-rows-3 gap-5">
+    <!-- MAIN SECTION -->
+    <div class="mt-5 grid grid-cols-6 grid-auto-rows gap-5">
         {#if mode === 'user'}
             <div class="rounded border shadow col-span-2 p-4">
                 <div class="flex gap-2 items-center text-main-app mb-2">
