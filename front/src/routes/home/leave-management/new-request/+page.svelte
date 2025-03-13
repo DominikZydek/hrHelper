@@ -8,6 +8,8 @@
 	import DayGrid from '@event-calendar/day-grid';
 	import Interaction from '@event-calendar/interaction';
 	import { getContext, onMount } from 'svelte';
+	import { MeterChart } from '@carbon/charts-svelte';
+	import { getUserPTOInfo } from '../../../../utils/getUserPTOInfo.js';
 
 	export let data;
 	let { handleEventClick } = getContext('leave-management');
@@ -26,20 +28,6 @@
 	];
 
 	let companyHolidays = data.me.organization.holidays;
-
-	const totalPaidTimeOffDays = data.me.paid_time_off_days * data.me.working_time;
-
-	const usedPaidTimeOffDays = totalPaidTimeOffDays - data.me.available_pto;
-
-	const pendingPaidTimeOffDays = data.me.pending_pto;
-
-	const availablePaidTimeOffDays = data.me.available_pto;
-
-	let paidTimeOffIndicator = null;
-	let showIndicatorDropdown = false;
-	const toggleIndicatorDropdown = () => {
-		showIndicatorDropdown = !showIndicatorDropdown;
-	};
 
 	const mapLeaveRequestsToCalendarEvents = (requests) => {
 		return requests.map((request) => ({
@@ -204,40 +192,53 @@
 	$: showReplacementSelect = selectedLeaveType?.requires_replacement === true;
 
 	let saveAsDraft = false;
+
+	let { usedPtoDays, pendingPtoDays, availablePtoDays, ptoDays } = getUserPTOInfo(data.user);
+
+	let chartData = [
+		{
+			group: 'Wykorzystane',
+			value: usedPtoDays
+		},
+		{
+			group: 'W trakcie rozpatrywania',
+			value: pendingPtoDays
+		},
+		{
+			group: 'Dostępne',
+			value: availablePtoDays
+		}
+	];
+
+	let chartOptions = {
+		height: '150px',
+		meter: {
+			proportional: {
+				total: ptoDays,
+				unit: 'dni'
+			}
+		},
+		color: {
+			pairing: {
+				option: 2
+			}
+		},
+		toolbar: false,
+		getFillColor: (group) => {
+			if (group === 'Wykorzystane') return '#DC2626';
+			if (group === 'W trakcie rozpatrywania') return '#EAB308';
+			if (group === 'Dostępne') return '#059669';
+		}
+	};
 </script>
 
 <div class="flex-1 p-4">
 	<div class="flex items-center gap-8 mb-4">
 		<p class="font-semibold text-2xl text-main-app">Nowy wniosek</p>
 	</div>
-	<div class="w-3/4 max-w-5xl m-auto">
+	<div class="w-3/4 max-w-5xl m-auto flex flex-col gap-5">
 		<Calendar {plugins} {options} />
-		<div
-			bind:this={paidTimeOffIndicator}
-			on:pointerenter={() => toggleIndicatorDropdown()}
-			on:pointerleave={() => toggleIndicatorDropdown()}
-			class="bg-accent-green h-8 mt-8 flex"
-		>
-			<div
-				class="bg-accent-red h-full"
-				style="width: {(usedPaidTimeOffDays / totalPaidTimeOffDays) * 100}%"
-			></div>
-			<div
-				class="bg-accent-yellow h-full"
-				style="width: {(pendingPaidTimeOffDays / totalPaidTimeOffDays) * 100}%"
-			></div>
-		</div>
-
-		{#if showIndicatorDropdown}
-			<Dropdown toggleDropdown={toggleIndicatorDropdown} triggerElement={paidTimeOffIndicator}>
-				<div class="p-4 font-semibold">
-					<p>Łączny wymiar urlopu rocznego: {totalPaidTimeOffDays} dni</p>
-					<p>Wykorzystano: {usedPaidTimeOffDays} dni</p>
-					<p>W trakcie rozpatrywania: {pendingPaidTimeOffDays} dni</p>
-					<p>Dostępne dni urlopowe: {availablePaidTimeOffDays} dni</p>
-				</div>
-			</Dropdown>
-		{/if}
+		<MeterChart data={chartData} options={chartOptions} />
 	</div>
 </div>
 

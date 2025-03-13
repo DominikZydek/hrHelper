@@ -108,9 +108,13 @@ export const handle = async ({ event, resolve }) => {
                     }
                 }
             },
-            type_of_employment,
-            paid_time_off_days,
-            working_time,
+            type_of_employment
+            paid_time_off_days
+            available_pto
+            pending_pto
+            transferred_pto
+            transferred_pto_expired_by
+            working_time
             employed_from,
             employed_to,
             health_check_expired_by,
