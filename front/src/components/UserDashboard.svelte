@@ -10,13 +10,11 @@
 	import Popup from '../components/Popup.svelte';
 	import LeaveRequestDetails from '../components/LeaveRequestDetails.svelte';
 	import LeaveRequestList from '../components/LeaveRequestList.svelte';
+	import { getUserPTOInfo } from '../utils/getUserPTOInfo.js';
 
 	export let data;
 
-	const ptoDays = data.me.paid_time_off_days * data.me.working_time;
-	const pendingPtoDays = data.me.pending_pto * data.me.working_time;
-	const availablePtoDays = data.me.available_pto * data.me.working_time - pendingPtoDays;
-	const usedPtoDays = ptoDays - availablePtoDays - pendingPtoDays;
+	let { usedPtoDays, pendingPtoDays, availablePtoDays } = getUserPTOInfo(data.me);
 
 	let pieData = [
 		{
