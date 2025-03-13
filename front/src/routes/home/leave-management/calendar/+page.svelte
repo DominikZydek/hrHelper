@@ -27,7 +27,7 @@
 	];
 
 	let chartOptions = {
-		height: '150px',
+		height: '100px',
 		meter: {
 			proportional: {
 				total: ptoDays,
