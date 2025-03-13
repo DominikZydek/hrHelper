@@ -7,10 +7,11 @@
     import NewspaperVariantMultiple from 'svelte-material-icons/NewspaperVariantMultipleOutline.svelte'
     import CalendarClock from 'svelte-material-icons/CalendarClock.svelte'
     import {PieChart} from "@carbon/charts-svelte";
-    import {onMount} from "svelte";
+    import {getContext, onMount} from "svelte";
     import Eye from 'svelte-material-icons/Eye.svelte'
     import Popup from "../../components/Popup.svelte";
     import LeaveRequestDetails from "../../components/LeaveRequestDetails.svelte";
+    import LeaveRequestList from "../../components/LeaveRequestList.svelte";
 
     export let data
 
@@ -65,10 +66,15 @@
         .filter(holiday => new Date(holiday.date) >= new Date())
         .sort((a, b) => new Date(a.date) - new Date(b.date))[0]
 
-    let showLeaveDetails = false
-    const toggleLeaveDetails = () => {
-        showLeaveDetails = !showLeaveDetails
+    let selectedLeaveRequest = null
+    const toggleLeaveDetails = (leaveRequest) => {
+        selectedLeaveRequest ? selectedLeaveRequest = null : selectedLeaveRequest = leaveRequest
     }
+
+    const onLeaveRequestClick = (leaveRequest) => {
+        selectedLeaveRequest = leaveRequest
+    }
+
 </script>
 
 <div class="p-8">
@@ -94,7 +100,7 @@
         </div>
     </div>
 
-    <!-- MAIN SECTION -->
+    <!-- MAIN SECTION --> <!-- TODO: change grid to flex -->
     <div class="mt-5 grid grid-cols-6 grid-rows-3 gap-5">
         {#if mode === 'user'}
             <div class="rounded border shadow col-span-2 p-4">
@@ -178,15 +184,10 @@
                                     {new Date(closestApprovedLeave.date_from).toLocaleDateString()} -
                                     {new Date(closestApprovedLeave.date_to).toLocaleDateString()} ({closestApprovedLeave.days_count} dni)
                                 </p>
-                                <button on:click={() => toggleLeaveDetails()} class="flex gap-1 items-center text-main-gray">
+                                <button on:click={() => toggleLeaveDetails(closestApprovedLeave)} class="flex gap-1 items-center text-main-gray">
                                     <Eye />
                                     Pokaż szczegóły
                                 </button>
-                                {#if showLeaveDetails}
-                                    <Popup togglePopup={toggleLeaveDetails} title="Szczegóły wniosku">
-                                        <LeaveRequestDetails leaveRequest={closestApprovedLeave} user={closestApprovedLeave.user || data.user} />
-                                    </Popup>
-                                {/if}
                             </div>
                         </div>
                     {/if}
@@ -205,6 +206,9 @@
                     <CalendarMultiselect size="1.5rem"/>
                     <p class="text-xl font-semibold">Moje wnioski urlopowe</p>
                 </div>
+                <div>
+                    <LeaveRequestList leaveRequests={data.me.leave_requests} onClick={onLeaveRequestClick} />
+                </div>
             </div>
             <div class="rounded border shadow col-span-6 p-4">
                 <div class="flex gap-2 items-center text-main-app mb-2">
@@ -212,6 +216,12 @@
                     <p class="text-xl font-semibold">Aktualności</p>
                 </div>
             </div>
+
+            {#if selectedLeaveRequest}
+                <Popup togglePopup={toggleLeaveDetails} title="Szczegóły wniosku">
+                    <LeaveRequestDetails leaveRequest={selectedLeaveRequest} user={selectedLeaveRequest.user || data.user} />
+                </Popup>
+            {/if}
         {/if}
 
         {#if mode === 'supervisor'}
