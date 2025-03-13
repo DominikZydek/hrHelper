@@ -10,6 +10,7 @@
 		"lint": "eslint ."
 	},
 	"devDependencies": {
+		"@carbon/charts-svelte": "^1.22.18",
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
 		"@event-calendar/core": "^3.10.0",
