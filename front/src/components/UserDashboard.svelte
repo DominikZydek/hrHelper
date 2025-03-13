@@ -71,6 +71,7 @@
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<AccountCircle size="1.5rem" />
 		<p class="text-xl font-semibold">Moje dane</p>
+		<!-- TODO: maybe calendar?? -->
 	</div>
 	<table class="text-left w-full">
 		<tbody>
