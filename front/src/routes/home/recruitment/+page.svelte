@@ -1,3 +1,1 @@
-<div>
-    Recruitment
-</div>
+<div>Recruitment</div>

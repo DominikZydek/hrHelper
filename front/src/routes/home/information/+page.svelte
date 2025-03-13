@@ -1,3 +1,1 @@
-<div>
-    Information
-</div>
+<div>Information</div>

@@ -1,7 +1,7 @@
-import {API_URL} from "$env/static/private";
+import { API_URL } from '$env/static/private';
 
-export const load = async({ request, fetch }) => {
-    const query = `
+export const load = async ({ request, fetch }) => {
+	const query = `
         {
           me {
             id,
@@ -210,16 +210,16 @@ export const load = async({ request, fetch }) => {
                     employed_from
                   }
           }
-    `
+    `;
 
-    const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ query })
-    }).then(res => res.json())
+	const res = await fetch(API_URL, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({ query })
+	}).then((res) => res.json());
 
-    return res.data
-}
+	return res.data;
+};

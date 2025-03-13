@@ -1,3 +1,1 @@
-<div>
-    Employee documents
-</div>
+<div>Employee documents</div>

@@ -1,12 +1,12 @@
-import { API_URL } from '$env/static/private'
-import {date, z} from 'zod'
-import {superValidate} from "sveltekit-superforms";
-import {zod} from "sveltekit-superforms/adapters";
-import { fail } from "@sveltejs/kit";
+import { API_URL } from '$env/static/private';
+import { date, z } from 'zod';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { fail } from '@sveltejs/kit';
 
-export const load = async({ request, fetch }) => {
-    // TODO: make it retrieve appropriate data (belonging to the same organization as locals.user),
-    const query = `
+export const load = async ({ request, fetch }) => {
+	// TODO: make it retrieve appropriate data (belonging to the same organization as locals.user),
+	const query = `
         {
           users {
             id,
@@ -71,80 +71,103 @@ export const load = async({ request, fetch }) => {
             icon_name
           }
         }
-    `
+    `;
 
-    const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ query })
-    }).then(res => res.json())
+	const res = await fetch(API_URL, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({ query })
+	}).then((res) => res.json());
 
-    return res.data
-}
+	return res.data;
+};
 
 const userSchema = z.object({
-    id: z.number().int(),
-    first_name: z.string(),
-    last_name: z.string(),
-    sex: z.string(),
-    email: z.string().email(),
-    birth_date: z.date().transform(date => date.toISOString().split('T')[0]),
-    phone_number: z.string(),
-    street_name: z.string(),
-    street_number: z.string(),
-    postal_code: z.string().regex(/^\d{2}-\d{3}$/),
-    city: z.string(),
-    role: z.string(), // TODO: adjust for new roles/permissions system
-    job_title: z.string(),
-    groups: z.preprocess(
-        (val) => {
-            // parse to array
-            if (Array.isArray(val) && val.length === 1 && typeof val[0] === 'string') {
-                return JSON.parse(val[0])
-            }
-            return val;
-        },
-        z.array(z.string())
-    ),
-    supervisor: z.number().int().nullable(),
-    type_of_employment: z.string(),
-    paid_time_off_days: z.number().int(),
-    working_time: z.number(),
-    employed_from: z.date().transform(date => date.toISOString().split('T')[0]),
-    employed_to: z.date().transform(date => date.toISOString().split('T')[0]).nullable(),
-    health_check_expired_by: z.date().transform(date => date.toISOString().split('T')[0]),
-    health_and_safety_training_expired_by: z.date().transform(date => date.toISOString().split('T')[0]),
-})
+	id: z.number().int(),
+	first_name: z.string(),
+	last_name: z.string(),
+	sex: z.string(),
+	email: z.string().email(),
+	birth_date: z.date().transform((date) => date.toISOString().split('T')[0]),
+	phone_number: z.string(),
+	street_name: z.string(),
+	street_number: z.string(),
+	postal_code: z.string().regex(/^\d{2}-\d{3}$/),
+	city: z.string(),
+	role: z.string(), // TODO: adjust for new roles/permissions system
+	job_title: z.string(),
+	groups: z.preprocess((val) => {
+		// parse to array
+		if (Array.isArray(val) && val.length === 1 && typeof val[0] === 'string') {
+			return JSON.parse(val[0]);
+		}
+		return val;
+	}, z.array(z.string())),
+	supervisor: z.number().int().nullable(),
+	type_of_employment: z.string(),
+	paid_time_off_days: z.number().int(),
+	working_time: z.number(),
+	employed_from: z.date().transform((date) => date.toISOString().split('T')[0]),
+	employed_to: z
+		.date()
+		.transform((date) => date.toISOString().split('T')[0])
+		.nullable(),
+	health_check_expired_by: z.date().transform((date) => date.toISOString().split('T')[0]),
+	health_and_safety_training_expired_by: z
+		.date()
+		.transform((date) => date.toISOString().split('T')[0])
+});
 
 const approvalProcessSchema = z.object({
-    id: z.number().int(),
-    steps: z.array(z.object({
-        order: z.number().int(),
-        approver_id: z.number().int()
-    }))
-})
-
-
+	id: z.number().int(),
+	steps: z.array(
+		z.object({
+			order: z.number().int(),
+			approver_id: z.number().int()
+		})
+	)
+});
 
 export const actions = {
-    updateUser: async ({ request, fetch }) => {
-        const form = await superValidate(request, zod(userSchema))
+	updateUser: async ({ request, fetch }) => {
+		const form = await superValidate(request, zod(userSchema));
 
-        console.log(form)
+		console.log(form);
 
-        if (!form.valid) {
-            return fail(400, { form })
-        }
+		if (!form.valid) {
+			return fail(400, { form });
+		}
 
-        // TODO: adjust for new roles/permissions system
-        let { id, first_name, last_name, sex, email, birth_date, phone_number, street_name, street_number, postal_code,
-            city, role, job_title, groups, supervisor, type_of_employment, paid_time_off_days, working_time, employed_from, employed_to,
-            health_check_expired_by, health_and_safety_training_expired_by } = form.data
+		// TODO: adjust for new roles/permissions system
+		let {
+			id,
+			first_name,
+			last_name,
+			sex,
+			email,
+			birth_date,
+			phone_number,
+			street_name,
+			street_number,
+			postal_code,
+			city,
+			role,
+			job_title,
+			groups,
+			supervisor,
+			type_of_employment,
+			paid_time_off_days,
+			working_time,
+			employed_from,
+			employed_to,
+			health_check_expired_by,
+			health_and_safety_training_expired_by
+		} = form.data;
 
-        const query = `
+		const query = `
                 mutation UpdateUser($id: ID!, $first_name: String!, $last_name: String!, $sex: Sex!, 
                     $email: String!, $birth_date: Date!, $phone_number: String!, $street_name: String!, 
                     $street_number: String!, $postal_code: String!, $city: String!, $role: Role!,
@@ -177,41 +200,58 @@ export const actions = {
                         ) {
                             id
                         }
-                    }`
+                    }`;
 
-        const variables = {
-            id, first_name, last_name, sex, email, birth_date, phone_number, street_name,
-            street_number, postal_code, city, role, job_title, groups, supervisor, type_of_employment,
-            paid_time_off_days, working_time, employed_from, employed_to,
-            health_check_expired_by, health_and_safety_training_expired_by
-        }
+		const variables = {
+			id,
+			first_name,
+			last_name,
+			sex,
+			email,
+			birth_date,
+			phone_number,
+			street_name,
+			street_number,
+			postal_code,
+			city,
+			role,
+			job_title,
+			groups,
+			supervisor,
+			type_of_employment,
+			paid_time_off_days,
+			working_time,
+			employed_from,
+			employed_to,
+			health_check_expired_by,
+			health_and_safety_training_expired_by
+		};
 
-        const res = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({ query, variables })
-        }).then(res => res.json())
+		const res = await fetch(API_URL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify({ query, variables })
+		}).then((res) => res.json());
 
-        console.log(res)
+		console.log(res);
 
-        return { form }
+		return { form };
+	},
+	updateApprovalProcess: async ({ request, fetch }) => {
+		const form = await superValidate(request, zod(approvalProcessSchema));
 
-    },
-    updateApprovalProcess: async ({ request, fetch }) => {
-        const form = await superValidate(request, zod(approvalProcessSchema))
+		console.dir(form, { depth: null });
 
-        console.dir(form, {depth: null})
+		if (!form.valid) {
+			return fail(400, { form });
+		}
 
-        if (!form.valid) {
-            return fail(400, { form })
-        }
+		let { id, steps } = form.data;
 
-        let { id, steps } = form.data
-
-        const query = `
+		const query = `
         mutation UpdateApprovalProcess($id: ID!, $steps: [ApprovalStepInput!]!) {
             updateApprovalProcess(
                 id: $id
@@ -219,21 +259,21 @@ export const actions = {
             ) {
                 id
             }
-        }`
+        }`;
 
-        const variables = { id, steps }
+		const variables = { id, steps };
 
-        const res = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({ query, variables })
-        }).then(res => res.json())
+		const res = await fetch(API_URL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify({ query, variables })
+		}).then((res) => res.json());
 
-        console.log(res)
+		console.log(res);
 
-        return { form }
-    }
-}
+		return { form };
+	}
+};
