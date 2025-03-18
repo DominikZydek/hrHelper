@@ -8,8 +8,9 @@
 	import ApprovalProcess from './ApprovalProcess.svelte';
 	import MultiSelect from './MultiSelect.svelte';
 	import ApprovalProcessEditMode from './ApprovalProcessEditMode.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import FileDocumentPlus from 'svelte-material-icons/FileDocumentPlus.svelte';
+	import { createWorker } from 'tesseract.js';
 
 	export let user;
 	export let toggleDrawer;
@@ -21,16 +22,58 @@
 	let newUserGroups = [];
 
 	let chosenScan = null;
+	let recognizedText = '';
+	let isProcessingOcr = false;
+	let progress = 0;
+	let worker = null;
+	let scanPreviewSrc = '';
+
+	onMount(async () => {
+		// if no user is sent, let's create a new one
+		if (!user) {
+			toggleCreateMode();
+		}
+	});
 
 	let showFile;
 	const toggleShowFile = () => {
 		showFile = !showFile;
 	};
 
+	async function processOcr(imageSrc) {
+		worker = await createWorker('pol');
+
+		if (!worker) {
+			console.error('Tesseract worker not initialized');
+			return;
+		}
+
+		try {
+			isProcessingOcr = true;
+			progress = 0;
+
+			console.log('Starting OCR processing...');
+			const { data } = await worker.recognize(imageSrc);
+			recognizedText = data.text;
+			console.log('OCR completed:', recognizedText);
+
+			// TODO: create a function to look for and fill the data
+		} catch (error) {
+			console.error('Error during OCR processing:', error);
+		} finally {
+			isProcessingOcr = false;
+		}
+
+		await worker.terminate();
+	}
+
 	const handleFileSelect = async () => {
 		if (chosenScan && chosenScan.files[0]) {
-			toggleShowFile();
 			try {
+				scanPreviewSrc = await getFileSrc(chosenScan.files[0]);
+				toggleShowFile();
+
+				await processOcr(scanPreviewSrc);
 			} catch (error) {
 				console.error('Error loading file:', error);
 			}
@@ -62,13 +105,6 @@
 	const toggleCreateMode = () => {
 		showCreateMode = !showCreateMode;
 	};
-
-	onMount(() => {
-		// if no user is sent, let's create a new one
-		if (!user) {
-			toggleCreateMode();
-		}
-	});
 
 	let showPopup = false;
 	const togglePopup = () => {
@@ -135,13 +171,14 @@
 				name="choose_scan"
 				id="choose_scan"
 				type="file"
+				accept="image/*,.pdf"
 				on:change={handleFileSelect}
 			/>
 		{/if}
-		{#if showFile && chosenScan?.files[0]}
-			{#await getFileSrc(chosenScan.files[0]) then src}
-				<!-- TODO: here {src} is available as a path to the uploaded img -->
-			{/await}
+		{#if showFile && scanPreviewSrc}
+			<Popup title="Podgląd skanu" togglePopup={toggleShowFile}>
+				<img src={scanPreviewSrc} alt="Skan dokumentu" />
+			</Popup>
 		{/if}
 	</svelte:fragment>
 
