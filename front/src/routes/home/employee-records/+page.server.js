@@ -286,5 +286,105 @@ export const actions = {
 		console.log(res);
 
 		return { form };
+	},
+	createUser: async ({ request, fetch }) => {
+		const form = await superValidate(request, zod(userSchema));
+
+		console.dir(form, { depth: null });
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		// TODO: send data for approval process creation
+		let {
+			first_name,
+			last_name,
+			sex,
+			email,
+			birth_date,
+			phone_number,
+			street_name,
+			street_number,
+			postal_code,
+			city,
+			roles,
+			job_title,
+			groups,
+			supervisor,
+			type_of_employment,
+			paid_time_off_days,
+			working_time,
+			employed_from,
+			employed_to,
+			health_check_expired_by,
+			health_and_safety_training_expired_by
+		} = form.data;
+
+		const query = `
+				mutation CreateUser($first_name: String!, $last_name: String!, $sex: Sex!, $email: String!, $birth_date: Date!, $phone_number: String!, $street_name: String!, $street_number: String!, $postal_code: String!, $city: String!, $roles: [String]!, $job_title: String!, $groups: [String]!, $supervisor: ID, $type_of_employment: TypeOfEmployment!, $paid_time_off_days: Int!, $working_time: Float!, $employed_from: Date!, $employed_to: Date, $health_check_expired_by: Date!, $health_and_safety_training_expired_by: Date!) {
+					createUser(
+						first_name: $first_name,
+						last_name: $last_name,
+						sex: $sex,
+						email: $email,
+						birth_date: $birth_date,
+						phone_number: $phone_number,
+						street_name: $street_name,
+						street_number: $street_number,
+						postal_code: $postal_code,
+						city: $city,
+						roles: $roles,
+						job_title: $job_title,
+						groups: $groups,
+						supervisor: $supervisor,
+						type_of_employment: $type_of_employment,
+						paid_time_off_days: $paid_time_off_days,
+						working_time: $working_time,
+						employed_from: $employed_from,
+						employed_to: $employed_to,
+						health_check_expired_by: $health_check_expired_by,
+						health_and_safety_training_expired_by: $health_and_safety_training_expired_by
+					) {
+						id
+					}
+				}`;
+
+		const variables = {
+			first_name,
+			last_name,
+			sex,
+			email,
+			birth_date,
+			phone_number,
+			street_name,
+			street_number,
+			postal_code,
+			city,
+			roles,
+			job_title,
+			groups,
+			supervisor,
+			type_of_employment,
+			paid_time_off_days,
+			working_time,
+			employed_from,
+			employed_to,
+			health_check_expired_by,
+			health_and_safety_training_expired_by
+		};
+
+		const res = await fetch(API_URL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify({ query, variables })
+		}).then((res) => res.json());
+
+		console.log(res);
+
+		return { form };
 	}
 };

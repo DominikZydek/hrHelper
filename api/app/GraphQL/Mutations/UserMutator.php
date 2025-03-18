@@ -7,6 +7,7 @@ use App\Models\User;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserMutator
 {
@@ -37,12 +38,12 @@ class UserMutator
                 'birth_date' => $args['birth_date'],
                 'phone_number' => $args['phone_number'],
                 'job_title' => $args['job_title'],
-                'supervisor_id' => $args['supervisor'],
+                'supervisor_id' => $args['supervisor'] ?? null,
                 'type_of_employment' => $args['type_of_employment'],
                 'paid_time_off_days' => $args['paid_time_off_days'],
                 'working_time' => $args['working_time'],
                 'employed_from' => $args['employed_from'],
-                'employed_to' => $args['employed_to'],
+                'employed_to' => $args['employed_to'] ?? null,
                 'health_check_expired_by' => $args['health_check_expired_by'],
                 'health_and_safety_training_expired_by' => $args['health_and_safety_training_expired_by']
             ]);
@@ -61,9 +62,14 @@ class UserMutator
                 $user->groups()->sync($args['groups']);
             }
 
-            if (isset($args['roles'])) {
-                $user->roles()->sync($args['roles']);
+            $roles = $args['roles'] ?? [];
+
+            // add employee role regardless
+            if (!in_array(4, $roles)) {
+                $roles[] = 4;
             }
+
+            $user->roles()->sync($roles);
 
             DB::commit();
 
@@ -74,6 +80,75 @@ class UserMutator
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception('Failed to update user: ' . $e->getMessage());
+        }
+    }
+
+    public function createUser($root, array $args)
+    {
+        $currentUser = Auth::user();
+
+        if (!$currentUser->hasPermission('create_users')) {
+            throw new Error('You do not have permission to create users.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $address = Address::create([
+                'street_name' => $args['street_name'],
+                'street_number' => $args['street_number'],
+                'postal_code' => $args['postal_code'],
+                'city' => $args['city']
+            ]);
+
+            // TODO: account activation token should be generated here and mailed to the user after
+
+            $user = User::create([
+                'organization_id' => $currentUser->organization_id,
+                'password' => 'INACTIVE ACCOUNT',
+                'first_name' => $args['first_name'],
+                'last_name' => $args['last_name'],
+                'sex' => $args['sex'],
+                'email' => $args['email'],
+                'birth_date' => $args['birth_date'],
+                'phone_number' => $args['phone_number'],
+                'address_id' => $address->id,
+                'job_title' => $args['job_title'],
+                'supervisor_id' => $args['supervisor'] ?? null,
+                'approval_process_id' => 1, // TODO: this is temporary
+                'type_of_employment' => $args['type_of_employment'],
+                'paid_time_off_days' => $args['paid_time_off_days'],
+                'working_time' => $args['working_time'],
+                'employed_from' => $args['employed_from'],
+                'employed_to' => $args['employed_to'] ?? null,
+                'available_pto' => $args['paid_time_off_days'] * $args['working_time'],
+                'pending_pto' => 0,
+                'transferred_pto' => 0, // TODO: this should be sent from the frontend
+                'transferred_pto_expired_by' => '2025-09-30', // TODO: this should be calculated
+                'health_check_expired_by' => $args['health_check_expired_by'],
+                'health_and_safety_training_expired_by' => $args['health_and_safety_training_expired_by']
+            ]);
+
+            if (isset($args['groups'])) {
+                $user->groups()->sync($args['groups']);
+            }
+
+            $roles = $args['roles'] ?? [];
+
+            // add employee role regardless
+            if (!in_array(4, $roles)) {
+                $roles[] = 4;
+            }
+
+            $user->roles()->sync($roles);
+
+            DB::commit();
+
+            return $user;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Failed to create user: ' . $e->getMessage());
         }
     }
 }
