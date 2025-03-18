@@ -37,11 +37,11 @@
 
 <div class="relative" use:clickOutside on:clickoutside={() => (isOpen = false)}>
 	<div
-		class="flex flex-wrap gap-2 min-h-[2.5rem] w-full border p-2 cursor-pointer"
+		class="flex flex-wrap gap-2 min-h-[2.5rem] w-full border border-main-gray p-2 cursor-pointer"
 		on:click={toggleDropdown}
 	>
 		{#if selectedOptions.length === 0}
-			<span class="text-gray-400">{placeholder}</span>
+			<span class="text-main-gray">{placeholder}</span>
 		{:else}
 			{#each selectedOptions as option}
 				<div class="flex items-center gap-1">

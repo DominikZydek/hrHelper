@@ -1,5 +1,6 @@
 <script>
 	import Close from 'svelte-material-icons/Close.svelte';
+	import { clickOutside } from '../utils/clickOutside.js';
 
 	export let toggleDrawer;
 	export let title = '';

@@ -8,6 +8,7 @@
 	import ApprovalProcess from './ApprovalProcess.svelte';
 	import MultiSelect from './MultiSelect.svelte';
 	import ApprovalProcessEditMode from './ApprovalProcessEditMode.svelte';
+	import { onMount } from 'svelte';
 
 	export let user;
 	export let toggleDrawer;
@@ -15,10 +16,25 @@
 	export let groups;
 	export let roles;
 
+	let newUserRoles = [];
+	let newUserGroups = [];
+
 	let showEditMode = false;
 	const toggleEditMode = () => {
 		showEditMode = !showEditMode;
 	};
+
+	let showCreateMode = false;
+	const toggleCreateMode = () => {
+		showCreateMode = !showCreateMode;
+	};
+
+	onMount(() => {
+		// if no user is sent, let's create a new one
+		if (!user) {
+			toggleCreateMode();
+		}
+	});
 
 	let showPopup = false;
 	const togglePopup = () => {
@@ -28,7 +44,11 @@
 	// adjusts width of an input element to its value dynamically
 	const adjustWidth = (node) => {
 		const setWidth = () => {
-			node.style.width = node.value.length + 0.5 + 'ch';
+			if (node.value.length !== 0) {
+				node.style.width = node.value.length + 2 + 'ch';
+			} else if (node.placeholder.length !== 0) {
+				node.style.width = node.placeholder.length + 2 + 'ch';
+			}
 		};
 
 		setWidth();
@@ -42,9 +62,12 @@
 	};
 </script>
 
-<Drawer {toggleDrawer} title={showEditMode ? '' : `${user?.first_name} ${user?.last_name}`}>
+<Drawer
+	{toggleDrawer}
+	title={showEditMode || showCreateMode ? '' : `${user?.first_name} ${user?.last_name}`}
+>
 	<svelte:fragment slot="header-left">
-		{#if showEditMode}
+		{#if showEditMode || showCreateMode}
 			<button
 				type="submit"
 				form="update_user"
@@ -65,7 +88,7 @@
 		<img class="h-8 w-8" src="/favicon.png" alt="" />
 	</svelte:fragment>
 
-	{#if !showEditMode}
+	{#if !showEditMode && !showCreateMode}
 		<div class="flex flex-col gap-5">
 			<div>
 				<p class="font-semibold text-xl text-main-app">Dane pracownika</p>
@@ -73,45 +96,45 @@
 					<tbody>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">IMIĘ</th>
-							<td class="w-1/2 text-main-black font-semibold pl-5">{user.first_name}</td>
+							<td class="w-1/2 text-main-black font-semibold pl-5">{user?.first_name}</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">NAZWISKO</th>
-							<td class="w-1/2 text-main-black font-semibold pl-5">{user.last_name}</td>
+							<td class="w-1/2 text-main-black font-semibold pl-5">{user?.last_name}</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">PŁEĆ</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{#if user.sex === 'M'}
+								{#if user?.sex === 'M'}
 									Mężczyzna
-								{:else if user.sex === 'F'}
+								{:else if user?.sex === 'F'}
 									Kobieta
-								{:else if user.sex === 'X'}
+								{:else if user?.sex === 'X'}
 									Inna
 								{/if}
 							</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">ADRES E-MAIL</th>
-							<td class="w-1/2 text-main-black font-semibold pl-5">{user.email}</td>
+							<td class="w-1/2 text-main-black font-semibold pl-5">{user?.email}</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">DATA URODZENIA</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{new Date(user.birth_date).toLocaleDateString()}
+								{new Date(user?.birth_date).toLocaleDateString()}
 							</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">NUMER TELEFONU</th>
-							<td class="w-1/2 text-main-black font-semibold pl-5">{user.phone_number}</td>
+							<td class="w-1/2 text-main-black font-semibold pl-5">{user?.phone_number}</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">ADRES ZAMIESZKANIA</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{user.address.street_name}
-								{user.address.street_number}
-								{user.address.postal_code}
-								{user.address.city}
+								{user?.address.street_name}
+								{user?.address.street_number}
+								{user?.address.postal_code}
+								{user?.address.city}
 							</td>
 						</tr>
 					</tbody>
@@ -122,10 +145,9 @@
 				<table class="text-left w-full">
 					<tbody>
 						<tr>
-							<!-- TODO: adjust for new roles/permission system -->
 							<th class="w-1/2 font-bold text-main-gray">ROLE</th>
 							<td class="w-1/2 text-main-black font-semibold flex gap-2 pl-5">
-								{#each user.roles as role}
+								{#each user?.roles as role}
 									<GroupBadge
 										group={{
 											icon_name: 'Account',
@@ -137,13 +159,13 @@
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">STANOWISKO</th>
-							<td class="w-1/2 text-main-black font-semibold pl-5">{user.job_title}</td>
+							<td class="w-1/2 text-main-black font-semibold pl-5">{user?.job_title}</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">PRZEŁOŻONY</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{#if user.supervisor}
-									{user.supervisor.first_name} {user.supervisor.last_name}
+								{#if user?.supervisor}
+									{user?.supervisor.first_name} {user?.supervisor.last_name}
 								{:else}
 									Brak
 								{/if}
@@ -152,7 +174,7 @@
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">ZESPOŁY</th>
 							<td class="w-1/2 text-main-black font-semibold flex gap-2 pl-5">
-								{#each user.groups as group}
+								{#each user?.groups as group}
 									<GroupBadge {group} />
 								{/each}
 							</td>
@@ -179,21 +201,21 @@
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">RODZAJ UMOWY</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{#if user.type_of_employment === 'UOP'}
+								{#if user?.type_of_employment === 'UOP'}
 									Umowa o pracę
-								{:else if user.type_of_employment === 'B2B'}
+								{:else if user?.type_of_employment === 'B2B'}
 									B2B
-								{/if} ({user.paid_time_off_days} dni)</td
+								{/if} <br />({user?.paid_time_off_days} dni urlopu)</td
 							>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">WYMIAR PRACY</th>
-							<td class="w-1/2 text-main-black font-semibold pl-5">{user.working_time} etatu</td>
+							<td class="w-1/2 text-main-black font-semibold pl-5">{user?.working_time} etatu</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">DATA ROZPOCZĘCIA UMOWY</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{new Date(user.employed_from).toLocaleDateString()}
+								{new Date(user?.employed_from).toLocaleDateString()}
 							</td>
 						</tr>
 					</tbody>
@@ -206,19 +228,19 @@
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">DATA ZAKOŃCZENIA UMOWY</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{user.employed_to ? new Date(user.employed_to).toLocaleDateString() : 'Brak'}
+								{user?.employed_to ? new Date(user?.employed_to).toLocaleDateString() : 'Brak'}
 							</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">DATA WAŻNOŚCI BADAŃ LEKARSKICH</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{new Date(user.health_check_expired_by).toLocaleDateString()}
+								{new Date(user?.health_check_expired_by).toLocaleDateString()}
 							</td>
 						</tr>
 						<tr>
 							<th class="w-1/2 font-bold text-main-gray">DATA WAŻNOŚCI SZKOLENIA BHP</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{new Date(user.health_and_safety_training_expired_by).toLocaleDateString()}
+								{new Date(user?.health_and_safety_training_expired_by).toLocaleDateString()}
 							</td>
 						</tr>
 					</tbody>
@@ -227,12 +249,18 @@
 		</div>
 		{#if showPopup}
 			<Popup {togglePopup} title="Proces akceptacji">
+				<!-- TODO: make it work in create mode -->
 				<ApprovalProcess {user} />
 			</Popup>
 		{/if}
 	{:else}
-		<form id="update_user" action="?/updateUser" method="POST" class="flex flex-col gap-5">
-			<input id="id" name="id" type="hidden" value={user.id} />
+		<form
+			id="update_user"
+			action={showCreateMode ? '?/createUser' : '?/updateUser'}
+			method="POST"
+			class="flex flex-col gap-5"
+		>
+			<input id="id" name="id" type="hidden" value={user?.id} />
 			<div>
 				<p class="font-semibold text-xl text-main-app">Dane pracownika</p>
 				<table class="text-left w-full">
@@ -243,11 +271,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="first_name"
 									id="first_name"
 									type="text"
-									value={user.first_name}
+									value={user?.first_name}
 								/>
 							</td>
 						</tr>
@@ -257,11 +285,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="last_name"
 									id="last_name"
 									type="text"
-									value={user.last_name}
+									value={user?.last_name}
 								/>
 							</td>
 						</tr>
@@ -270,10 +298,10 @@
 								<label for="sex">PŁEĆ</label>
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								<select class="w-full" name="sex" id="sex">
-									<option value="M" selected={user.sex === 'M'}>Mężczyzna</option>
-									<option value="F" selected={user.sex === 'F'}>Kobieta</option>
-									<option value="X" selected={user.sex === 'X'}>Inna</option>
+								<select class="w-full border border-main-gray px-1" name="sex" id="sex">
+									<option value="M" selected={user?.sex === 'M'}>Mężczyzna</option>
+									<option value="F" selected={user?.sex === 'F'}>Kobieta</option>
+									<option value="X" selected={user?.sex === 'X'}>Inna</option>
 								</select>
 							</td>
 						</tr>
@@ -282,7 +310,13 @@
 								<label for="email">ADRES E-MAIL</label>
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								<input class="w-full" name="email" id="email" type="email" value={user.email} />
+								<input
+									class="w-full border border-main-gray px-1"
+									name="email"
+									id="email"
+									type="email"
+									value={user?.email}
+								/>
 							</td>
 						</tr>
 						<tr>
@@ -291,11 +325,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="birth_date"
 									id="birth_date"
 									type="date"
-									value={user.birth_date}
+									value={user?.birth_date}
 								/>
 							</td>
 						</tr>
@@ -305,11 +339,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="phone_number"
 									id="phone_number"
 									type="text"
-									value={user.phone_number}
+									value={user?.phone_number}
 								/>
 							</td>
 						</tr>
@@ -319,36 +353,40 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class=""
+									class="border border-main-gray px-1"
 									name="street_name"
 									id="street_name"
 									type="text"
+									placeholder="Ulica"
 									use:adjustWidth
-									value={user.address.street_name}
+									value={user?.address.street_name}
 								/>
 								<input
-									class=""
+									class="border border-main-gray px-1"
 									name="street_number"
 									id="street_number"
 									type="text"
+									placeholder="Numer domu"
 									use:adjustWidth
-									value={user.address.street_number}
+									value={user?.address.street_number}
 								/>
 								<input
-									class=""
+									class="border border-main-gray px-1"
 									name="postal_code"
 									id="postal_code"
 									type="text"
+									placeholder="Kod pocztowy"
 									use:adjustWidth
-									value={user.address.postal_code}
+									value={user?.address.postal_code}
 								/>
 								<input
-									class=""
+									class="border border-main-gray px-1"
 									name="city"
 									id="city"
 									type="text"
+									placeholder="Miejscowość"
 									use:adjustWidth
-									value={user.address.city}
+									value={user?.address.city}
 								/>
 							</td>
 						</tr>
@@ -368,7 +406,9 @@
 									type="hidden"
 									id="roles"
 									name="roles"
-									value={JSON.stringify(user.roles.map((r) => r.id))}
+									value={showEditMode
+										? JSON.stringify(user?.roles.map((r) => r.id))
+										: JSON.stringify(newUserRoles.map((r) => r.id))}
 								/>
 								<MultiSelect
 									options={roles.map((role) => ({
@@ -376,12 +416,18 @@
 										name: role.display_name,
 										icon_name: 'Account'
 									}))}
-									selected={user.roles.map((r) => r.id)}
+									selected={showEditMode
+										? user?.roles.map((r) => r.id)
+										: newUserRoles.map((r) => r.id)}
 									name="roles"
 									id="roles"
 									placeholder="Wybierz role"
 									onChange={(values) => {
-										user.roles = roles.filter((r) => values.includes(r.id));
+										if (showEditMode) {
+											user.roles = roles.filter((r) => values.includes(r.id));
+										} else {
+											newUserRoles = roles.filter((r) => values.includes(r.id));
+										}
 									}}
 								/>
 							</td>
@@ -392,11 +438,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="job_title"
 									id="job_title"
 									type="text"
-									value={user.job_title}
+									value={user?.job_title}
 								/>
 							</td>
 						</tr>
@@ -405,21 +451,22 @@
 								<label for="supervisor">PRZEŁOŻONY</label>
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{#if user.supervisor}
-									<select class="w-full" name="supervisor" id="supervisor">
-										{#each allUsers as newSupervisor}
-											<option
-												value={newSupervisor.id}
-												selected={user.supervisor?.id === newSupervisor.id}
-											>
-												{newSupervisor.first_name}
-												{newSupervisor.last_name}
-											</option>
-										{/each}
-									</select>
-								{:else}
-									Brak
-								{/if}
+								<select
+									class="w-full border border-main-gray px-1"
+									name="supervisor"
+									id="supervisor"
+								>
+									<option value={null}> Brak przełożonego </option>
+									{#each allUsers as newSupervisor}
+										<option
+											value={newSupervisor.id}
+											selected={user?.supervisor?.id === newSupervisor.id}
+										>
+											{newSupervisor.first_name}
+											{newSupervisor.last_name}
+										</option>
+									{/each}
+								</select>
 							</td>
 						</tr>
 						<tr>
@@ -431,7 +478,9 @@
 									type="hidden"
 									id="groups"
 									name="groups"
-									value={JSON.stringify(user.groups.map((g) => g.id))}
+									value={showEditMode
+										? JSON.stringify(user?.groups.map((g) => g.id))
+										: JSON.stringify(newUserGroups.map((g) => g.id))}
 								/>
 								<MultiSelect
 									options={groups.map((group) => ({
@@ -439,12 +488,18 @@
 										name: group.name,
 										icon_name: group.icon_name
 									}))}
-									selected={user.groups.map((g) => g.id)}
+									selected={showEditMode
+										? user?.groups.map((g) => g.id)
+										: newUserGroups.map((g) => g.id)}
 									name="groups"
 									id="groups"
-									placeholder="Wybierz grupy"
+									placeholder="Wybierz zespoły"
 									onChange={(values) => {
-										user.groups = groups.filter((g) => values.includes(g.id));
+										if (showEditMode) {
+											user.groups = groups.filter((g) => values.includes(g.id));
+										} else {
+											newUserGroups = groups.filter((g) => values.includes(g.id));
+										}
 									}}
 								/>
 							</td>
@@ -476,20 +531,25 @@
 								<label for="type_of_employment">RODZAJ UMOWY</label>
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								<select class="" name="type_of_employment" id="type_of_employment">
-									<option value="UoP" selected={user.type_of_employment === 'UOP'}
+								<select
+									class="border border-main-gray px-1"
+									name="type_of_employment"
+									id="type_of_employment"
+								>
+									<option value="UoP" selected={user?.type_of_employment === 'UOP'}
 										>Umowa o pracę</option
 									>
-									<option value="B2B" selected={user.type_of_employment === 'B2B'}>B2B</option>
+									<option value="B2B" selected={user?.type_of_employment === 'B2B'}>B2B</option>
 								</select>
+								<br />
 								(<input
-									class=""
+									class="w-8 border border-main-gray px-1"
 									name="paid_time_off_days"
 									id="paid_time_off_days"
 									type="text"
 									use:adjustWidth
-									value={user.paid_time_off_days}
-								/> dni)
+									value={user?.paid_time_off_days}
+								/> dni urlopu)
 							</td>
 						</tr>
 						<tr>
@@ -498,12 +558,12 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class=""
+									class="w-8 border border-main-gray px-1"
 									name="working_time"
 									id="working_time"
 									type="text"
 									use:adjustWidth
-									value={user.working_time}
+									value={user?.working_time}
 								/> etatu
 							</td>
 						</tr>
@@ -513,11 +573,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="employed_from"
 									id="employed_from"
 									type="date"
-									value={user.employed_from}
+									value={user?.employed_from}
 								/>
 							</td>
 						</tr>
@@ -534,11 +594,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="employed_to"
 									id="employed_to"
 									type="date"
-									value={user.employed_to}
+									value={user?.employed_to}
 								/>
 							</td>
 						</tr>
@@ -548,11 +608,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="health_check_expired_by"
 									id="health_check_expired_by"
 									type="date"
-									value={user.health_check_expired_by}
+									value={user?.health_check_expired_by}
 								/>
 							</td>
 						</tr>
@@ -564,11 +624,11 @@
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
 								<input
-									class="w-full"
+									class="w-full border border-main-gray px-1"
 									name="health_and_safety_training_expired_by"
 									id="health_and_safety_training_expired_by"
 									type="date"
-									value={user.health_and_safety_training_expired_by}
+									value={user?.health_and_safety_training_expired_by}
 								/>
 							</td>
 						</tr>
