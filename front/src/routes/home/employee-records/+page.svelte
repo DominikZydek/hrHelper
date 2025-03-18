@@ -35,7 +35,13 @@
 	<EmployeeList users={displayedUsers} {onClick} />
 	{#if selectedUser}
 		{#if showDrawer}
-			<EmployeeDrawer {toggleDrawer} user={selectedUser} {allUsers} groups={data.groups} />
+			<EmployeeDrawer
+				{toggleDrawer}
+				user={selectedUser}
+				{allUsers}
+				groups={data.groups}
+				roles={data.roles}
+			/>
 		{/if}
 	{/if}
 </div>

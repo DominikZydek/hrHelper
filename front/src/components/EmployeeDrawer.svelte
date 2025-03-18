@@ -13,6 +13,7 @@
 	export let toggleDrawer;
 	export let allUsers;
 	export let groups;
+	export let roles;
 
 	let showEditMode = false;
 	const toggleEditMode = () => {
@@ -122,17 +123,16 @@
 					<tbody>
 						<tr>
 							<!-- TODO: adjust for new roles/permission system -->
-							<th class="w-1/2 font-bold text-main-gray">ROLA</th>
-							<td class="w-1/2 text-main-black font-semibold pl-5">
-								{#if user.roles.some((r) => r.name === 'employee')}
-									Pracownik
-								{:else if user.roles.some((r) => r.name === 'supervisor')}
-									Przełożony
-								{:else if user.roles.some((r) => r.name === 'hr')}
-									Kadry
-								{:else if user.roles.some((r) => r.name === 'admin')}
-									Administrator
-								{/if}
+							<th class="w-1/2 font-bold text-main-gray">ROLE</th>
+							<td class="w-1/2 text-main-black font-semibold flex gap-2 pl-5">
+								{#each user.roles as role}
+									<GroupBadge
+										group={{
+											icon_name: 'Account',
+											name: role.display_name
+										}}
+									/>
+								{/each}
 							</td>
 						</tr>
 						<tr>
@@ -360,17 +360,30 @@
 				<table class="text-left w-full">
 					<tbody>
 						<tr>
-							<!-- TODO: adjust for new roles/permission system -->
 							<th class="w-1/2 font-bold text-main-gray">
-								<label for="role">ROLA</label>
+								<label for="roles">ROLE</label>
 							</th>
 							<td class="w-1/2 text-main-black font-semibold pl-5">
-								<select class="w-full" name="role" id="role">
-									<!--                                <option value="employee" selected={user.role === 'EMPLOYEE'}>Pracownik</option>-->
-									<!--                                <option value="supervisor" selected={user.role === 'SUPERVISOR'}>Przełożony</option>-->
-									<!--                                <option value="hr" selected={user.role === 'HR'}>Kadry</option>-->
-									<!--                                <option value="admin" selected={user.role === 'ADMIN'}>Administrator</option>-->
-								</select>
+								<input
+									type="hidden"
+									id="roles"
+									name="roles"
+									value={JSON.stringify(user.roles.map((r) => r.id))}
+								/>
+								<MultiSelect
+									options={roles.map((role) => ({
+										value: role.id,
+										name: role.display_name,
+										icon_name: 'Account'
+									}))}
+									selected={user.roles.map((r) => r.id)}
+									name="roles"
+									id="roles"
+									placeholder="Wybierz role"
+									onChange={(values) => {
+										user.roles = roles.filter((r) => values.includes(r.id));
+									}}
+								/>
 							</td>
 						</tr>
 						<tr>

@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import Laptop from 'svelte-material-icons/Laptop.svelte';
+import Account from 'svelte-material-icons/Account.svelte';
 import AccountGroup from 'svelte-material-icons/AccountGroup.svelte';
 import AccountSearch from 'svelte-material-icons/AccountSearch.svelte';
 import ChartGantt from 'svelte-material-icons/ChartGantt.svelte';
@@ -26,6 +27,7 @@ import HelpCircleOutline from 'svelte-material-icons/HelpCircleOutline.svelte';
 
 export const icons = writable({
 	Laptop,
+	Account,
 	AccountGroup,
 	AccountSearch,
 	ChartGantt,

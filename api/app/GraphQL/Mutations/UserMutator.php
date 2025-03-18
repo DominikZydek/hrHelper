@@ -36,7 +36,6 @@ class UserMutator
                 'email' => $args['email'],
                 'birth_date' => $args['birth_date'],
                 'phone_number' => $args['phone_number'],
-                'role' => $args['role'], // TODO: adjust to new roles/permissions system
                 'job_title' => $args['job_title'],
                 'supervisor_id' => $args['supervisor'],
                 'type_of_employment' => $args['type_of_employment'],
@@ -60,6 +59,10 @@ class UserMutator
 
             if (isset($args['groups'])) {
                 $user->groups()->sync($args['groups']);
+            }
+
+            if (isset($args['roles'])) {
+                $user->roles()->sync($args['roles']);
             }
 
             DB::commit();

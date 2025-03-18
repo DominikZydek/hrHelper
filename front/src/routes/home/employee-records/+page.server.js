@@ -69,7 +69,13 @@ export const load = async ({ request, fetch }) => {
             id,
             name,
             icon_name
-          }
+          },
+          roles {
+                id,
+                name,
+                display_name,
+                description
+            },
         }
     `;
 
@@ -97,7 +103,13 @@ const userSchema = z.object({
 	street_number: z.string(),
 	postal_code: z.string().regex(/^\d{2}-\d{3}$/),
 	city: z.string(),
-	role: z.string(), // TODO: adjust for new roles/permissions system
+	roles: z.preprocess((val) => {
+		// parse to array
+		if (Array.isArray(val) && val.length === 1 && typeof val[0] === 'string') {
+			return JSON.parse(val[0]);
+		}
+		return val;
+	}, z.array(z.string())),
 	job_title: z.string(),
 	groups: z.preprocess((val) => {
 		// parse to array
@@ -141,7 +153,6 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		// TODO: adjust for new roles/permissions system
 		let {
 			id,
 			first_name,
@@ -154,7 +165,7 @@ export const actions = {
 			street_number,
 			postal_code,
 			city,
-			role,
+			roles,
 			job_title,
 			groups,
 			supervisor,
@@ -170,7 +181,7 @@ export const actions = {
 		const query = `
                 mutation UpdateUser($id: ID!, $first_name: String!, $last_name: String!, $sex: Sex!, 
                     $email: String!, $birth_date: Date!, $phone_number: String!, $street_name: String!, 
-                    $street_number: String!, $postal_code: String!, $city: String!, $role: Role!,
+                    $street_number: String!, $postal_code: String!, $city: String!, $roles: [String]!,
                     $job_title: String!, $groups: [String]!, $supervisor: ID, $type_of_employment: TypeOfEmployment!,
                     $paid_time_off_days: Int!, $working_time: Float!, $employed_from: Date!, $employed_to: Date, 
                     $health_check_expired_by: Date!, $health_and_safety_training_expired_by: Date!) {
@@ -186,7 +197,7 @@ export const actions = {
                             street_number: $street_number
                             postal_code: $postal_code
                             city: $city
-                            role: $role
+                            roles: $roles
                             job_title: $job_title
                             groups: $groups
                             supervisor: $supervisor
@@ -214,7 +225,7 @@ export const actions = {
 			street_number,
 			postal_code,
 			city,
-			role,
+			roles,
 			job_title,
 			groups,
 			supervisor,

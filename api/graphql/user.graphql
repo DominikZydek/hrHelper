@@ -59,7 +59,7 @@ extend type Mutation {
         street_number: String!,
         postal_code: String!,
         city: String!,
-        role: Role!, # TODO: adjust for new roles/permissions system
+        roles: [String]!,
         job_title: String!,
         groups: [String]!,
         supervisor: ID,
