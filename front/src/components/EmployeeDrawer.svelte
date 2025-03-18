@@ -9,6 +9,7 @@
 	import MultiSelect from './MultiSelect.svelte';
 	import ApprovalProcessEditMode from './ApprovalProcessEditMode.svelte';
 	import { onMount } from 'svelte';
+	import FileDocumentPlus from 'svelte-material-icons/FileDocumentPlus.svelte';
 
 	export let user;
 	export let toggleDrawer;
@@ -18,6 +19,39 @@
 
 	let newUserRoles = [];
 	let newUserGroups = [];
+
+	let chosenScan = null;
+
+	let showFile;
+	const toggleShowFile = () => {
+		showFile = !showFile;
+	};
+
+	const handleFileSelect = async () => {
+		if (chosenScan && chosenScan.files[0]) {
+			toggleShowFile();
+			try {
+			} catch (error) {
+				console.error('Error loading file:', error);
+			}
+		}
+	};
+
+	function getFileSrc(file) {
+		return new Promise((resolve, reject) => {
+			if (!file) {
+				reject(new Error('No file provided'));
+				return;
+			}
+
+			let reader = new FileReader();
+			reader.readAsDataURL(file);
+
+			reader.onloadstart = () => console.log('Started loading');
+			reader.onloadend = (e) => resolve(e.target.result);
+			reader.onerror = (err) => reject(err);
+		});
+	}
 
 	let showEditMode = false;
 	const toggleEditMode = () => {
@@ -85,7 +119,30 @@
 				Edytuj
 			</button>
 		{/if}
-		<img class="h-8 w-8" src="/favicon.png" alt="" />
+		{#if !showCreateMode}
+			<img class="h-8 w-8" src="/favicon.png" alt="" />
+		{:else}
+			<label
+				for="choose_scan"
+				class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4 cursor-pointer"
+			>
+				<FileDocumentPlus />
+				Wypełnij za pomocą skanu umowy
+			</label>
+			<input
+				bind:this={chosenScan}
+				class="hidden"
+				name="choose_scan"
+				id="choose_scan"
+				type="file"
+				on:change={handleFileSelect}
+			/>
+		{/if}
+		{#if showFile && chosenScan?.files[0]}
+			{#await getFileSrc(chosenScan.files[0]) then src}
+				<!-- TODO: here {src} is available as a path to the uploaded img -->
+			{/await}
+		{/if}
 	</svelte:fragment>
 
 	{#if !showEditMode && !showCreateMode}
