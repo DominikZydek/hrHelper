@@ -86,7 +86,7 @@ class LeaveRequestMutator
             $typeLimit = $leaveType->limit_per_year * $user->working_time;
             $typeLimitRounded = ceil($typeLimit);
 
-            if (($usedLeaveDaysOfType + $daysCount) > $typeLimitRounded) {
+            if ($typeLimitRounded != 0 && (($usedLeaveDaysOfType + $daysCount) > $typeLimitRounded)) {
                 $remaining = $typeLimitRounded - $usedLeaveDaysOfType;
                 throw new \Exception("Exceeded yearly limit for this leave type. Available: {$remaining}, Used: {$usedLeaveDaysOfType}, Requested: {$daysCount}");
             }
