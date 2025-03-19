@@ -2,12 +2,14 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Mail\ActivationMail;
 use App\Models\Address;
 use App\Models\User;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class UserMutator
 {
@@ -101,7 +103,7 @@ class UserMutator
                 'city' => $args['city']
             ]);
 
-            // TODO: account activation token should be generated here and mailed to the user after
+            $activation_token = Str::random(60);
 
             $user = User::create([
                 'organization_id' => $currentUser->organization_id,
@@ -126,7 +128,8 @@ class UserMutator
                 'transferred_pto' => 0, // TODO: this should be sent from the frontend
                 'transferred_pto_expired_by' => '2025-09-30', // TODO: this should be calculated
                 'health_check_expired_by' => $args['health_check_expired_by'],
-                'health_and_safety_training_expired_by' => $args['health_and_safety_training_expired_by']
+                'health_and_safety_training_expired_by' => $args['health_and_safety_training_expired_by'],
+                'activation_token' => $activation_token
             ]);
 
             if (isset($args['groups'])) {
@@ -143,6 +146,9 @@ class UserMutator
             $user->roles()->sync($roles);
 
             DB::commit();
+
+            // mail activation link to user
+            Mail::to($user->email)->send(new ActivationMail($user));
 
             return $user;
 

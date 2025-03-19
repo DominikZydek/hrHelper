@@ -118,7 +118,8 @@ export const handle = async ({ event, resolve }) => {
             employed_from,
             employed_to,
             health_check_expired_by,
-            health_and_safety_training_expired_by
+            health_and_safety_training_expired_by,
+            activation_token
           },
           groups {
             id,
@@ -156,7 +157,7 @@ export const handle = async ({ event, resolve }) => {
 		if (event.url.pathname === '/') {
 			throw redirect(303, `${FRONTEND_URL}/home`);
 		}
-	} else if (event.url.pathname !== '/') {
+	} else if (event.url.pathname !== '/' && !event.url.pathname.startsWith('/activate-account')) {
 		throw redirect(303, `${FRONTEND_URL}/`);
 	}
 

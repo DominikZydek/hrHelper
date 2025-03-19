@@ -36,6 +36,7 @@ return new class extends Migration
             $table->date('transferred_pto_expired_by');
             $table->date('health_check_expired_by');
             $table->date('health_and_safety_training_expired_by');
+            $table->string('activation_token')->nullable();
             $table->timestamps();
 
             $table->unique(['organization_id', 'email']);

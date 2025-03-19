@@ -15,7 +15,7 @@ class User extends Authenticatable
         'address_id', 'job_title', 'supervisor_id', 'approval_process_id', 'type_of_employment',
         'paid_time_off_days', 'working_time', 'employed_from', 'employed_to',
         'available_pto', 'pending_pto', 'transferred_pto', 'transferred_pto_expired_by',
-        'health_check_expired_by', 'health_and_safety_training_expired_by'
+        'health_check_expired_by', 'health_and_safety_training_expired_by', 'activation_token'
     ];
 
     protected $casts = [

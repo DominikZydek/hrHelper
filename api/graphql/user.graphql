@@ -26,6 +26,7 @@ type User {
     transferred_pto_expired_by: Date!
     health_check_expired_by: Date!
     health_and_safety_training_expired_by: Date!
+    activation_token: String
     leave_requests: [LeaveRequest!]!
 
     hasPermission(name: String!): Boolean! @method
@@ -44,6 +45,9 @@ enum TypeOfEmployment {
 
 extend type Query {
     users: [User!]! @field(resolver: "App\\GraphQL\\Queries\\UserResolver@users")
+
+    # Get user with a specific activation_token
+    user(activation_token: String! @where(key: "activation_token", value: activation_token)) : User @find
 }
 
 extend type Mutation {
