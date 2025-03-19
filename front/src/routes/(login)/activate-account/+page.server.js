@@ -5,12 +5,10 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 
 const schema = z.object({
-	password: z
-		.string()
-		.regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&.-]{8,}$/, {
-			message:
-				'Hasło powinno zawierać minimum 8 znaków, w tym co najmniej 1 wielką literę, 1 małą literę i 1 cyfrę'
-		}),
+	password: z.string().regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&.-]{8,}$/, {
+		message:
+			'Hasło powinno zawierać minimum 8 znaków, w tym co najmniej 1 wielką literę, 1 małą literę i 1 cyfrę'
+	}),
 	confirm_password: z.string().min(1, { message: 'Potwierdź hasło' })
 });
 
@@ -54,6 +52,10 @@ export const load = async ({ request, fetch }) => {
 	}).then((res) => res.json());
 
 	console.log(res);
+
+	if (!data.res.user) {
+		throw redirect(303, `${FRONTEND_URL}/`);
+	}
 
 	if (res.data.user.organization.alias !== alias) {
 		throw redirect(303, `${FRONTEND_URL}/`);
