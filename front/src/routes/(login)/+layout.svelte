@@ -9,7 +9,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="w-1/3 flex items-center justify-center">
+	<div class="w-1/3 flex items-center justify-center flex-col gap-5">
 		<slot />
 	</div>
 </div>

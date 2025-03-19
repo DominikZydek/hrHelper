@@ -20,7 +20,7 @@
 	});
 </script>
 
-<form method="POST" class="flex flex-col" use:enhance>
+<form method="POST" class="flex flex-col w-1/2" use:enhance>
 	<div class="flex gap-2 items-center">
 		<img class="h-12 w-12" src="/favicon.png" alt="logo" />
 		<p class="text-4xl font-poppins">hrHelper</p>

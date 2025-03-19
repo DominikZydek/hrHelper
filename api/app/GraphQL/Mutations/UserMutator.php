@@ -157,4 +157,27 @@ class UserMutator
             throw new \Exception('Failed to create user: ' . $e->getMessage());
         }
     }
+
+    public function activateUserAccount($root, array $args)
+    {
+        $user = User::where('activation_token', $args['activation_token'])->first();
+
+        try {
+            DB::beginTransaction();
+
+            $user->fill([
+                'activation_token' => null,
+                'password' => bcrypt($args['password']),
+            ]);
+
+            $user->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Failed to activate user account: ' . $e->getMessage());
+        }
+
+        return $user;
+    }
 }

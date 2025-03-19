@@ -99,4 +99,9 @@ extend type Mutation {
         health_check_expired_by: Date!
         health_and_safety_training_expired_by: Date!
     ) : User! @field(resolver: "App\\GraphQL\\Mutations\\UserMutator@createUser")
+
+    activateUserAccount(
+        activation_token: String!,
+        password: String!
+    ) : User! @field(resolver: "App\\GraphQL\\Mutations\\UserMutator@activateUserAccount")
 }

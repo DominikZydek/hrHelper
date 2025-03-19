@@ -50,6 +50,7 @@ export const handle = async ({ event, resolve }) => {
 	}
 
 	// check if we have necessary cookies
+	// TODO: activate-account route is giving 419 back, fix that
 	const xsrfToken = event.cookies.get('XSRF-TOKEN');
 	if (!xsrfToken && event.url.pathname === '/') {
 		return resolve(event);
