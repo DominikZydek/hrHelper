@@ -1,8 +1,8 @@
 import { API_URL } from '$env/static/private';
 
-export const load = async ({ request, fetch }) => {
+export const load = async ({ locals, request, fetch }) => {
 	const query = `
-        {
+        query ($organization: ID!){
           me {
             id,
             paid_time_off_days,
@@ -197,7 +197,7 @@ export const load = async ({ request, fetch }) => {
                 min_notice_days,
                 can_be_cancelled
               },
-              users {
+              users(organization: $organization) {
                 id,
                     first_name,
                     last_name,
@@ -212,13 +212,19 @@ export const load = async ({ request, fetch }) => {
           }
     `;
 
+	const { user } = locals;
+
+	const variables = {
+		organization: user.organization.id
+	};
+
 	const res = await fetch(API_URL, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		credentials: 'include',
-		body: JSON.stringify({ query })
+		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
 
 	return res.data;

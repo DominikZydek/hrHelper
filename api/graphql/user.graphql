@@ -44,8 +44,6 @@ enum TypeOfEmployment {
 }
 
 extend type Query {
-    users: [User!]! @field(resolver: "App\\GraphQL\\Queries\\UserResolver@users")
-
     # Get user with a specific activation_token
     user(activation_token: String! @where(key: "activation_token", value: activation_token)) : User @find
 
@@ -54,6 +52,8 @@ extend type Query {
 
     # get users from a specific organization
     users(organization: ID!) : [User] @field(resolver: "App\\GraphQL\\Queries\\UserResolver@users")
+
+    userDebug(id: ID! @eq) : User! @find
 }
 
 extend type Mutation {
