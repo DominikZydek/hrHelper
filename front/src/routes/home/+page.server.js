@@ -308,6 +308,28 @@ export const load = async ({ locals, request, fetch }) => {
 							}
 						}
 						}
+					},
+					users(organization: $organization) {
+						id
+						first_name
+						last_name
+						email
+						groups {
+							icon_name
+							name
+						}
+						job_title
+						type_of_employment
+						paid_time_off_days
+						working_time
+						employed_from
+						employed_to
+						available_pto
+						pending_pto
+						transferred_pto
+						transferred_pto_expired_by
+						health_check_expired_by
+						health_and_safety_training_expired_by
 					}
         }`;
 
@@ -325,6 +347,8 @@ export const load = async ({ locals, request, fetch }) => {
 		credentials: 'include',
 		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
+
+	console.log(res.data.users);
 
 	return res.data;
 };

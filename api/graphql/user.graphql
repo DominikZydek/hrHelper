@@ -51,6 +51,9 @@ extend type Query {
 
     # Get currently absent employees and their current leave
     absentEmployees(organization: ID!) : [User] @field(resolver: "App\\GraphQL\\Queries\\UserResolver@absentEmployees")
+
+    # get users from a specific organization
+    users(organization: ID!) : [User] @field(resolver: "App\\GraphQL\\Queries\\UserResolver@users")
 }
 
 extend type Mutation {
