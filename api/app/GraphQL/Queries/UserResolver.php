@@ -10,17 +10,13 @@ class UserResolver
 {
     public function users($root, array $args)
     {
-        if (isset($args['organization'])) {
-            $currentUser = Auth::user();
+        $currentUser = Auth::user();
 
-            if ($currentUser->hasPermission('view_users')) {
-                $organization = Organization::findOrFail($args['organization']);
+        if ($currentUser->hasPermission('view_users')) {
+            $organization = Organization::findOrFail($args['organization']);
 
-                return User::where('organization_id', $organization->id)->get();
-            }
+            return User::where('organization_id', $organization->id)->get();
         }
-
-        return User::with(['groups', 'supervisor', 'address', 'approval_process'])->get();
     }
 
     public function absentEmployees($root, array $args)

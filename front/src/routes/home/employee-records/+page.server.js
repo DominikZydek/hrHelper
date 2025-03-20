@@ -4,11 +4,10 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 
-export const load = async ({ request, fetch }) => {
-	// TODO: make it retrieve appropriate data (belonging to the same organization as locals.user),
+export const load = async ({ locals, request, fetch }) => {
 	const query = `
-        {
-          users {
+        query ($organization: ID!) {
+          users(organization: $organization) {
             id,
             first_name,
             last_name,
@@ -79,13 +78,18 @@ export const load = async ({ request, fetch }) => {
         }
     `;
 
+	const { user } = locals;
+	const variables = {
+		organization: user.organization.id
+	};
+
 	const res = await fetch(API_URL, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		credentials: 'include',
-		body: JSON.stringify({ query })
+		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
 
 	return res.data;
