@@ -7,6 +7,7 @@
 	import GroupBadge from './GroupBadge.svelte';
 	import { MeterChart } from '@carbon/charts-svelte';
 	import Eye from 'svelte-material-icons/Eye.svelte';
+	import CalendarAccount from 'svelte-material-icons/CalendarAccount.svelte';
 	export let data;
 	export let onLeaveRequestClick;
 	export let selectedLeaveRequest;
@@ -120,8 +121,30 @@
 </div>
 <div class="rounded border shadow col-span-5 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
-		<AccountCircle size="1.5rem" />
-		<p class="text-xl font-semibold">Informacje o dniach urlopowych pracowników</p>
+		<CalendarAccount size="1.5rem" />
+		<p class="text-xl font-semibold">Dane pracowników // informacje // ??</p>
+	</div>
+	<div class="max-h-[30vh] overflow-auto divide-y divide-main-black">
+		<!-- TODO: this should be handled in the grid -->
+		{#each data.users as employee}
+			<div>
+				<p>{employee.first_name}</p>
+				<p>{employee.last_name}</p>
+				<p>{employee.email}</p>
+				<p>{employee.job_title}</p>
+				<p>{employee.groups}</p>
+				<p>{employee.paid_time_off_days}</p>
+				<p>{employee.working_time}</p>
+				<p>{employee.available_pto}</p>
+				<p>{employee.pending_pto}</p>
+				<p>{employee.transferred_pto}</p>
+				<p>{employee.transferred_pto_expired_by}</p>
+				<p>{employee.health_check_expired_by}</p>
+				<p>{employee.health_and_safety_training_expired_by}</p>
+				<p>{employee.working_to}</p>
+				<p>{employee.type_of_employment}</p>
+			</div>
+		{/each}
 	</div>
 </div>
 <div class="rounded border shadow col-span-12 p-4">
