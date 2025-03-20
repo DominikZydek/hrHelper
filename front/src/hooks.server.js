@@ -60,6 +60,7 @@ export const handle = async ({ event, resolve }) => {
         me {
             id,
             organization {
+            		id,
                 name
             },
             first_name,

@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\LeaveRequest;
+use App\Models\Organization;
 use Illuminate\Support\Facades\Auth;
 
 class LeaveRequestResolver
@@ -26,5 +27,21 @@ class LeaveRequestResolver
                 'approval_steps_history.approver'
             ])
             ->get();
+    }
+
+    public function leaveRequests($root, array $args)
+    {
+        $currentUser = Auth::user();
+
+        if ($currentUser->hasPermission('view_all_leave_requests')) {
+            $organization = Organization::findOrFail($args['organization']);
+
+            // return all leave requests in which users have specific organization_id
+            return LeaveRequest::whereHas('user', function($query) use ($organization) {
+                $query->where('organization_id', $organization->id);
+            })->get();
+        }
+
+        return null;
     }
 }
