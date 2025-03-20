@@ -220,6 +220,95 @@ export const load = async ({ locals, request, fetch }) => {
 							}
 						}
 					}
+					absentEmployees(organization: $organization) {
+						id
+						first_name
+						last_name
+						email
+						groups {
+							icon_name
+							name
+						}
+						job_title
+						leave_requests {
+							id
+						user {
+							id
+							first_name
+							last_name
+							email
+							job_title
+							groups {
+              id
+              name
+              icon_name
+            }
+						}
+						leave_type {
+							id
+							name
+							limit_per_year
+							requires_replacement
+							min_notice_days
+							can_be_cancelled
+						}
+						date_from
+						date_to
+						days_count
+						reason
+						comment
+						status
+						replacement {
+							user {
+								id
+								first_name
+								last_name
+								email
+								groups {
+									icon_name
+									name
+								}
+								job_title
+							}
+							status
+							comment
+						}
+						approval_process {
+							steps {
+								order
+								approver {
+									id
+									first_name
+									last_name
+									email
+									groups {
+										icon_name
+										name
+									}
+									job_title
+								}
+							}
+						}
+						current_approval_step
+						approval_steps_history {
+							step
+							status
+							comment
+							date
+							approver {
+								id
+								first_name
+								last_name
+								email
+								groups {
+									icon_name
+									name
+								}
+								job_title
+							}
+						}
+						}
+					}
         }`;
 
 	const { user } = locals;
@@ -236,8 +325,6 @@ export const load = async ({ locals, request, fetch }) => {
 		credentials: 'include',
 		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
-
-	console.log(res.data.leaveRequests);
 
 	return res.data;
 };

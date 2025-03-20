@@ -48,6 +48,9 @@ extend type Query {
 
     # Get user with a specific activation_token
     user(activation_token: String! @where(key: "activation_token", value: activation_token)) : User @find
+
+    # Get currently absent employees and their current leave
+    absentEmployees(organization: ID!) : [User] @field(resolver: "App\\GraphQL\\Queries\\UserResolver@absentEmployees")
 }
 
 extend type Mutation {
