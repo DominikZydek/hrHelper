@@ -2,12 +2,23 @@
 	import UserDashboard from '../../components/UserDashboard.svelte';
 	import ManagerDashboard from '../../components/ManagerDashboard.svelte';
 	import HRDashboard from '../../components/HRDashboard.svelte';
+	import Popup from '../../components/Popup.svelte';
+	import LeaveRequestDetails from '../../components/LeaveRequestDetails.svelte';
 
 	export let data;
 
 	let mode = 'user';
 	const changeMode = (newMode) => {
 		mode = newMode;
+	};
+
+	let selectedLeaveRequest = null;
+	const toggleLeaveDetails = (leaveRequest) => {
+		selectedLeaveRequest ? (selectedLeaveRequest = null) : (selectedLeaveRequest = leaveRequest);
+	};
+
+	const onLeaveRequestClick = (leaveRequest) => {
+		selectedLeaveRequest = leaveRequest;
 	};
 </script>
 
@@ -43,7 +54,7 @@
 	<!-- MAIN SECTION -->
 	<div class="mt-5 grid grid-cols-6 grid-auto-rows gap-5">
 		{#if mode === 'user'}
-			<UserDashboard {data} />
+			<UserDashboard {data} {selectedLeaveRequest} {toggleLeaveDetails} {onLeaveRequestClick} />
 		{/if}
 
 		{#if mode === 'manager'}
@@ -51,7 +62,16 @@
 		{/if}
 
 		{#if mode === 'hr'}
-			<HRDashboard {data} />
+			<HRDashboard {data} {selectedLeaveRequest} {toggleLeaveDetails} {onLeaveRequestClick} />
 		{/if}
 	</div>
 </div>
+
+{#if selectedLeaveRequest}
+	<Popup togglePopup={toggleLeaveDetails} title="Szczegóły wniosku">
+		<LeaveRequestDetails
+			leaveRequest={selectedLeaveRequest}
+			user={selectedLeaveRequest.user || data.user}
+		/>
+	</Popup>
+{/if}

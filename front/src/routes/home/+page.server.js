@@ -150,6 +150,11 @@ export const load = async ({ locals, request, fetch }) => {
 							last_name
 							email
 							job_title
+							groups {
+              id
+              name
+              icon_name
+            }
 						}
 						leave_type {
 							id

@@ -11,6 +11,10 @@
 	import LeaveRequestDetails from '../components/LeaveRequestDetails.svelte';
 	import LeaveRequestList from '../components/LeaveRequestList.svelte';
 	import { getUserPTOInfo } from '../utils/getUserPTOInfo.js';
+	import Searchbar from './Searchbar.svelte';
+	export let onLeaveRequestClick;
+	export let selectedLeaveRequest;
+	export let toggleLeaveDetails;
 
 	export let data;
 
@@ -57,13 +61,11 @@
 		.filter((holiday) => new Date(holiday.date) >= new Date())
 		.sort((a, b) => new Date(a.date) - new Date(b.date))[0];
 
-	let selectedLeaveRequest = null;
-	const toggleLeaveDetails = (leaveRequest) => {
-		selectedLeaveRequest ? (selectedLeaveRequest = null) : (selectedLeaveRequest = leaveRequest);
-	};
+	let tableRequests = data.me.leave_requests;
+	let displayedRequests = tableRequests;
 
-	const onLeaveRequestClick = (leaveRequest) => {
-		selectedLeaveRequest = leaveRequest;
+	const handleFilteredDataChange = (filteredData) => {
+		displayedRequests = filteredData;
 	};
 </script>
 
@@ -178,9 +180,20 @@
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<CalendarMultiselect size="1.5rem" />
 		<p class="text-xl font-semibold">Moje wnioski urlopowe</p>
+		<div class="flex-1 text-main-black">
+			<Searchbar
+				placeholderText="Szukaj wniosku..."
+				searchData={data.me.leave_requests}
+				onFilteredDataChange={handleFilteredDataChange}
+			/>
+		</div>
 	</div>
 	<div>
-		<LeaveRequestList leaveRequests={data.me.leave_requests} onClick={onLeaveRequestClick} />
+		<LeaveRequestList
+			leaveRequests={displayedRequests}
+			onClick={onLeaveRequestClick}
+			fullHeight={false}
+		/>
 	</div>
 </div>
 <div class="rounded border shadow col-span-6 p-4">
@@ -189,12 +202,3 @@
 		<p class="text-xl font-semibold">Aktualności</p>
 	</div>
 </div>
-
-{#if selectedLeaveRequest}
-	<Popup togglePopup={toggleLeaveDetails} title="Szczegóły wniosku">
-		<LeaveRequestDetails
-			leaveRequest={selectedLeaveRequest}
-			user={selectedLeaveRequest.user || data.user}
-		/>
-	</Popup>
-{/if}
