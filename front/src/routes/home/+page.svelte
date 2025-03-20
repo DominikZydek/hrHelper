@@ -52,7 +52,7 @@
 	</div>
 
 	<!-- MAIN SECTION -->
-	<div class="mt-5 grid grid-cols-6 grid-auto-rows gap-5">
+	<div class="mt-5 grid grid-cols-12 grid-auto-rows gap-5">
 		{#if mode === 'user'}
 			<UserDashboard {data} {selectedLeaveRequest} {toggleLeaveDetails} {onLeaveRequestClick} />
 		{/if}

@@ -69,7 +69,7 @@
 	};
 </script>
 
-<div class="rounded border shadow col-span-2 p-4">
+<div class="rounded border shadow col-span-4 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<AccountCircle size="1.5rem" />
 		<p class="text-xl font-semibold">Moje dane</p>
@@ -108,7 +108,7 @@
 		</tbody>
 	</table>
 </div>
-<div class="rounded border shadow col-span-2 p-4">
+<div class="rounded border shadow col-span-4 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<CalendarClock size="1.5rem" />
 		<p class="text-xl font-semibold">Stan dni urlopowych</p>
@@ -118,7 +118,7 @@
 		<PieChart data={pieData} options={pieOptions} />
 	</div>
 </div>
-<div class="rounded border shadow col-span-2 p-4">
+<div class="rounded border shadow col-span-4 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<CalendarMonth size="1.5rem" />
 		<p class="text-xl font-semibold">Ważne daty</p>
@@ -176,7 +176,7 @@
 		{/if}
 	</div>
 </div>
-<div class="rounded border shadow col-span-6 p-4">
+<div class="rounded border shadow col-span-12 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<CalendarMultiselect size="1.5rem" />
 		<p class="text-xl font-semibold">Moje wnioski urlopowe</p>
@@ -196,7 +196,7 @@
 		/>
 	</div>
 </div>
-<div class="rounded border shadow col-span-6 p-4">
+<div class="rounded border shadow col-span-12 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<NewspaperVariantMultiple size="1.5rem" />
 		<p class="text-xl font-semibold">Aktualności</p>

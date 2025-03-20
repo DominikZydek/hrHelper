@@ -65,7 +65,7 @@
 	});
 </script>
 
-<div class="rounded border shadow col-span-4 p-4">
+<div class="rounded border shadow col-span-7 p-4">
 	<div>
 		<div class="flex gap-2 items-center text-main-app mb-2">
 			<AccountClock size="1.5rem" />
@@ -73,8 +73,8 @@
 		</div>
 		<div class="divide-y divide-main-black">
 			{#each absentEmployees as absentEmployee}
-				<div class="flex py-2">
-					<div class="flex items-center gap-5 flex-1">
+				<div class="flex py-2 justify-between">
+					<div class="flex items-center gap-5 w-2/3">
 						<img class="h-16 w-16" src="/favicon.png" alt="" />
 						<div class="flex-1">
 							<div class="flex gap-10 items-start">
@@ -96,7 +96,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="flex-1 flex flex-col gap-2">
+					<div class="flex flex-col gap-2 w-1/3">
 						<div class="flex gap-3 items-center">
 							<p>{absentEmployee.leave_requests[0].leave_type.name}</p>
 							<button
@@ -118,13 +118,13 @@
 		</div>
 	</div>
 </div>
-<div class="rounded border shadow col-span-2 p-4">
+<div class="rounded border shadow col-span-5 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<AccountCircle size="1.5rem" />
 		<p class="text-xl font-semibold">Informacje o dniach urlopowych pracowników</p>
 	</div>
 </div>
-<div class="rounded border shadow col-span-6 p-4">
+<div class="rounded border shadow col-span-12 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<CalendarMultiselect size="1.5rem" />
 		<p class="text-xl font-semibold">Wnioski urlopowe firmy</p>
@@ -145,7 +145,7 @@
 		/>
 	</div>
 </div>
-<div class="rounded border shadow col-span-6 p-4">
+<div class="rounded border shadow col-span-12 p-4">
 	<div class="flex gap-2 items-center text-main-app mb-2">
 		<AccountCircle size="1.5rem" />
 		<p class="text-xl font-semibold">Raporty i analityka HR</p>
