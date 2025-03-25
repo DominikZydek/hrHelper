@@ -6,13 +6,17 @@
 	import Popup from '../../../../components/Popup.svelte';
 	import LeaveRequestDetails from '../../../../components/LeaveRequestDetails.svelte';
 	import Dropdown from '../../../../components/Dropdown.svelte';
-	import ArrowULeftTop from 'svelte-material-icons/ArrowULeftTop.svelte';
+	import Close from 'svelte-material-icons/Close.svelte';
 	import History from 'svelte-material-icons/History.svelte';
-	import Pencil from 'svelte-material-icons/Pencil.svelte';
+	import Check from 'svelte-material-icons/Check.svelte';
 	import DotsHorizontal from 'svelte-material-icons/DotsHorizontal.svelte';
 	import LeaveRequestList from '../../../../components/LeaveRequestList.svelte';
+	import { superForm } from 'sveltekit-superforms';
 
 	let { data } = $props();
+
+	const { form, errors, constraints, message, enhance } = superForm(data.form);
+
 	let showPopup = $state(false);
 	const togglePopup = () => {
 		showPopup = !showPopup;
@@ -33,18 +37,19 @@
 		togglePopup();
 	};
 
-	const handleEventClick = (info) => {
-		selectedLeaveRequest = data.me.leave_requests.filter(
-			(request) => info.event.id === request.id
-		)[0];
-		if (selectedLeaveRequest) {
-			togglePopup();
-		}
-	};
-
 	let showLeaveRequestHistory = $state(false);
 	const toggleLeaveRequestHistory = () => {
 		showLeaveRequestHistory = !showLeaveRequestHistory;
+	};
+
+	let showApproveLeaveRequestPopup = $state(false);
+	const toggleApproveLeaveRequestPopup = () => {
+		showApproveLeaveRequestPopup = !showApproveLeaveRequestPopup;
+	};
+
+	let showRejectLeaveRequestPopup = $state(false);
+	const toggleRejectLeaveRequestPopup = () => {
+		showRejectLeaveRequestPopup = !showRejectLeaveRequestPopup;
 	};
 
 	let tableRequests = data.leaveRequestsAwaitingApproval;
@@ -131,19 +136,89 @@
 					{/if}
 
 					<button
+						onclick={() => toggleApproveLeaveRequestPopup()}
 						type="button"
-						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-orange"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-green"
 					>
-						<Pencil size="1.25rem" />
-						<span>Edytuj wniosek</span>
+						<Check size="1.25rem" />
+						<span>Zatwierdź wniosek</span>
 					</button>
+
+					{#if showApproveLeaveRequestPopup}
+						<Popup
+							togglePopup={toggleApproveLeaveRequestPopup}
+							title="Zatwierdź wniosek"
+							closeOnClickOutside={false}
+						>
+							<p class="mb-2">
+								Czy na pewno chcesz zatwierdzić wniosek
+								{selectedLeaveRequest.user.first_name}
+								{selectedLeaveRequest.user.last_name}
+								o {selectedLeaveRequest.leave_type.name}
+								z powodu: {selectedLeaveRequest.reason}
+								w terminie: {new Date(selectedLeaveRequest.date_from).toLocaleDateString()} -
+								{new Date(selectedLeaveRequest.date_to).toLocaleDateString()} ({selectedLeaveRequest.days_count}
+								dni roboczych)?
+							</p>
+
+							<label for="comment">Dodaj komentarz:</label>
+
+							<form
+								id="approve_leave_request"
+								action="?/approveLeaveRequest"
+								method="POST"
+								use:enhance
+							>
+								<textarea
+									class="border border-main-gray rounded resize-none {$errors.comment
+										? 'outline-accent-red border border-accent-red'
+										: ''}"
+									aria-invalid={$errors.comment ? 'true' : ''}
+									cols="35"
+									rows="3"
+									name="comment"
+									id="comment"
+									bind:value={$form.comment}
+								></textarea>
+							</form>
+
+							{#if $errors.comment}
+								<small class="text-accent-red">{$errors.comment[0]}</small>
+							{/if}
+
+							<div class="flex justify-end gap-2">
+								<button
+									type="submit"
+									form="approve_leave_request"
+									class="flex gap-1 items-center bg-accent-green text-main-white font-semibold h-8 px-4"
+								>
+									<Check />
+									Tak
+								</button>
+								<button
+									onclick={() => toggleApproveLeaveRequestPopup()}
+									type="button"
+									class="flex gap-1 items-center bg-accent-red text-main-white font-semibold h-8 px-4"
+								>
+									<Close />
+									Nie
+								</button>
+							</div>
+						</Popup>
+					{/if}
+
 					<button
+						onclick={() => toggleRejectLeaveRequestPopup()}
 						type="button"
-						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red"
 					>
-						<ArrowULeftTop size="1.25rem" />
-						<span>Wycofaj wniosek</span>
+						<Close size="1.25rem" />
+						<span>Odrzuć wniosek</span>
 					</button>
+
+					{#if showRejectLeaveRequestPopup}
+						<Popup togglePopup={toggleRejectLeaveRequestPopup} title="Odrzuć wniosek"></Popup>
+					{/if}
 				</div>
 			</Dropdown>
 		{/if}
