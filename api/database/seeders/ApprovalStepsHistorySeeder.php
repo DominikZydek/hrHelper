@@ -178,7 +178,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'date' => '2025-03-13 09:45:00'
             ],
 
-            // Anna Nowak - 7. Wakacje nad morzem (IN_PROGRESS)
+            // Anna Nowak - 7. Wakacje nad morzem
             [
                 'leave_request_id' => 7,
                 'step' => 0,
@@ -194,14 +194,6 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'approver_id' => null,
                 'comment' => 'Wysłano wniosek do akceptacji',
                 'date' => '2025-02-20 10:10:00'
-            ],
-            [
-                'leave_request_id' => 7,
-                'step' => 1,
-                'status' => 'IN_PROGRESS',
-                'approver_id' => 6, // Maria Wiśniewska (HR Director)
-                'comment' => 'Wniosek jest w trakcie rozpatrywania',
-                'date' => '2025-02-21 09:20:00'
             ],
 
             // Anna Nowak - 8. Szkolenie (SENT)
@@ -405,14 +397,6 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'comment' => 'Wysłano wniosek do akceptacji',
                 'date' => '2025-06-20 12:00:00'
             ],
-            [
-                'leave_request_id' => 16,
-                'step' => 1,
-                'status' => 'IN_PROGRESS',
-                'approver_id' => 2, // Andrzej Siwy (CTO)
-                'comment' => 'Wniosek w trakcie rozpatrywania',
-                'date' => '2025-06-21 09:20:00'
-            ],
 
             // Karolina Dąbrowska - 17. Urlop na żądanie
             [
@@ -500,14 +484,6 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'approver_id' => null,
                 'comment' => 'Wysłano wniosek do akceptacji',
                 'date' => '2025-05-10 10:00:00'
-            ],
-            [
-                'leave_request_id' => 20,
-                'step' => 1,
-                'status' => 'IN_PROGRESS',
-                'approver_id' => 2, // Andrzej Siwy (CTO)
-                'comment' => 'Wniosek w trakcie rozpatrywania',
-                'date' => '2025-05-11 11:15:00'
             ],
 
             // Natalia Kamińska - 21. Wakacje w górach
@@ -623,14 +599,6 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'comment' => 'Wysłano wniosek do akceptacji',
                 'date' => '2025-07-15 10:00:00'
             ],
-            [
-                'leave_request_id' => 25,
-                'step' => 1,
-                'status' => 'IN_PROGRESS',
-                'approver_id' => 2, // Andrzej Siwy (CTO)
-                'comment' => 'Wniosek w trakcie rozpatrywania',
-                'date' => '2025-07-16 11:30:00'
-            ],
 
             // Łukasz Michalski - 26. Szkolenie z cyberbezpieczeństwa
             [
@@ -732,15 +700,7 @@ class ApprovalStepsHistorySeeder extends Seeder
                 'approver_id' => null,
                 'comment' => 'Wysłano wniosek do akceptacji',
                 'date' => '2025-05-15 10:40:00'
-            ],
-            [
-                'leave_request_id' => 29,
-                'step' => 1,
-                'status' => 'IN_PROGRESS',
-                'approver_id' => 4, // Anna Nowak (HR Specialist)
-                'comment' => 'Wniosek w trakcie rozpatrywania',
-                'date' => '2025-05-16 09:15:00'
-            ],
+            ]
         ];
 
         DB::table('approval_steps_histories')->insert($approvalStepsHistory);

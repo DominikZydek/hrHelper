@@ -5,6 +5,7 @@ import { fail } from '@sveltejs/kit';
 import { API_URL } from '$env/static/private';
 
 const schema = z.object({
+	leave_request: z.number().int(),
 	comment: z.string().min(1, { message: 'Dodaj komentarz' })
 });
 
@@ -24,12 +25,17 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		let { comment } = form.data;
+		let { leave_request, comment } = form.data;
 
 		const query = `
-        `;
+		mutation ApproveLeaveRequest($leave_request: ID!, $comment: String!) {
+			approveLeaveRequest(leave_request: $leave_request, comment: $comment) {
+				id
+			}
+		}`;
 
 		const variables = {
+			leave_request,
 			comment
 		};
 

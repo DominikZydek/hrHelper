@@ -169,6 +169,12 @@
 								method="POST"
 								use:enhance
 							>
+								<input
+									id="leave_request"
+									name="leave_request"
+									type="hidden"
+									value={selectedLeaveRequest.id}
+								/>
 								<textarea
 									class="border border-main-gray rounded resize-none {$errors.comment
 										? 'outline-accent-red border border-accent-red'
