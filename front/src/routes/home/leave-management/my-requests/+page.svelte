@@ -33,22 +33,13 @@
 		togglePopup();
 	};
 
-	const handleEventClick = (info) => {
-		selectedLeaveRequest = data.me.leave_requests.filter(
-			(request) => info.event.id === request.id
-		)[0];
-		if (selectedLeaveRequest) {
-			togglePopup();
-		}
-	};
-
 	let showLeaveRequestHistory = $state(false);
 	const toggleLeaveRequestHistory = () => {
 		showLeaveRequestHistory = !showLeaveRequestHistory;
 	};
 
 	let tableRequests = data.me.leave_requests;
-	let displayedRequests = tableRequests;
+	let displayedRequests = $state(tableRequests);
 
 	const handleFilteredDataChange = (filteredData) => {
 		displayedRequests = filteredData;

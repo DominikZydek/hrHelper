@@ -48,7 +48,7 @@
 	};
 
 	let tableRequests = data.leaveRequestsAwaitingApproval;
-	let displayedRequests = tableRequests;
+	let displayedRequests = $state(tableRequests);
 
 	const handleFilteredDataChange = (filteredData) => {
 		displayedRequests = filteredData;
