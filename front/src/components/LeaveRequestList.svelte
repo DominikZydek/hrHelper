@@ -2,6 +2,7 @@
 	import { getStatusInfo } from '../utils/getStatusInfo.js';
 	import { icons } from '../stores/icons.js';
 	import GroupBadge from './GroupBadge.svelte';
+	import IconWithNotificationBadge from './IconWithNotificationBadge.svelte';
 	export let leaveRequests;
 	export let onClick;
 
@@ -65,10 +66,18 @@
 			<tbody class="divide-y divide-main-gray">
 				{#each leaveRequests as leaveRequest}
 					{@const statusInfo = getStatusInfo(leaveRequest.status)}
+					{@const notification = leaveRequest.isUserCurrentApprover}
+					<!-- TODO: this flag should be passed as a prop or something, since it may be needed to change for other use cases -->
 					<tr class="cursor-pointer hover:bg-auxiliary-gray" on:click={() => onClick(leaveRequest)}>
 						<td class="px-4 py-3">
 							<div class="flex items-center gap-5">
-								<img class="h-16 w-16" src="/favicon.png" alt="" />
+								{#if notification}
+									<IconWithNotificationBadge>
+										<img class="h-16 w-16" src="/favicon.png" alt="" slot="icon" />
+									</IconWithNotificationBadge>
+								{:else}
+									<img class="h-16 w-16" src="/favicon.png" alt="" />
+								{/if}
 								<div class="flex-1">
 									<div class="flex gap-5 items-start">
 										<div>
