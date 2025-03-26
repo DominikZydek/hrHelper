@@ -4,6 +4,7 @@
 	import CalendarMonth from 'svelte-material-icons/CalendarMonth.svelte';
 	import ClockTimeFourOutline from 'svelte-material-icons/ClockTimeFourOutline.svelte';
 	import { page } from '$app/state';
+	import IconWithNotificationBadge from '../../../components/IconWithNotificationBadge.svelte';
 
 	let path = $derived(page.url.pathname.split('/')[3]);
 
@@ -42,7 +43,9 @@
 			class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
                   {path === 'approvals' ? 'bg-auxiliary-gray' : ''}"
 		>
-			<ClockTimeFourOutline size="1.75rem" />
+			<IconWithNotificationBadge>
+				<ClockTimeFourOutline slot="icon" size="1.75rem" />
+			</IconWithNotificationBadge>
 			<span>Wnioski do rozpatrzenia</span>
 		</a>
 	</div>
