@@ -5,7 +5,6 @@
 	import ClockTimeFourOutline from 'svelte-material-icons/ClockTimeFourOutline.svelte';
 	import { page } from '$app/state';
 	import IconWithNotificationBadge from '../../../components/IconWithNotificationBadge.svelte';
-	import { setContext } from 'svelte';
 
 	let path = $derived(page.url.pathname.split('/')[3]);
 
@@ -13,8 +12,10 @@
 
 	let notificationCounter = $state(0);
 
-	setContext('leave-management', {
-		setNotificationCounter: (val) => (notificationCounter = val)
+	$effect(() => {
+		notificationCounter = data.leaveRequestsWhereUserIsApprover.filter(
+			(r) => r.isUserCurrentApprover
+		).length;
 	});
 </script>
 

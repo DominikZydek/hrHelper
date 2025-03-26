@@ -62,12 +62,6 @@
 	let tableRequests = data.leaveRequestsWhereUserIsApprover;
 	let displayedRequests = $state(tableRequests);
 
-	// set notification counter from layout
-	let { setNotificationCounter } = getContext('leave-management');
-	onMount(() => {
-		setNotificationCounter(tableRequests.filter((r) => r.isUserCurrentApprover).length);
-	});
-
 	const handleFilteredDataChange = (filteredData) => {
 		displayedRequests = filteredData;
 	};
