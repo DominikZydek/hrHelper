@@ -1,16 +1,18 @@
 <script>
 	import Magnify from 'svelte-material-icons/Magnify.svelte';
 	import Plus from 'svelte-material-icons/Plus.svelte';
-
 	export let placeholderText;
 	export let searchData;
 	export let onFilteredDataChange;
+	export let searchMapper = (item) => item;
 
 	let searchTerm = '';
 	let filteredData = searchData;
 
 	const searchAllProperties = (item, term) => {
-		return Object.values(item).some((value) => {
+		const mappedItem = searchMapper(item);
+
+		return Object.values(mappedItem).some((value) => {
 			if (value === null || value === undefined) return false;
 			if (Array.isArray(value)) {
 				return value.some((v) => v.toString().toLowerCase().includes(term.toLowerCase()));
