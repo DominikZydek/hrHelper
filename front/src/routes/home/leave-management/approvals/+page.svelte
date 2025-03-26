@@ -76,6 +76,7 @@
 		return {
 			first_name: request.user.first_name,
 			last_name: request.user.last_name,
+			full_name: request.user.first_name + ' ' + request.user.last_name,
 			email: request.user.email,
 			job_title: request.user.job_title,
 			groups: groups,
