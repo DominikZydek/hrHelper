@@ -58,6 +58,25 @@
 		status = showApproveLeaveRequestPopup ? 'APPROVED' : 'REJECTED';
 	});
 
+	let isUserCurrentApprover = $state(false);
+
+	$effect(() => {
+		let leaveRequestStatus = selectedLeaveRequest?.status;
+
+		// if request is in progress, determine if user is current approver
+		if (leaveRequestStatus === 'IN_PROGRESS') {
+			let currentApprovalStepOrder = selectedLeaveRequest?.current_approval_step;
+			let approvalSteps = selectedLeaveRequest?.approval_process.steps;
+			let currentApprovalStep = approvalSteps.find(
+				(step) => step.order === currentApprovalStepOrder
+			);
+
+			isUserCurrentApprover = currentApprovalStep.approver.id === data.user.id;
+		} else {
+			isUserCurrentApprover = false;
+		}
+	});
+
 	let tableRequests = data.leaveRequestsWhereUserIsApprover;
 	let displayedRequests = $state(tableRequests);
 
@@ -211,9 +230,11 @@
 					{/if}
 
 					<button
+						disabled={!isUserCurrentApprover}
 						onclick={() => toggleApproveLeaveRequestPopup()}
 						type="button"
-						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-green"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-green
+										{!isUserCurrentApprover ? 'hidden' : ''}"
 					>
 						<Check size="1.25rem" />
 						<span>Zatwierdź wniosek</span>
@@ -226,7 +247,8 @@
 					<button
 						onclick={() => toggleRejectLeaveRequestPopup()}
 						type="button"
-						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red
+										{!isUserCurrentApprover ? 'hidden' : ''}"
 					>
 						<Close size="1.25rem" />
 						<span>Odrzuć wniosek</span>
