@@ -53,7 +53,7 @@
 			<IconWithNotificationBadge number={notificationCounter}>
 				<ClockTimeFourOutline slot="icon" size="1.75rem" />
 			</IconWithNotificationBadge>
-			<span>Wnioski do rozpatrzenia</span>
+			<span>Rozpatrywane wnioski</span>
 		</a>
 	</div>
 	<slot />
