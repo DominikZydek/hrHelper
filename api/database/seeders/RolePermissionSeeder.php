@@ -26,7 +26,7 @@ class RolePermissionSeeder extends Seeder
                 'view_all_leave_requests', 'approve_leave_requests',
                 'create_leave_requests', 'view_own_leave_requests',
                 'cancel_own_leave_requests', 'manage_company_holidays',
-                'manage_groups'
+                'manage_groups', 'manage_approval_processes',
             ],
             'supervisor' => [
                 'view_users', 'edit_own_profile', 'view_all_leave_requests',

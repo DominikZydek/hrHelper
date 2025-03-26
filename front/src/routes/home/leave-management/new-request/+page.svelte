@@ -124,14 +124,13 @@
 	let showOnlyApprovedRequestsButtonActive = false;
 
 	let plugins = [DayGrid, Interaction];
-	let options = {
+	let options = $state({
 		view: 'dayGridMonth',
 		events: [
 			...mapLeaveRequestsToCalendarEvents(calendarDisplayedRequests),
 			...mapCompanyHolidaysToCalendarEvents(companyHolidays)
 		],
 		eventClick: (info) => handleEventClick(info),
-		dateClick: (info) => handleDataCellClick(info),
 		selectable: true,
 		unselectAuto: false,
 		select: (info) => handleNewEventSelection(info),
@@ -213,19 +212,19 @@
 		buttonText: (text) => ({ ...text, today: 'Dziś' }),
 		dayHeaderFormat: { weekday: 'long' },
 		firstDay: 1
-	};
+	});
 
-	let showEmployeeList = false;
+	let showEmployeeList = $state(false);
 	const toggleEmployeeList = () => {
 		showEmployeeList = !showEmployeeList;
 	};
-	let selectedReplacement = null;
+	let selectedReplacement = $state(null);
 	const onSelectReplacement = (replacement) => {
 		selectedReplacement = replacement;
 		toggleEmployeeList();
 	};
 
-	let selectedLeaveTypeId = data.leaveTypes[0]?.id || null;
+	let selectedLeaveTypeId = $state(data.leaveTypes[0]?.id || null);
 	let selectedLeaveType = $state();
 	let showReplacementSelect = $state(false);
 
@@ -237,7 +236,7 @@
 		showReplacementSelect = selectedLeaveType?.requires_replacement === true;
 	});
 
-	let saveAsDraft = false;
+	let saveAsDraft = $state(false);
 
 	let { usedPtoDays, pendingPtoDays, availablePtoDays, ptoDays } = getUserPTOInfo(data.user);
 

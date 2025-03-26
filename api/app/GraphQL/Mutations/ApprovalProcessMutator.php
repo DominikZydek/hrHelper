@@ -12,7 +12,7 @@ class ApprovalProcessMutator
     public function updateApprovalProcess($root, array $args) {
 
         $user = Auth::user();
-        if (!$user->hasPermission('manage_approval_process')) {
+        if (!$user->hasPermission('manage_approval_processes')) {
             throw new Error('You can not update approval process.');
         }
 
