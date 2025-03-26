@@ -41,8 +41,9 @@ extend type Mutation {
         save_as_draft: Boolean!
     ) : LeaveRequest! @field(resolver: "App\\GraphQL\\Mutations\\LeaveRequestMutator@createLeaveRequest")
 
-    approveLeaveRequest(
+    setLeaveRequestStatus(
         leave_request: ID!
         comment: String!
-    ) : LeaveRequest! @field(resolver: "App\\GraphQL\\Mutations\\LeaveRequestMutator@approveLeaveRequest")
+        status: String!
+    ) : LeaveRequest! @field(resolver: "App\\GraphQL\\Mutations\\LeaveRequestMutator@setLeaveRequestStatus")
 }

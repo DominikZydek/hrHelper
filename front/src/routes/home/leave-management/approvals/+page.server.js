@@ -6,7 +6,8 @@ import { API_URL } from '$env/static/private';
 
 const schema = z.object({
 	leave_request: z.number().int(),
-	comment: z.string().min(1, { message: 'Dodaj komentarz' })
+	comment: z.string().min(1, { message: 'Dodaj komentarz' }),
+	status: z.string()
 });
 
 export const load = async ({ request, fetch }) => {
@@ -16,7 +17,7 @@ export const load = async ({ request, fetch }) => {
 };
 
 export const actions = {
-	approveLeaveRequest: async ({ request, fetch }) => {
+	setLeaveRequestStatus: async ({ request, fetch }) => {
 		const form = await superValidate(request, zod(schema));
 
 		console.log(form);
@@ -25,18 +26,19 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		let { leave_request, comment } = form.data;
+		let { leave_request, comment, status } = form.data;
 
 		const query = `
-		mutation ApproveLeaveRequest($leave_request: ID!, $comment: String!) {
-			approveLeaveRequest(leave_request: $leave_request, comment: $comment) {
+		mutation SetLeaveRequestStatus($leave_request: ID!, $comment: String!, $status: String!) {
+			setLeaveRequestStatus(leave_request: $leave_request, comment: $comment, status: $status) {
 				id
 			}
 		}`;
 
 		const variables = {
 			leave_request,
-			comment
+			comment,
+			status
 		};
 
 		const res = await fetch(API_URL, {

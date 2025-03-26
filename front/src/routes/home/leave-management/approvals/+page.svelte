@@ -52,6 +52,12 @@
 		showRejectLeaveRequestPopup = !showRejectLeaveRequestPopup;
 	};
 
+	let status = $state(null);
+
+	$effect(() => {
+		status = showApproveLeaveRequestPopup ? 'APPROVED' : 'REJECTED';
+	});
+
 	let tableRequests = data.leaveRequestsAwaitingApproval;
 	let displayedRequests = $state(tableRequests);
 
@@ -59,6 +65,75 @@
 		displayedRequests = filteredData;
 	};
 </script>
+
+{#snippet setLeaveRequestStatusForm()}
+	<Popup
+		togglePopup={showApproveLeaveRequestPopup
+			? toggleApproveLeaveRequestPopup
+			: toggleRejectLeaveRequestPopup}
+		title={showApproveLeaveRequestPopup ? 'Zatwierdź wniosek' : 'Odrzuć wniosek'}
+		closeOnClickOutside={false}
+	>
+		<p class="mb-2">
+			Czy na pewno chcesz {showApproveLeaveRequestPopup ? 'zatwierdzić' : 'odrzucić'} wniosek
+			{selectedLeaveRequest.user.first_name}
+			{selectedLeaveRequest.user.last_name}
+			o {selectedLeaveRequest.leave_type.name}
+			z powodu: {selectedLeaveRequest.reason}
+			w terminie: {new Date(selectedLeaveRequest.date_from).toLocaleDateString()} -
+			{new Date(selectedLeaveRequest.date_to).toLocaleDateString()} ({selectedLeaveRequest.days_count}
+			dni roboczych)?
+		</p>
+
+		<label for="comment">Dodaj komentarz:</label>
+
+		<form id="set_leave_request_status" action="?/setLeaveRequestStatus" method="POST" use:enhance>
+			<input
+				id="leave_request"
+				name="leave_request"
+				type="hidden"
+				value={selectedLeaveRequest.id}
+			/>
+
+			<input id="status" name="status" type="hidden" bind:value={status} />
+
+			<textarea
+				class="border border-main-gray rounded resize-none {$errors.comment
+					? 'outline-accent-red border border-accent-red'
+					: ''}"
+				aria-invalid={$errors.comment ? 'true' : ''}
+				cols="35"
+				rows="3"
+				name="comment"
+				id="comment"
+				bind:value={$form.comment}
+			></textarea>
+		</form>
+
+		{#if $errors.comment}
+			<small class="text-accent-red">{$errors.comment[0]}</small>
+		{/if}
+
+		<div class="flex justify-end gap-2">
+			<button
+				type="submit"
+				form="set_leave_request_status"
+				class="flex gap-1 items-center bg-accent-green text-main-white font-semibold h-8 px-4"
+			>
+				<Check />
+				Tak
+			</button>
+			<button
+				onclick={() => toggleApproveLeaveRequestPopup()}
+				type="button"
+				class="flex gap-1 items-center bg-accent-red text-main-white font-semibold h-8 px-4"
+			>
+				<Close />
+				Nie
+			</button>
+		</div>
+	</Popup>
+{/snippet}
 
 <div class="flex-1 p-4">
 	<div class="flex items-center gap-8 mb-4">
@@ -145,72 +220,7 @@
 					</button>
 
 					{#if showApproveLeaveRequestPopup}
-						<Popup
-							togglePopup={toggleApproveLeaveRequestPopup}
-							title="Zatwierdź wniosek"
-							closeOnClickOutside={false}
-						>
-							<p class="mb-2">
-								Czy na pewno chcesz zatwierdzić wniosek
-								{selectedLeaveRequest.user.first_name}
-								{selectedLeaveRequest.user.last_name}
-								o {selectedLeaveRequest.leave_type.name}
-								z powodu: {selectedLeaveRequest.reason}
-								w terminie: {new Date(selectedLeaveRequest.date_from).toLocaleDateString()} -
-								{new Date(selectedLeaveRequest.date_to).toLocaleDateString()} ({selectedLeaveRequest.days_count}
-								dni roboczych)?
-							</p>
-
-							<label for="comment">Dodaj komentarz:</label>
-
-							<form
-								id="approve_leave_request"
-								action="?/approveLeaveRequest"
-								method="POST"
-								use:enhance
-							>
-								<input
-									id="leave_request"
-									name="leave_request"
-									type="hidden"
-									value={selectedLeaveRequest.id}
-								/>
-								<textarea
-									class="border border-main-gray rounded resize-none {$errors.comment
-										? 'outline-accent-red border border-accent-red'
-										: ''}"
-									aria-invalid={$errors.comment ? 'true' : ''}
-									cols="35"
-									rows="3"
-									name="comment"
-									id="comment"
-									bind:value={$form.comment}
-								></textarea>
-							</form>
-
-							{#if $errors.comment}
-								<small class="text-accent-red">{$errors.comment[0]}</small>
-							{/if}
-
-							<div class="flex justify-end gap-2">
-								<button
-									type="submit"
-									form="approve_leave_request"
-									class="flex gap-1 items-center bg-accent-green text-main-white font-semibold h-8 px-4"
-								>
-									<Check />
-									Tak
-								</button>
-								<button
-									onclick={() => toggleApproveLeaveRequestPopup()}
-									type="button"
-									class="flex gap-1 items-center bg-accent-red text-main-white font-semibold h-8 px-4"
-								>
-									<Close />
-									Nie
-								</button>
-							</div>
-						</Popup>
+						{@render setLeaveRequestStatusForm()}
 					{/if}
 
 					<button
@@ -223,7 +233,7 @@
 					</button>
 
 					{#if showRejectLeaveRequestPopup}
-						<Popup togglePopup={toggleRejectLeaveRequestPopup} title="Odrzuć wniosek"></Popup>
+						{@render setLeaveRequestStatusForm()}
 					{/if}
 				</div>
 			</Dropdown>

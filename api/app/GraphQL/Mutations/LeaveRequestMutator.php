@@ -184,7 +184,7 @@ class LeaveRequestMutator
         }
     }
 
-    public function approveLeaveRequest($root, array $args)
+    public function setLeaveRequestStatus($root, array $args)
     {
         $leaveRequest = LeaveRequest::findOrFail($args['leave_request']);
         $user = User::findOrFail($leaveRequest->user_id);
@@ -198,30 +198,51 @@ class LeaveRequestMutator
 
         // throw error if current user is not who they are supposed to be
         if ($currentUser->id != $currentApprovalStep->approver_id) {
-            throw new Error('You are not permitted to approve this leave request.');
+            throw new Error('You are not permitted to approve/reject this leave request.');
         }
 
         try {
-            // if currently approving user is not the last in the process
-            if ($currentApprovalStep->order != $approvalSteps->last()->order) {
-                // add history entry
-                ApprovalStepsHistory::create([
-                    'leave_request_id' => $leaveRequest->id,
-                    'step' => $leaveRequest->current_approval_step,
-                    'status' => 'APPROVED',
-                    'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail($user->approval_process_id)->id)
-                        ->where('order', $leaveRequest->current_approval_step)->first()->approver_id,
-                    'comment' => $args['comment'],
-                    'date' => Carbon::now(),
-                ]);
+            if ($args['status'] == 'APPROVED') {
+                // if currently approving user is not the last in the process
+                if ($currentApprovalStep->order != $approvalSteps->last()->order) {
+                    // add history entry
+                    ApprovalStepsHistory::create([
+                        'leave_request_id' => $leaveRequest->id,
+                        'step' => $leaveRequest->current_approval_step,
+                        'status' => 'APPROVED',
+                        'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail($user->approval_process_id)->id)
+                            ->where('order', $leaveRequest->current_approval_step)->first()->approver_id,
+                        'comment' => $args['comment'],
+                        'date' => Carbon::now(),
+                    ]);
 
-                // increment order, to pass it to the next person in the process
-                $leaveRequest->current_approval_step += 1;
-                $leaveRequest->save();
+                    // increment order, to pass it to the next person in the process
+                    $leaveRequest->current_approval_step += 1;
+                    $leaveRequest->save();
+                } else {
+                    // change status to approved, deduct days, etc.
+                    $user->pending_pto -= $leaveRequest->days_count;
+                    $leaveRequest->status = 'APPROVED';
+
+                    $user->save();
+                    $leaveRequest->save();
+
+                    // add history entry
+                    ApprovalStepsHistory::create([
+                        'leave_request_id' => $leaveRequest->id,
+                        'step' => $leaveRequest->current_approval_step,
+                        'status' => 'APPROVED',
+                        'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail($user->approval_process_id)->id)
+                            ->where('order', $leaveRequest->current_approval_step)->first()->approver_id,
+                        'comment' => $args['comment'],
+                        'date' => Carbon::now(),
+                    ]);
+                }
             } else {
-                // change status to approved, deduct days, etc.
+                // return pending days, set status
                 $user->pending_pto -= $leaveRequest->days_count;
-                $leaveRequest->status = 'APPROVED';
+                $user->available_pto += $leaveRequest->days_count;
+                $leaveRequest->status = 'REJECTED';
 
                 $user->save();
                 $leaveRequest->save();
@@ -230,7 +251,7 @@ class LeaveRequestMutator
                 ApprovalStepsHistory::create([
                     'leave_request_id' => $leaveRequest->id,
                     'step' => $leaveRequest->current_approval_step,
-                    'status' => 'APPROVED',
+                    'status' => 'REJECTED',
                     'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail($user->approval_process_id)->id)
                         ->where('order', $leaveRequest->current_approval_step)->first()->approver_id,
                     'comment' => $args['comment'],
@@ -243,10 +264,5 @@ class LeaveRequestMutator
         }
 
         return $leaveRequest;
-    }
-
-    public function rejectLeaveRequest($root, array $args)
-    {
-
     }
 }
