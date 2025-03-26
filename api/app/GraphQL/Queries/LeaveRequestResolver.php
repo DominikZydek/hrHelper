@@ -24,6 +24,8 @@ class LeaveRequestResolver
                 'replacement.user',
                 'approval_steps_history.approver'
             ])
+            ->orderByRaw("CASE WHEN status = 'IN_PROGRESS' THEN 0 ELSE 1 END")
+            ->orderBy('date_from', 'asc')
             ->get();
     }
 
