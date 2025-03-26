@@ -5,10 +5,17 @@
 	import ClockTimeFourOutline from 'svelte-material-icons/ClockTimeFourOutline.svelte';
 	import { page } from '$app/state';
 	import IconWithNotificationBadge from '../../../components/IconWithNotificationBadge.svelte';
+	import { setContext } from 'svelte';
 
 	let path = $derived(page.url.pathname.split('/')[3]);
 
 	let { data } = $props();
+
+	let notificationCounter = $state(0);
+
+	setContext('leave-management', {
+		setNotificationCounter: (val) => (notificationCounter = val)
+	});
 </script>
 
 <div class="w-full h-full flex">
@@ -43,7 +50,7 @@
 			class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
                   {path === 'approvals' ? 'bg-auxiliary-gray' : ''}"
 		>
-			<IconWithNotificationBadge>
+			<IconWithNotificationBadge number={notificationCounter}>
 				<ClockTimeFourOutline slot="icon" size="1.75rem" />
 			</IconWithNotificationBadge>
 			<span>Wnioski do rozpatrzenia</span>

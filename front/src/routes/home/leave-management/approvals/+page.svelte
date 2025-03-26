@@ -12,6 +12,7 @@
 	import DotsHorizontal from 'svelte-material-icons/DotsHorizontal.svelte';
 	import LeaveRequestList from '../../../../components/LeaveRequestList.svelte';
 	import { superForm } from 'sveltekit-superforms';
+	import { getContext, onMount } from 'svelte';
 
 	let { data } = $props();
 
@@ -58,27 +59,14 @@
 		status = showApproveLeaveRequestPopup ? 'APPROVED' : 'REJECTED';
 	});
 
-	let isUserCurrentApprover = $state(false);
-
-	$effect(() => {
-		let leaveRequestStatus = selectedLeaveRequest?.status;
-
-		// if request is in progress, determine if user is current approver
-		if (leaveRequestStatus === 'IN_PROGRESS') {
-			let currentApprovalStepOrder = selectedLeaveRequest?.current_approval_step;
-			let approvalSteps = selectedLeaveRequest?.approval_process.steps;
-			let currentApprovalStep = approvalSteps.find(
-				(step) => step.order === currentApprovalStepOrder
-			);
-
-			isUserCurrentApprover = currentApprovalStep.approver.id === data.user.id;
-		} else {
-			isUserCurrentApprover = false;
-		}
-	});
-
 	let tableRequests = data.leaveRequestsWhereUserIsApprover;
 	let displayedRequests = $state(tableRequests);
+
+	// set notification counter from layout
+	let { setNotificationCounter } = getContext('leave-management');
+	onMount(() => {
+		setNotificationCounter(tableRequests.filter((r) => r.isUserCurrentApprover).length);
+	});
 
 	const handleFilteredDataChange = (filteredData) => {
 		displayedRequests = filteredData;
@@ -230,11 +218,11 @@
 					{/if}
 
 					<button
-						disabled={!isUserCurrentApprover}
+						disabled={!selectedLeaveRequest.isUserCurrentApprover}
 						onclick={() => toggleApproveLeaveRequestPopup()}
 						type="button"
 						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-green
-										{!isUserCurrentApprover ? 'hidden' : ''}"
+										{!selectedLeaveRequest.isUserCurrentApprover ? 'hidden' : ''}"
 					>
 						<Check size="1.25rem" />
 						<span>Zatwierdź wniosek</span>
@@ -248,7 +236,7 @@
 						onclick={() => toggleRejectLeaveRequestPopup()}
 						type="button"
 						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red
-										{!isUserCurrentApprover ? 'hidden' : ''}"
+										{!selectedLeaveRequest.isUserCurrentApprover ? 'hidden' : ''}"
 					>
 						<Close size="1.25rem" />
 						<span>Odrzuć wniosek</span>
