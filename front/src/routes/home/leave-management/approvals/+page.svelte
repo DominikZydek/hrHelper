@@ -58,7 +58,7 @@
 		status = showApproveLeaveRequestPopup ? 'APPROVED' : 'REJECTED';
 	});
 
-	let tableRequests = data.leaveRequestsAwaitingApproval;
+	let tableRequests = data.leaveRequestsWhereUserIsApprover;
 	let displayedRequests = $state(tableRequests);
 
 	const handleFilteredDataChange = (filteredData) => {
@@ -141,12 +141,12 @@
 		<div class="flex-1">
 			<Searchbar
 				placeholderText="Szukaj wniosku..."
-				searchData={data.leaveRequestsAwaitingApproval}
+				searchData={data.leaveRequestsWhereUserIsApprover}
 				onFilteredDataChange={handleFilteredDataChange}
 			/>
 		</div>
 	</div>
-	<LeaveRequestList leaveRequests={displayedRequests} {onClick} mode="manage" />
+	<LeaveRequestList leaveRequests={displayedRequests} {onClick} mode="manage" fullHeight={false} />
 </div>
 
 {#if showPopup}

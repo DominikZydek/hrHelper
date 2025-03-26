@@ -112,7 +112,7 @@ export const load = async ({ locals, request, fetch }) => {
               }
             }
           },
-          leaveRequestsAwaitingApproval {
+          leaveRequestsWhereUserIsApprover {
               id,
               user {
                   id,
