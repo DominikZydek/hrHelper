@@ -8,17 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 class LeaveRequestResolver
 {
-    public function leaveRequestsAwaitingApproval($root, array $args)
+    public function leaveRequestsWhereUserIsApprover($root, array $args)
     {
         $currentUser = Auth::user();
 
-        return LeaveRequest::where('status', 'IN_PROGRESS')
-            ->whereHas('approval_process', function ($query) use ($currentUser) {
-                $query->whereHas('steps', function ($query) use ($currentUser) {
-                    $query->where('approver_id', $currentUser->id)
-                        ->whereRaw('leave_requests.current_approval_step = approval_steps.order');
-                });
-            })
+        return LeaveRequest::whereHas('approval_process', function ($query) use ($currentUser) {
+            $query->whereHas('steps', function ($query) use ($currentUser) {
+                $query->where('approver_id', $currentUser->id);
+            });
+        })
             ->with([
                 'user',
                 'leave_type',
@@ -26,6 +24,8 @@ class LeaveRequestResolver
                 'replacement.user',
                 'approval_steps_history.approver'
             ])
+            ->orderByRaw("CASE WHEN status = 'IN_PROGRESS' THEN 0 ELSE 1 END")
+            ->orderBy('date_from', 'asc')
             ->get();
     }
 

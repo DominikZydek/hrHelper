@@ -24,7 +24,7 @@ enum LeaveRequestStatus {
 }
 
 extend type Query {
-    leaveRequestsAwaitingApproval: [LeaveRequest!]! @field(resolver: "App\\GraphQL\\Queries\\LeaveRequestResolver@leaveRequestsAwaitingApproval")
+    leaveRequestsWhereUserIsApprover: [LeaveRequest!]! @field(resolver: "App\\GraphQL\\Queries\\LeaveRequestResolver@leaveRequestsWhereUserIsApprover")
 
     # Get all leave requests from a specific organization
     leaveRequests(organization: ID!) : [LeaveRequest] @field(resolver: "App\\GraphQL\\Queries\\LeaveRequestResolver@leaveRequests")
@@ -40,4 +40,10 @@ extend type Mutation {
         replacement: ID
         save_as_draft: Boolean!
     ) : LeaveRequest! @field(resolver: "App\\GraphQL\\Mutations\\LeaveRequestMutator@createLeaveRequest")
+
+    setLeaveRequestStatus(
+        leave_request: ID!
+        comment: String!
+        status: String!
+    ) : LeaveRequest! @field(resolver: "App\\GraphQL\\Mutations\\LeaveRequestMutator@setLeaveRequestStatus")
 }

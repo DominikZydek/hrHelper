@@ -9,10 +9,12 @@ use App\Models\CompanyHoliday;
 use App\Models\LeaveRequest;
 use App\Models\LeaveRequestReplacement;
 use App\Models\LeaveType;
+use App\Models\User;
 use Carbon\Carbon;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class LeaveRequestMutator
 {
@@ -180,5 +182,87 @@ class LeaveRequestMutator
             DB::rollBack();
             throw new \Exception('Failed to create request: ' . $e->getMessage());
         }
+    }
+
+    public function setLeaveRequestStatus($root, array $args)
+    {
+        $leaveRequest = LeaveRequest::findOrFail($args['leave_request']);
+        $user = User::findOrFail($leaveRequest->user_id);
+
+        // get approval process with associated approval steps
+        $approvalSteps = ApprovalProcess::with('steps')->findOrFail($user->approval_process_id)->steps;
+        $currentApprovalStep = $approvalSteps[$leaveRequest->current_approval_step - 1];
+
+        // check if auth user is supposed to be accepting the request right now
+        $currentUser = Auth::user();
+
+        // throw error if current user is not who they are supposed to be
+        if ($currentUser->id != $currentApprovalStep->approver_id) {
+            throw new Error('You are not permitted to approve/reject this leave request.');
+        }
+
+        try {
+            if ($args['status'] == 'APPROVED') {
+                // if currently approving user is not the last in the process
+                if ($currentApprovalStep->order != $approvalSteps->last()->order) {
+                    // add history entry
+                    ApprovalStepsHistory::create([
+                        'leave_request_id' => $leaveRequest->id,
+                        'step' => $leaveRequest->current_approval_step,
+                        'status' => 'APPROVED',
+                        'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail($user->approval_process_id)->id)
+                            ->where('order', $leaveRequest->current_approval_step)->first()->approver_id,
+                        'comment' => $args['comment'],
+                        'date' => Carbon::now(),
+                    ]);
+
+                    // increment order, to pass it to the next person in the process
+                    $leaveRequest->current_approval_step += 1;
+                    $leaveRequest->save();
+                } else {
+                    // change status to approved, deduct days, etc.
+                    $user->pending_pto -= $leaveRequest->days_count;
+                    $leaveRequest->status = 'APPROVED';
+
+                    $user->save();
+                    $leaveRequest->save();
+
+                    // add history entry
+                    ApprovalStepsHistory::create([
+                        'leave_request_id' => $leaveRequest->id,
+                        'step' => $leaveRequest->current_approval_step,
+                        'status' => 'APPROVED',
+                        'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail($user->approval_process_id)->id)
+                            ->where('order', $leaveRequest->current_approval_step)->first()->approver_id,
+                        'comment' => $args['comment'],
+                        'date' => Carbon::now(),
+                    ]);
+                }
+            } else {
+                // return pending days, set status
+                $user->pending_pto -= $leaveRequest->days_count;
+                $user->available_pto += $leaveRequest->days_count;
+                $leaveRequest->status = 'REJECTED';
+
+                $user->save();
+                $leaveRequest->save();
+
+                // add history entry
+                ApprovalStepsHistory::create([
+                    'leave_request_id' => $leaveRequest->id,
+                    'step' => $leaveRequest->current_approval_step,
+                    'status' => 'REJECTED',
+                    'approver_id' => ApprovalStep::where('approval_process_id', ApprovalProcess::findOrFail($user->approval_process_id)->id)
+                        ->where('order', $leaveRequest->current_approval_step)->first()->approver_id,
+                    'comment' => $args['comment'],
+                    'date' => Carbon::now(),
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Failed to approve request: ' . $e->getMessage());
+        }
+
+        return $leaveRequest;
     }
 }

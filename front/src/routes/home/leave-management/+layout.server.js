@@ -112,7 +112,7 @@ export const load = async ({ locals, request, fetch }) => {
               }
             }
           },
-          leaveRequestsAwaitingApproval {
+          leaveRequestsWhereUserIsApprover {
               id,
               user {
                   id,
@@ -226,6 +226,30 @@ export const load = async ({ locals, request, fetch }) => {
 		credentials: 'include',
 		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
+
+	// attach to each leave request a flag for deciding if user is current approver
+	res.data.leaveRequestsWhereUserIsApprover = res.data.leaveRequestsWhereUserIsApprover.map((r) => {
+		let isUserCurrentApprover = false;
+
+		let leaveRequestStatus = r?.status;
+
+		// if request is in progress, determine if user is current approver
+		if (leaveRequestStatus === 'IN_PROGRESS') {
+			let currentApprovalStepOrder = r?.current_approval_step;
+			let approvalSteps = r?.approval_process.steps;
+			let currentApprovalStep = approvalSteps.find(
+				(step) => step.order === currentApprovalStepOrder
+			);
+			isUserCurrentApprover = currentApprovalStep.approver.id === user.id;
+		} else {
+			isUserCurrentApprover = false;
+		}
+
+		return {
+			...r,
+			isUserCurrentApprover
+		};
+	});
 
 	return res.data;
 };

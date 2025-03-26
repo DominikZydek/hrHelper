@@ -4,6 +4,7 @@
 	import { clickOutside } from '../utils/clickOutside.js';
 	export let togglePopup;
 	export let title;
+	export let closeOnClickOutside = true;
 </script>
 
 <div
@@ -11,8 +12,8 @@
 	class="fixed top-0 left-0 w-screen h-screen bg-main-black/75 flex items-center justify-center p-4 z-[9999]"
 >
 	<div
-		use:clickOutside
-		on:clickoutside={() => togglePopup()}
+		use:clickOutside={closeOnClickOutside}
+		on:clickoutside={() => closeOnClickOutside && togglePopup()}
 		class="bg-main-white max-w-5xl max-h-[90vh] rounded-lg p-6 overflow-auto"
 	>
 		<div class="flex justify-between items-center mb-4">

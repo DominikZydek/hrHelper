@@ -2,11 +2,21 @@
 	import { getStatusInfo } from '../utils/getStatusInfo.js';
 	import { icons } from '../stores/icons.js';
 	import GroupBadge from './GroupBadge.svelte';
+	import IconWithNotificationBadge from './IconWithNotificationBadge.svelte';
 	export let leaveRequests;
 	export let onClick;
 
-	export let mode = 'view'; // 'manage'
-	export let fullHeight = true; // if false, restrict to 50vh
+	// string setting the mode of the component, 'view' or 'manage'<br>
+	// default - 'view'
+	export let mode = 'view';
+
+	// a flag determining if the component is to be displayed with h-full, if false -> h-[50vh]<br>
+	// default - true
+	export let fullHeight = true;
+
+	// string representation of leaveRequest bool property determining if NotificationBadge is to be shown<br>
+	// default - null
+	export let notificationFlagName = null;
 </script>
 
 {#if mode === 'view'}
@@ -65,10 +75,17 @@
 			<tbody class="divide-y divide-main-gray">
 				{#each leaveRequests as leaveRequest}
 					{@const statusInfo = getStatusInfo(leaveRequest.status)}
+					{@const notification = leaveRequest[notificationFlagName]}
 					<tr class="cursor-pointer hover:bg-auxiliary-gray" on:click={() => onClick(leaveRequest)}>
 						<td class="px-4 py-3">
 							<div class="flex items-center gap-5">
-								<img class="h-16 w-16" src="/favicon.png" alt="" />
+								{#if notification}
+									<IconWithNotificationBadge>
+										<img class="h-16 w-16" src="/favicon.png" alt="" slot="icon" />
+									</IconWithNotificationBadge>
+								{:else}
+									<img class="h-16 w-16" src="/favicon.png" alt="" />
+								{/if}
 								<div class="flex-1">
 									<div class="flex gap-5 items-start">
 										<div>
