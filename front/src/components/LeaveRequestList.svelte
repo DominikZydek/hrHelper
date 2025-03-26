@@ -6,8 +6,17 @@
 	export let leaveRequests;
 	export let onClick;
 
-	export let mode = 'view'; // 'manage'
-	export let fullHeight = true; // if false, restrict to 50vh
+	// string setting the mode of the component, 'view' or 'manage'<br>
+	// default - 'view'
+	export let mode = 'view';
+
+	// a flag determining if the component is to be displayed with h-full, if false -> h-[50vh]<br>
+	// default - true
+	export let fullHeight = true;
+
+	// string representation of leaveRequest bool property determining if NotificationBadge is to be shown<br>
+	// default - null
+	export let notificationFlagName = null;
 </script>
 
 {#if mode === 'view'}
@@ -66,8 +75,7 @@
 			<tbody class="divide-y divide-main-gray">
 				{#each leaveRequests as leaveRequest}
 					{@const statusInfo = getStatusInfo(leaveRequest.status)}
-					{@const notification = leaveRequest.isUserCurrentApprover}
-					<!-- TODO: this flag should be passed as a prop or something, since it may be needed to change for other use cases -->
+					{@const notification = leaveRequest[notificationFlagName]}
 					<tr class="cursor-pointer hover:bg-auxiliary-gray" on:click={() => onClick(leaveRequest)}>
 						<td class="px-4 py-3">
 							<div class="flex items-center gap-5">

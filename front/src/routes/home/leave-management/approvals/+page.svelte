@@ -147,7 +147,13 @@
 			/>
 		</div>
 	</div>
-	<LeaveRequestList leaveRequests={displayedRequests} {onClick} mode="manage" fullHeight={false} />
+	<LeaveRequestList
+		leaveRequests={displayedRequests}
+		{onClick}
+		mode="manage"
+		fullHeight={false}
+		notificationFlagName="isUserCurrentApprover"
+	/>
 </div>
 
 {#if showPopup}
