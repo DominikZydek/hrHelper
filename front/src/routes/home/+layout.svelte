@@ -91,8 +91,11 @@
 				</a>
 			</li>
 			<!-- recruitment -->
-			<li class="px-4 py-6 w-full relative {path === 'information' ? 'bg-auxiliary-darkblue' : ''}">
-				<a class="flex flex-col items-center justify-center h-8 group" href="/home/information">
+			<li class="px-4 py-6 w-full relative {path === 'messages' ? 'bg-auxiliary-darkblue' : ''}">
+				<a
+					class="flex flex-col items-center justify-center h-8 group"
+					href="/home/messages/view-messages"
+				>
 					<NewspaperVariantMultiple
 						class="text-main-white absolute group-hover:-translate-y-3 transition-transform"
 						size="2rem"
@@ -100,11 +103,11 @@
 					<p
 						class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity"
 					>
-						Informacje
+						Wiadomości
 					</p>
 				</a>
 			</li>
-			<!-- information -->
+			<!-- messages -->
 		</ul>
 	</nav>
 	<div class="ml-20 relative h-full">
