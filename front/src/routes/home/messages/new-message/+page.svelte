@@ -275,9 +275,9 @@
 					/>
 					<select class="w-max" name="category" id="category">
 						<option disabled selected>Wybierz kategorię</option>
-						<option value="1">Ogólne</option>
-						<option value="2">Ważne</option>
-						<option value="3">Informacje</option>
+						{#each data.message_categories as category}
+							<option value={category.id}>{category.name}</option>
+						{/each}
 					</select>
 				</div>
 				<textarea

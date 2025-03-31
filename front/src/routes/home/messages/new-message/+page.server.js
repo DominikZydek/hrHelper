@@ -63,6 +63,10 @@ export const load = async ({ locals, request, fetch }) => {
 				},
 				employed_from,
 				employed_to
+			},
+			message_categories {
+				id,
+				name
 			}
 		}
 	`;
