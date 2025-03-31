@@ -1,0 +1,4 @@
+type MessageCategory {
+    id: ID!
+    name: String!
+}

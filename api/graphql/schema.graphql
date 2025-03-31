@@ -17,3 +17,5 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 #import role.graphql
 #import permission.graphql
 #import permission_override.graphql
+#import message.graphql
+#import message_category.graphql

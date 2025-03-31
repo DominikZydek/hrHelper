@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Seed the application's database.
      */
     public function run(): void
     {
@@ -20,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,        // Role muszą istnieć przed użytkownikami
             PermissionSeeder::class,  // Uprawnienia również muszą istnieć przed użytkownikami
             GroupSeeder::class,       // Grupy też muszą być przed użytkownikami
+            MessageCategorySeeder::class, // Kategorie wiadomości nie zależą od innych tabel
 
             // 2. Użytkownicy (zależni od organizacji, adresów, procesów zatwierdzania)
             UserSeeder::class,
@@ -37,6 +37,10 @@ class DatabaseSeeder extends Seeder
             LeaveRequestReplacementSeeder::class, // Zależne od leave_requests i users
             ApprovalStepsHistorySeeder::class,  // Zależne od leave_requests
             CompanyHolidaySeeder::class,        // Zależne od organizations
+
+            // 5. System wiadomości (zależny od użytkowników)
+            MessageSeeder::class,               // Zależne od users i message_categories
+            MessageRecipientSeeder::class,      // Zależne od messages i users
         ]);
     }
 }

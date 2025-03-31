@@ -12,7 +12,7 @@ const schema = z.object({
 		}
 		return val;
 	}, z.array(z.string())),
-	topic: z.string(),
+	subject: z.string(),
 	category: z.number().int(),
 	content: z.string(),
 	priority: z.string(),

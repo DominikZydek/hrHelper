@@ -1,0 +1,17 @@
+type Message {
+    id: ID!
+    author: User!
+    subject: String!
+    category: MessageCategory!
+    content: String!
+    priority: Int!
+    publication_date: DateTime!
+    date_from: Date
+    date_to: Date
+    require_confirmation: Boolean!
+}
+
+extend type Query {
+    messages : [Message]! @all
+}
+

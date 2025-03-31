@@ -269,8 +269,8 @@
 					<input
 						class="flex-1 border border-main-gray p-2"
 						type="text"
-						id="topic"
-						name="topic"
+						id="subject"
+						name="subject"
 						placeholder="Temat wiadomości"
 					/>
 					<select class="w-max" name="category" id="category">
