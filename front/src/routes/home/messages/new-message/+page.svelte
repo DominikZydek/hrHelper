@@ -273,7 +273,7 @@
 						name="subject"
 						placeholder="Temat wiadomości"
 					/>
-					<select class="w-max" name="category" id="category">
+					<select class="w-max border border-main-gray p-2" name="category" id="category">
 						<option disabled selected>Wybierz kategorię</option>
 						{#each data.message_categories as category}
 							<option value={category.id}>{category.name}</option>
