@@ -15,8 +15,11 @@ class Message extends Model
         return $this->belongsTo(MessageCategory::class);
     }
 
-    public function recipients() {
-        return $this->belongsToMany(User::class, 'message_recipients');
+    public function recipients()
+    {
+        return $this->belongsToMany(User::class, 'message_recipients', 'message_id', 'recipient_id')
+            ->withPivot('seen')
+            ->withTimestamps();
     }
 
     public function author() {

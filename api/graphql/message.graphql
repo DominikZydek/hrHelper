@@ -15,3 +15,17 @@ extend type Query {
     messages : [Message]! @all
 }
 
+extend type Mutation {
+    createMessage(
+        recipients: [String]!
+        subject: String!
+        category: ID!
+        content: String!
+        priority: Int!
+        publication_date: DateTime!
+        date_from: Date
+        date_to: Date
+        require_confirmation: Boolean!
+    ) : Message! @field(resolver: "App\\GraphQL\\Mutations\\MessageMutator@createMessage")
+}
+
