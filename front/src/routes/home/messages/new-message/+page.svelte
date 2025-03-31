@@ -265,13 +265,21 @@
 		<div class="p-6 border rounded-xl shadow col-span-12">
 			<p class="font-bold text-lg mb-2">Napisz wiadomość</p>
 			<div class="flex flex-col gap-4">
-				<input
-					class="w-full border border-main-gray p-2"
-					type="text"
-					id="topic"
-					name="topic"
-					placeholder="Temat wiadomości"
-				/>
+				<div class="flex gap-2">
+					<input
+						class="flex-1 border border-main-gray p-2"
+						type="text"
+						id="topic"
+						name="topic"
+						placeholder="Temat wiadomości"
+					/>
+					<select class="w-max" name="category" id="category">
+						<option disabled selected>Wybierz kategorię</option>
+						<option value="1">Ogólne</option>
+						<option value="2">Ważne</option>
+						<option value="3">Informacje</option>
+					</select>
+				</div>
 				<textarea
 					class="w-full border border-main-gray p-2 resize-none"
 					id="content"

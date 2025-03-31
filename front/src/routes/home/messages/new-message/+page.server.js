@@ -13,6 +13,7 @@ const schema = z.object({
 		return val;
 	}, z.array(z.string())),
 	topic: z.string(),
+	category: z.number().int(),
 	content: z.string(),
 	priority: z.string(),
 	publication_date: z.date().transform((date) => date.toISOString()),
