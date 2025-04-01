@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             // 5. System wiadomości (zależny od użytkowników)
             MessageSeeder::class,               // Zależne od users i message_categories
             MessageRecipientSeeder::class,      // Zależne od messages i users
+            MessageTemplateSeeder::class,       // Zależne od categories
         ]);
     }
 }

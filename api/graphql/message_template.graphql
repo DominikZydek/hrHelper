@@ -1,0 +1,13 @@
+type MessageTemplate {
+    id: ID!
+    name: String!
+    subject: String
+    content: String!
+    priority: Int
+    require_confirmation: Boolean
+    category: MessageCategory
+}
+
+extend type Query {
+    message_templates: [MessageTemplate]! @all
+}

@@ -251,12 +251,13 @@
 		</div>
 
 		<div class="p-6 border rounded-xl shadow col-span-9">
-			<!-- TODO: implement templates on the backend -->
+			<!-- TODO: populate message on change -->
 			<p class="font-bold text-lg mb-2">Wybierz szablon</p>
 			<select class="w-full border border-main-gray p-2" name="template" id="template">
-				<option selected>Brak szablonu</option>
-				<option value="1">Newsletter</option>
-				<option value="2">Zmiana polityki firmy</option>
+				<option selected>Wybierz szablon</option>
+				{#each data.message_templates as template}
+					<option value={template.id}>{template.name}</option>
+				{/each}
 			</select>
 		</div>
 

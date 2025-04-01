@@ -122,6 +122,18 @@ export const load = async ({ locals, request, fetch }) => {
 			message_categories {
 				id,
 				name
+			},
+			message_templates {
+				id
+				name
+				subject
+				content
+				priority
+				require_confirmation
+				category {
+					id
+					name
+				}
 			}
 		}
 	`;
