@@ -5,6 +5,7 @@
 	import Popup from '../../../../components/Popup.svelte';
 	import EmployeeList from '../../../../components/EmployeeList.svelte';
 	import { onDestroy, onMount } from 'svelte';
+	import { getMessagePriorityInfo } from '../../../../utils/getMessagePriorityInfo.js';
 
 	let { data } = $props();
 
@@ -67,11 +68,6 @@
 	};
 
 	let messagePriority = $state('2'); // 1 - low, 2 - medium, 3 - high
-	const messagePriorityDisplay = (priorityNumber) => {
-		if (priorityNumber === '1') return { message: 'Niski', class: 'text-accent-green' };
-		if (priorityNumber === '2') return { message: 'Średni', class: 'text-accent-orange' };
-		if (priorityNumber === '3') return { message: 'Wysoki', class: 'text-accent-red' };
-	};
 
 	let currentDateTime = $state(new Date());
 	let interval;
@@ -217,9 +213,10 @@
 						}}
 					/>
 					<p
-						class="w-1/6 text-center font-semibold {messagePriorityDisplay(messagePriority).class}"
+						class="w-1/6 text-center font-semibold text-{getMessagePriorityInfo(messagePriority)
+							.colorClass}"
 					>
-						{messagePriorityDisplay(messagePriority).message}
+						{getMessagePriorityInfo(messagePriority).message}
 					</p>
 				</div>
 			</div>

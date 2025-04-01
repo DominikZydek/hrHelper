@@ -30,6 +30,7 @@ type User {
     leave_requests: [LeaveRequest!]!
 
     hasPermission(name: String!): Boolean! @method
+    visibleMessages: [Message]! @hasMany
 }
 
 enum Sex {

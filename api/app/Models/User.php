@@ -77,6 +77,31 @@ class User extends Authenticatable
             ->withPivot('granted');
     }
 
+    public function messages()
+    {
+        return $this->belongsToMany(Message::class, 'message_recipients', 'recipient_id')
+            ->withPivot('seen')
+            ->withTimestamps();
+    }
+
+    public function visibleMessages()
+    {
+        $query = $this->messages()
+            ->where('publication_date', '<=', now());
+
+        $query->where(function($q) {
+            $q->whereNull('date_from')
+                ->orWhere('date_from', '<=', now());
+        });
+
+        $query->where(function($q) {
+            $q->whereNull('date_to')
+                ->orWhere('date_to', '>=', now());
+        });
+
+        return $query;
+    }
+
     /**
      * Checks if user has a specific permission
      */

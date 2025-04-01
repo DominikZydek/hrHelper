@@ -12,7 +12,7 @@ class Message extends Model
     ];
 
     public function category() {
-        return $this->belongsTo(MessageCategory::class);
+        return $this->belongsTo(MessageCategory::class, 'message_category_id');
     }
 
     public function recipients()

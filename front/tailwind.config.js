@@ -23,5 +23,14 @@ export default {
 		}
 	},
 
+	safelist: [
+		'border-accent-red',
+		'border-accent-orange',
+		'border-accent-green',
+		'text-accent-red',
+		'text-accent-orange',
+		'text-accent-green'
+	],
+
 	plugins: []
 };

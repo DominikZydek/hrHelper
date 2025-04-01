@@ -9,6 +9,11 @@ type Message {
     date_from: Date
     date_to: Date
     require_confirmation: Boolean!
+
+    recipients: [User]!
+
+    # get a bool value whether the user read the message
+    seen: Boolean! @field(resolver: "App\\GraphQL\\Queries\\MessageResolver@seen")
 }
 
 extend type Query {
