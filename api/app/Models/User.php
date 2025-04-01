@@ -99,7 +99,7 @@ class User extends Authenticatable
                 ->orWhere('date_to', '>=', now());
         });
 
-        return $query->orderBy('priority', 'DESC');
+        return $query->orderBy('priority', 'DESC')->orderBy('publication_date', 'DESC');
     }
 
     /**
