@@ -1,6 +1,7 @@
 <script>
 	import GroupBadge from './GroupBadge.svelte';
 	import { getMessagePriorityInfo } from '../utils/getMessagePriorityInfo.js';
+	import Eye from 'svelte-material-icons/Eye.svelte';
 
 	let { messages } = $props();
 	$inspect(messages);
@@ -81,6 +82,21 @@
 					({calculateTimeAgo(message.publication_date)})
 				</p>
 				<p class="whitespace-pre-wrap text-lg">{message.content}</p>
+				{#if message.require_confirmation}
+					<button
+						type="button"
+						class="flex gap-1 items-center font-semibold h-8 self-end mt-5
+						{message.seen ? 'bg-main-white text-main-gray' : 'px-4 bg-accent-green text-main-white'}"
+						disabled={message.seen}
+					>
+						<Eye />
+						{#if !message.seen}
+							Potwierdź odczytanie
+						{:else}
+							Odczytano
+						{/if}
+					</button>
+				{/if}
 			</div>
 		</li>
 	{/each}
