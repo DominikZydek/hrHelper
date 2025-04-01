@@ -28,6 +28,7 @@
 			email: message.author.email,
 			job_title: message.author.job_title,
 			groups: groups,
+			category: message.category.name,
 			priority: getMessagePriorityInfo(message.priority).message,
 			subject: message.subject,
 			publication_date_locale_date: new Date(message.publication_date).toLocaleDateString(),
