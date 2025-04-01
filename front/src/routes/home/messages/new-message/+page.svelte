@@ -230,6 +230,7 @@
 					type="datetime-local"
 					id="publication_date"
 					name="publication_date"
+					onchange={clearIntervalOnUserInput}
 					value={new Date(currentDateTime.getTime() - currentDateTime.getTimezoneOffset() * 60000)
 						.toISOString()
 						.slice(0, 16)}
