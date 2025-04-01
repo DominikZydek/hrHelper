@@ -5,9 +5,19 @@
 
 	let { messages } = $props();
 	$inspect(messages);
+	const convertUTCtoLocalTime = (utcDateTime) => {
+		// make sure the date is in ISO format
+		let dateStr = utcDateTime;
+		if (typeof dateStr === 'string' && !dateStr.endsWith('Z') && !dateStr.includes('+')) {
+			dateStr = dateStr + 'Z';
+		}
+
+		const date = new Date(dateStr);
+		return date;
+	};
 
 	const calculateTimeAgo = (dateTime) => {
-		const publicationDate = new Date(dateTime);
+		const publicationDate = convertUTCtoLocalTime(dateTime);
 		const now = new Date();
 
 		const diffMs = now - publicationDate;
@@ -38,6 +48,21 @@
 		} else {
 			return 'mniej niż minutę temu';
 		}
+	};
+
+	const formatLocalDateTime = (dateTime) => {
+		const date = convertUTCtoLocalTime(dateTime);
+
+		const options = {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
+			hour12: false
+		};
+
+		return new Intl.DateTimeFormat('pl-PL', options).format(date).replace(',', ' o');
 	};
 </script>
 
@@ -75,10 +100,7 @@
 			<div>
 				<p class="text-xl font-bold">{message.subject}</p>
 				<p class="font-light text-main-gray text-sm mb-4">
-					Wysłano: {new Date(message.publication_date)
-						.toLocaleString()
-						.replace(', ', ' o ')
-						.slice(0, -3)}
+					Wysłano: {formatLocalDateTime(message.publication_date)}
 					({calculateTimeAgo(message.publication_date)})
 				</p>
 				<p class="whitespace-pre-wrap text-lg">{message.content}</p>
@@ -86,7 +108,9 @@
 					<button
 						type="button"
 						class="flex gap-1 items-center font-semibold h-8 self-end mt-5
-						{message.seen ? 'bg-main-white text-main-gray' : 'px-4 bg-accent-green text-main-white'}"
+            {message.seen
+							? 'bg-main-white text-main-gray'
+							: 'px-4 bg-accent-green text-main-white'}"
 						disabled={message.seen}
 					>
 						<Eye />
