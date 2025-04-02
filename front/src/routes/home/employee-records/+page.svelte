@@ -3,6 +3,7 @@
 	import Searchbar from '../../../components/Searchbar.svelte';
 	import EmployeeDrawer from '../../../components/EmployeeDrawer.svelte';
 	import Plus from 'svelte-material-icons/Plus.svelte';
+	import { getSearchbarMappers } from '../../../utils/getSearchbarMappers.js';
 
 	export let data;
 
@@ -37,6 +38,9 @@
 					placeholderText="Szukaj pracownika..."
 					searchData={allUsers}
 					onFilteredDataChange={handleFilteredDataChange}
+					searchMapper={getSearchbarMappers('EmployeeList').searchMapper}
+					filterableFields={getSearchbarMappers('EmployeeList').filterableFields}
+					fieldLabels={getSearchbarMappers('EmployeeList').fieldLabels}
 				/>
 			</div>
 		</div>

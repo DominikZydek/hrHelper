@@ -13,6 +13,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import Dropdown from './Dropdown.svelte';
 	import Searchbar from './Searchbar.svelte';
+	import { getSearchbarMappers } from '../utils/getSearchbarMappers.js';
 
 	export let user;
 	export let allUsers;
@@ -356,6 +357,9 @@
 			placeholderText="Szukaj pracownika..."
 			searchData={allUsers}
 			onFilteredDataChange={handleFilteredDataChange}
+			searchMapper={getSearchbarMappers('EmployeeList').searchMapper}
+			filterableFields={getSearchbarMappers('EmployeeList').filterableFields}
+			fieldLabels={getSearchbarMappers('EmployeeList').fieldLabels}
 		/>
 		<EmployeeList users={displayedUsers} onClick={onSelectUser} />
 	</Popup>

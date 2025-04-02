@@ -8,6 +8,8 @@
 	import { MeterChart } from '@carbon/charts-svelte';
 	import Eye from 'svelte-material-icons/Eye.svelte';
 	import CalendarAccount from 'svelte-material-icons/CalendarAccount.svelte';
+	import { getSearchbarMappers } from '../utils/getSearchbarMappers';
+
 	export let data;
 	export let onLeaveRequestClick;
 	export let selectedLeaveRequest;
@@ -156,6 +158,9 @@
 				placeholderText="Szukaj wniosku..."
 				searchData={data.leaveRequests}
 				onFilteredDataChange={handleFilteredDataChange}
+				searchMapper={getSearchbarMappers('LeaveRequestList', 'manage').searchMapper}
+				filterableFields={getSearchbarMappers('LeaveRequestList', 'manage').filterableFields}
+				fieldLabels={getSearchbarMappers('LeaveRequestList', 'manage').fieldLabels}
 			/>
 		</div>
 	</div>

@@ -11,6 +11,7 @@
 	import Pencil from 'svelte-material-icons/Pencil.svelte';
 	import DotsHorizontal from 'svelte-material-icons/DotsHorizontal.svelte';
 	import LeaveRequestList from '../../../../components/LeaveRequestList.svelte';
+	import { getSearchbarMappers } from '../../../../utils/getSearchbarMappers.js';
 
 	let { data } = $props();
 	let showPopup = $state(false);
@@ -54,6 +55,9 @@
 				placeholderText="Szukaj wniosku..."
 				searchData={data.me.leave_requests}
 				onFilteredDataChange={handleFilteredDataChange}
+				searchMapper={getSearchbarMappers('LeaveRequestList', 'view').searchMapper}
+				filterableFields={getSearchbarMappers('LeaveRequestList', 'view').filterableFields}
+				fieldLabels={getSearchbarMappers('LeaveRequestList', 'view').fieldLabels}
 			/>
 		</div>
 	</div>

@@ -13,6 +13,7 @@
 	import LeaveRequestList from '../../../../components/LeaveRequestList.svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import { getContext, onMount } from 'svelte';
+	import { getSearchbarMappers } from '../../../../utils/getSearchbarMappers.js';
 
 	let { data } = $props();
 
@@ -65,28 +66,6 @@
 	const handleFilteredDataChange = (filteredData) => {
 		displayedRequests = filteredData;
 	};
-
-	function searchMapper(request) {
-		let groups = [];
-
-		request.user.groups.forEach((g) => {
-			groups.push(g.name);
-		});
-
-		return {
-			first_name: request.user.first_name,
-			last_name: request.user.last_name,
-			full_name: request.user.first_name + ' ' + request.user.last_name,
-			email: request.user.email,
-			job_title: request.user.job_title,
-			groups: groups,
-			leave_type: request.leave_type.name,
-			date_to: request.date_to,
-			date_from: request.date_from,
-			days_count: request.days_count,
-			status: getStatusInfo(request.status).message
-		};
-	}
 </script>
 
 {#snippet setLeaveRequestStatusForm()}
@@ -166,7 +145,9 @@
 				placeholderText="Szukaj wniosku..."
 				searchData={data.leaveRequestsWhereUserIsApprover}
 				onFilteredDataChange={handleFilteredDataChange}
-				{searchMapper}
+				searchMapper={getSearchbarMappers('LeaveRequestList', 'manage').searchMapper}
+				filterableFields={getSearchbarMappers('LeaveRequestList', 'manage').filterableFields}
+				fieldLabels={getSearchbarMappers('LeaveRequestList', 'manage').fieldLabels}
 			/>
 		</div>
 	</div>

@@ -12,6 +12,8 @@
 	import LeaveRequestList from '../components/LeaveRequestList.svelte';
 	import { getUserPTOInfo } from '../utils/getUserPTOInfo.js';
 	import Searchbar from './Searchbar.svelte';
+	import { getStatusInfo } from '../utils/getStatusInfo.js';
+	import { getSearchbarMappers } from '../utils/getSearchbarMappers.js';
 	export let onLeaveRequestClick;
 	export let selectedLeaveRequest;
 	export let toggleLeaveDetails;
@@ -185,6 +187,9 @@
 				placeholderText="Szukaj wniosku..."
 				searchData={data.me.leave_requests}
 				onFilteredDataChange={handleFilteredDataChange}
+				searchMapper={getSearchbarMappers('LeaveRequestList', 'view').searchMapper}
+				filterableFields={getSearchbarMappers('LeaveRequestList', 'view').filterableFields}
+				fieldLabels={getSearchbarMappers('LeaveRequestList', 'view').fieldLabels}
 			/>
 		</div>
 	</div>
