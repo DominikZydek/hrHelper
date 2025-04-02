@@ -138,7 +138,7 @@
 {/snippet}
 
 <div class="flex-1 p-4">
-	<div class="flex items-center gap-8 mb-4">
+	<div class="flex items-start gap-8 mb-4">
 		<p class="font-semibold text-2xl text-main-app">Rozpatrywane wnioski</p>
 		<div class="flex-1">
 			<Searchbar

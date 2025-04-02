@@ -127,11 +127,11 @@
 	}
 </script>
 
-<form class="flex flex-col gap-2">
-	<div class="flex">
-		<div class="flex items-center gap-2 flex-1">
+<div class="flex flex-col gap-2">
+	<div class="flex gap-5">
+		<form class="flex items-center gap-2">
 			<input
-				class="w-1/4 border h-8 px-2 rounded border-main-gray"
+				class="border h-8 px-2 rounded border-main-gray"
 				type="text"
 				placeholder={placeholderText}
 				bind:value={searchTerm}
@@ -146,10 +146,10 @@
 				<Plus />
 				Dodaj filtr
 			</button>
-		</div>
+		</form>
 
 		{#if showFilterMenu}
-			<div class="flex items-center gap-2 p-2 rounded">
+			<form class="flex items-center gap-2">
 				<select bind:value={selectedField} class="border h-8 px-2 rounded border-main-gray">
 					{#each filterableFields as field}
 						<option value={field}>{getFieldLabel(field)}</option>
@@ -177,7 +177,7 @@
 				>
 					Zastosuj
 				</button>
-			</div>
+			</form>
 		{/if}
 	</div>
 
@@ -197,4 +197,4 @@
 			{/each}
 		</div>
 	{/if}
-</form>
+</div>

@@ -31,7 +31,7 @@
 
 <div class="p-8">
 	<div class="px-10 flex justify-between">
-		<div class="flex items-center gap-8 mb-4 flex-1">
+		<div class="flex items-start gap-8 mb-4 flex-1">
 			<p class="font-semibold text-2xl text-main-app">Pracownicy</p>
 			<div class="flex-1">
 				<Searchbar
