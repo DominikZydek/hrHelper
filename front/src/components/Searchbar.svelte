@@ -2,6 +2,7 @@
 	import Magnify from 'svelte-material-icons/Magnify.svelte';
 	import Plus from 'svelte-material-icons/Plus.svelte';
 	import Close from 'svelte-material-icons/Close.svelte';
+	import Check from 'svelte-material-icons/Check.svelte';
 
 	export let placeholderText;
 	export let searchData;
@@ -170,11 +171,11 @@
 						bind:value={filterValue}
 					/>
 				{/if}
-
 				<button
 					on:click|preventDefault={addFilter}
-					class="bg-main-app text-white px-3 py-1 rounded"
+					class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4"
 				>
+					<Check />
 					Zastosuj
 				</button>
 			</form>
@@ -184,13 +185,10 @@
 	{#if activeFilters.length > 0}
 		<div class="flex flex-wrap gap-2 mt-2">
 			{#each activeFilters as filter, index}
-				<div class="flex items-center gap-1 bg-gray-200 px-2 py-1 rounded">
+				<div class="flex items-center gap-1 bg-auxiliary-gray px-2 py-1 rounded">
 					<span class="font-medium">{getFieldLabel(filter.field)}:</span>
 					<span>{filter.value}</span>
-					<button
-						on:click|preventDefault={() => removeFilter(index)}
-						class="ml-1 text-gray-600 hover:text-red-500"
-					>
+					<button on:click|preventDefault={() => removeFilter(index)} class="ml-1 text-main-gray">
 						<Close size="1rem" />
 					</button>
 				</div>
