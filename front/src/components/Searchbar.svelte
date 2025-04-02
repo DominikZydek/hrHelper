@@ -87,8 +87,6 @@
 
 		filterValue = '';
 
-		showFilterMenu = false;
-
 		updateFilteredResults();
 	};
 
