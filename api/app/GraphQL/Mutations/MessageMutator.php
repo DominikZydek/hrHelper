@@ -40,4 +40,17 @@ class MessageMutator
             throw new \Exception('Failed to create message: ' . $e->getMessage());
         }
     }
+
+    public function markMessageAsRead($root, array $args) {
+        $currentUser = Auth::user();
+
+        $message = $currentUser->messages()
+            ->wherePivot('message_id', $args['message'])
+            ->first();
+
+        $message->pivot->seen = true;
+        $message->pivot->save();
+
+        return $message;
+    }
 }

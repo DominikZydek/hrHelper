@@ -32,5 +32,7 @@ extend type Mutation {
         date_to: Date
         require_confirmation: Boolean!
     ) : Message! @field(resolver: "App\\GraphQL\\Mutations\\MessageMutator@createMessage")
+
+    markMessageAsRead(message: ID!) : Message! @field(resolver: "App\\GraphQL\\Mutations\\MessageMutator@markMessageAsRead")
 }
 
