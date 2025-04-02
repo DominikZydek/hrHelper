@@ -4,6 +4,7 @@
 	import CalendarMultiselect from 'svelte-material-icons/CalendarMultiselect.svelte';
 	import AccountMultiplePlus from 'svelte-material-icons/AccountMultiplePlus.svelte';
 	import NewspaperVariantMultiple from 'svelte-material-icons/NewspaperVariantMultiple.svelte';
+	import Tune from 'svelte-material-icons/Tune.svelte';
 	import { page } from '$app/state';
 
 	// current path
@@ -12,7 +13,29 @@
 
 <div class="h-screen">
 	<nav class="fixed h-full w-20 bg-main-app flex flex-col items-center py-5">
-		<a href="/home"><img class="h-10 w-10" src="/favicon.png" alt="logo" /></a>
+		<a class="mb-5" href="/home"><img class="h-10 w-10" src="/favicon.png" alt="logo" /></a>
+
+		<div
+			class="px-4 py-6 w-full relative {path === 'organization-settings'
+				? 'bg-auxiliary-darkblue'
+				: ''}"
+		>
+			<a
+				class="flex flex-col items-center justify-center h-8 group"
+				href="/home/organization-settings"
+			>
+				<Tune
+					class="text-main-white absolute group-hover:-translate-y-4 transition-transform"
+					size="2rem"
+				/>
+				<p
+					class="text-white text-xs absolute translate-y-4 opacity-0 group-hover:opacity-100 transition-opacity text-center"
+				>
+					Ustawienia organizacji
+				</p>
+			</a>
+		</div>
+
 		<ul class="flex flex-col items-center justify-end h-full w-full">
 			<li
 				class="px-4 py-6 w-full relative {path === 'employee-records'
