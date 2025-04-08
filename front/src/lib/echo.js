@@ -20,9 +20,9 @@ export function initEcho() {
 		broadcaster: 'pusher',
 		key: PUBLIC_PUSHER_KEY,
 		cluster: PUBLIC_PUSHER_CLUSTER,
-		wsHost: PUBLIC_PUSHER_HOST,
-		wsPort: 80,
-		forceTLS: false,
+		...(PUBLIC_PUSHER_HOST ? { wsHost: PUBLIC_PUSHER_HOST } : {}),
+		wsPort: PUBLIC_PUSHER_PORT,
+		forceTLS: true,
 		authEndpoint: `${PUBLIC_FRONTEND_URL}/api/broadcasting/auth`
 	});
 
@@ -35,15 +35,28 @@ export function listenForNotifications(userId) {
 		return;
 	}
 
-	window.Echo.private(`App.Models.User.${userId}`).notification((notification) => {
-		notifications.update((n) => {
-			const newNotifications = [notification, ...n];
-			return newNotifications.slice(0, 50);
-		});
+	console.log(`Nasłuchiwanie na kanale: App.Models.User.${userId}`);
 
-		unreadCount.update((count) => count + 1);
+	const channel = window.Echo.private(`App.Models.User.${userId}`);
 
-		showDesktopNotification(notification);
+	channel.listen(
+		'.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated',
+		(notification) => {
+			console.log('Otrzymano powiadomienie:', notification);
+			notifications.update((n) => {
+				const newNotifications = [notification, ...n];
+				return newNotifications.slice(0, 50);
+			});
+
+			unreadCount.update((count) => count + 1);
+
+			showDesktopNotification(notification);
+		}
+	);
+
+	// Dodaj ogólne nasłuchiwanie na wszystkie wydarzenia na tym kanale
+	channel.listenForWhisper('*', (event) => {
+		console.log('Otrzymano whisper:', event);
 	});
 }
 
