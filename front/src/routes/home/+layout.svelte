@@ -6,9 +6,11 @@
 	import NewspaperVariantMultiple from 'svelte-material-icons/NewspaperVariantMultiple.svelte';
 	import Tune from 'svelte-material-icons/Tune.svelte';
 	import { page } from '$app/state';
+	import NotificationCenter from '../../components/NotificationCenter.svelte';
 
 	// current path
 	let path = $derived(page.url.pathname.split('/')[2]);
+	let { data } = $props();
 </script>
 
 <div class="h-screen">
@@ -134,6 +136,10 @@
 		</ul>
 	</nav>
 	<div class="ml-20 relative h-full">
+		<div class="absolute top-4 right-4 flex items-center gap-4">
+			<NotificationCenter user={data.user} />
+			<span class="text-main-black">{data.user.first_name} {data.user.last_name}</span>
+		</div>
 		<slot />
 	</div>
 </div>

@@ -20,3 +20,5 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 #import message.graphql
 #import message_category.graphql
 #import message_template.graphql
+
+#import notification.graphql

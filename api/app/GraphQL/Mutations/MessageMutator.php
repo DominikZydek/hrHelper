@@ -4,14 +4,13 @@ namespace App\GraphQL\Mutations;
 
 use App\Models\Message;
 use App\Models\User;
+use App\Notifications\NewMessageNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MessageMutator
 {
     public function createMessage($root, array $args) {
-
-        // TODO: use permissions
         $currentUser = Auth::user();
 
         try {
@@ -29,7 +28,12 @@ class MessageMutator
                 'require_confirmation' => $args['require_confirmation'],
             ]);
 
+            $recipients = User::whereIn('id', $args['recipients'])->get();
             $message->recipients()->sync($args['recipients']);
+
+            foreach ($recipients as $recipient) {
+                $recipient->notify(new NewMessageNotification($message));
+            }
 
             DB::commit();
 

@@ -10,6 +10,7 @@ use App\Models\LeaveRequest;
 use App\Models\LeaveRequestReplacement;
 use App\Models\LeaveType;
 use App\Models\User;
+use App\Notifications\LeaveRequestNotification;
 use Carbon\Carbon;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
@@ -172,6 +173,20 @@ class LeaveRequestMutator
                     'status' => 'IN_PROGRESS',
                     'current_approval_step' => 1,
                 ]);
+
+                $firstApproverStep = ApprovalStep::where('approval_process_id', $user->approval_process_id)
+                    ->where('order', 1)
+                    ->first();
+
+                if ($firstApproverStep) {
+                    $firstApprover = User::find($firstApproverStep->approver_id);
+                    if ($firstApprover) {
+                        $firstApprover->notify(new LeaveRequestNotification(
+                            $leaveRequest,
+                            'new_approval'
+                        ));
+                    }
+                }
             }
 
             DB::commit();
@@ -219,6 +234,18 @@ class LeaveRequestMutator
                     // increment order, to pass it to the next person in the process
                     $leaveRequest->current_approval_step += 1;
                     $leaveRequest->save();
+
+                    // Powiadom kolejnego approver'a
+                    $nextStep = $approvalSteps->firstWhere('order', $leaveRequest->current_approval_step);
+                    if ($nextStep) {
+                        $nextApprover = User::find($nextStep->approver_id);
+                        if ($nextApprover) {
+                            $nextApprover->notify(new LeaveRequestNotification(
+                                $leaveRequest,
+                                'next_approval'
+                            ));
+                        }
+                    }
                 } else {
                     // change status to approved, deduct days, etc.
                     $user->pending_pto -= $leaveRequest->days_count;
@@ -237,6 +264,12 @@ class LeaveRequestMutator
                         'comment' => $args['comment'],
                         'date' => Carbon::now(),
                     ]);
+
+                    $user->notify(new LeaveRequestNotification(
+                        $leaveRequest,
+                        'approved',
+                        $args['comment']
+                    ));
                 }
             } else {
                 // return pending days, set status
@@ -257,6 +290,12 @@ class LeaveRequestMutator
                     'comment' => $args['comment'],
                     'date' => Carbon::now(),
                 ]);
+                $user->notify(new LeaveRequestNotification(
+                    $leaveRequest,
+                    'rejected',
+                    $args['comment']
+                ));
+
             }
         } catch (\Exception $e) {
             DB::rollBack();
