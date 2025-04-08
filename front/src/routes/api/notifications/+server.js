@@ -21,27 +21,14 @@ export const POST = async ({ request, fetch }) => {
 		},
 		credentials: 'include',
 		body: JSON.stringify({ query, variables })
-	}).then((res) => res.json());
+	});
 
-	console.log(res);
+	const data = await res.json();
 
-	if (res.errors) {
-		return new Response(
-			JSON.stringify({
-				message: 'Wystąpił błąd'
-			}),
-			{
-				status: 400
-			}
-		);
-	}
-
-	return new Response(
-		JSON.stringify({
-			message: 'Sukces'
-		}),
-		{
-			status: 200
+	return new Response(JSON.stringify(data), {
+		status: res.status,
+		headers: {
+			'Content-Type': 'application/json'
 		}
-	);
+	});
 };

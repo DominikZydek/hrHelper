@@ -4,7 +4,9 @@ import {
 	PUBLIC_PUSHER_KEY,
 	PUBLIC_PUSHER_CLUSTER,
 	PUBLIC_API_URL,
-	PUBLIC_FRONTEND_URL
+	PUBLIC_FRONTEND_URL,
+	PUBLIC_PUSHER_HOST,
+	PUBLIC_PUSHER_PORT
 } from '$env/static/public';
 import { writable } from 'svelte/store';
 
@@ -14,29 +16,17 @@ export const unreadCount = writable(0);
 export function initEcho() {
 	window.Pusher = Pusher;
 
-	console.log(document);
-
 	window.Echo = new Echo({
 		broadcaster: 'pusher',
 		key: PUBLIC_PUSHER_KEY,
 		cluster: PUBLIC_PUSHER_CLUSTER,
-		forceTLS: true,
-		authEndpoint: `${PUBLIC_API_URL}/broadcasting/auth`,
-		auth: {
-			headers: {
-				'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-			}
-		}
+		wsHost: PUBLIC_PUSHER_HOST,
+		wsPort: 80,
+		forceTLS: false,
+		authEndpoint: `${PUBLIC_FRONTEND_URL}/api/broadcasting/auth`
 	});
 
 	return window.Echo;
-}
-
-function getCookie(name) {
-	const value = `; ${document.cookie}`;
-	const parts = value.split(`; ${name}=`);
-	if (parts.length === 2) return parts.pop().split(';').shift();
-	return null;
 }
 
 export function listenForNotifications(userId) {
@@ -79,26 +69,24 @@ export async function fetchNotifications() {
             }
         `;
 
-		const response = await fetch(`${PUBLIC_FRONTEND_URL}/api/notifications`, {
+		const res = await fetch(`${PUBLIC_FRONTEND_URL}/api/notifications`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ query })
-		});
+		}).then((res) => res.json());
 
-		const result = await response.json();
+		console.log(res);
 
-		if (result.errors) {
-			throw new Error(result.errors[0].message);
+		if (res.errors) {
+			throw new Error(res.errors[0].message);
 		}
 
-		const data = result.data;
+		notifications.set(res.data.userNotifications || []);
 
-		notifications.set(data.userNotifications || []);
-
-		unreadCount.set(data.unreadNotificationsCount || 0);
+		unreadCount.set(res.data.unreadNotificationsCount || 0);
 	} catch (error) {
 		console.error('Błąd podczas pobierania powiadomień:', error);
 	}
@@ -128,8 +116,7 @@ export async function markAsRead(id = null) {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
-				'Content-Type': 'application/json',
-				'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ query, variables })
 		});

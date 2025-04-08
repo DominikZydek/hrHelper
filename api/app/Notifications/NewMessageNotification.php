@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
 class NewMessageNotification extends Notification implements ShouldQueue
 {
@@ -21,11 +22,13 @@ class NewMessageNotification extends Notification implements ShouldQueue
 
     public function via($notifiable): array
     {
+        Log::info('Notification via called');
         return ['database', 'broadcast'];
     }
 
     public function toDatabase($notifiable): array
     {
+        Log::info('toDatabase called for notification');
         return [
             'id' => $this->message->id,
             'type' => 'message',
@@ -41,6 +44,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
 
     public function toBroadcast($notifiable): BroadcastMessage
     {
+        Log::info('toBroadcast called for notification');
         return new BroadcastMessage($this->toDatabase($notifiable));
     }
 }

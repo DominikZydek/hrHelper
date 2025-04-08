@@ -24,7 +24,6 @@
 
 	onMount(async () => {
 		if (browser) {
-			// Kod wykorzystujący window
 			echo = initEcho();
 			await fetchNotifications();
 			listenForNotifications(user.id);
@@ -36,7 +35,6 @@
 	});
 
 	onDestroy(() => {
-		// Zatrzymaj nasłuchiwanie powiadomień
 		if (browser && echo) {
 			echo.leave(`App.Models.User.${user.id}`);
 		}
@@ -47,10 +45,8 @@
 	}
 
 	function handleNotificationClick(notification) {
-		// Oznacz jako przeczytane
 		markAsRead(notification.id);
 
-		// Przekieruj jeśli jest URL
 		if (browser && notification.url) {
 			if (window.location.pathname === notification.url) {
 				togglePanel();
@@ -62,24 +58,20 @@
 		}
 	}
 
-	// Formatowanie daty
 	function formatDate(dateString) {
 		const date = new Date(dateString);
 		const now = new Date();
 
-		// Ten sam dzień
 		if (date.toDateString() === now.toDateString()) {
 			return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 		}
 
-		// W tym tygodniu
 		const daysAgo = Math.floor((now - date) / (1000 * 60 * 60 * 24));
 		if (daysAgo < 7) {
 			const options = { weekday: 'long' };
 			return date.toLocaleDateString(undefined, options);
 		}
 
-		// Dawniej
 		return date.toLocaleDateString();
 	}
 

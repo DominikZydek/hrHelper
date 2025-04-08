@@ -4,6 +4,7 @@
 	import CalendarMultiselect from 'svelte-material-icons/CalendarMultiselect.svelte';
 	import AccountMultiplePlus from 'svelte-material-icons/AccountMultiplePlus.svelte';
 	import NewspaperVariantMultiple from 'svelte-material-icons/NewspaperVariantMultiple.svelte';
+	import BellRing from 'svelte-material-icons/BellRing.svelte';
 	import Tune from 'svelte-material-icons/Tune.svelte';
 	import { page } from '$app/state';
 	import NotificationCenter from '../../components/NotificationCenter.svelte';
@@ -133,12 +134,28 @@
 				</a>
 			</li>
 			<!-- messages -->
+			<li
+				class="px-4 py-6 w-full relative mt-6 {path === 'notifications'
+					? 'bg-auxiliary-darkblue'
+					: ''}"
+			>
+				<a class="flex flex-col items-center justify-center h-8 group" href="/home/notifications">
+					<BellRing
+						class="text-main-white absolute group-hover:-translate-y-3 transition-transform"
+						size="2rem"
+					/>
+					<p
+						class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity"
+					>
+						Powiadomienia
+					</p>
+				</a>
+			</li>
 		</ul>
 	</nav>
 	<div class="ml-20 relative h-full">
 		<div class="absolute top-4 right-4 flex items-center gap-4">
-			<NotificationCenter user={data.user} />
-			<span class="text-main-black">{data.user.first_name} {data.user.last_name}</span>
+			<!--			<NotificationCenter user={data.user} />-->
 		</div>
 		<slot />
 	</div>
