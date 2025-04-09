@@ -1,4 +1,7 @@
 import { writable } from 'svelte/store';
+import EmailOutline from 'svelte-material-icons/EmailOutline.svelte';
+import CalendarClock from 'svelte-material-icons/CalendarClock.svelte';
+import BellOutline from 'svelte-material-icons/BellOutline.svelte';
 import Laptop from 'svelte-material-icons/Laptop.svelte';
 import Account from 'svelte-material-icons/Account.svelte';
 import AccountGroup from 'svelte-material-icons/AccountGroup.svelte';
@@ -26,6 +29,9 @@ import SendOutline from 'svelte-material-icons/SendOutline.svelte';
 import HelpCircleOutline from 'svelte-material-icons/HelpCircleOutline.svelte';
 
 export const icons = writable({
+	EmailOutline,
+	CalendarClock,
+	BellOutline,
 	Laptop,
 	Account,
 	AccountGroup,

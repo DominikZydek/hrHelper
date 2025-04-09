@@ -1,23 +1,10 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
-	import { page } from '$app/stores';
-	import {
-		notifications,
-		unreadCount,
-		initEcho,
-		listenForNotifications,
-		fetchNotifications,
-		markAsRead
-	} from '$lib/echo';
-	import { slide } from 'svelte/transition';
-	import Bell from 'svelte-material-icons/Bell.svelte';
-	import BellRing from 'svelte-material-icons/BellRing.svelte';
+	import { notifications, unreadCount, markAsRead } from '$lib/echo';
 	import Close from 'svelte-material-icons/Close.svelte';
 	import CheckAll from 'svelte-material-icons/CheckAll.svelte';
-	import IconWithNotificationBadge from './IconWithNotificationBadge.svelte';
 	import { browser } from '$app/environment';
-	import NotificationPanel from './NotificationPanel.svelte';
 	import { calculateTimeAgo } from '../utils/timeCalculation.js';
+	import { icons } from '../stores/icons.js';
 
 	export let togglePanel;
 
@@ -35,23 +22,6 @@
 		}
 	}
 
-	function formatDate(dateString) {
-		const date = new Date(dateString);
-		const now = new Date();
-
-		if (date.toDateString() === now.toDateString()) {
-			return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-		}
-
-		const daysAgo = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-		if (daysAgo < 7) {
-			const options = { weekday: 'long' };
-			return date.toLocaleDateString(undefined, options);
-		}
-
-		return date.toLocaleDateString();
-	}
-
 	function getTypeIcon(type) {
 		if (type === 'message') return 'EmailOutline';
 		if (type === 'leave_request') return 'CalendarClock';
@@ -63,10 +33,7 @@
 	}
 </script>
 
-<div
-	transition:slide={{ duration: 200 }}
-	class="fixed left-24 bottom-4 w-80 bg-white shadow-xl rounded-lg overflow-hidden z-50"
->
+<div class="fixed left-24 bottom-4 w-80 bg-white shadow-xl rounded-lg overflow-hidden z-50">
 	<div class="flex justify-between items-center bg-main-app text-white p-3">
 		<h3 class="font-semibold">Powiadomienia ({$unreadCount} nowych)</h3>
 		<div class="flex gap-2">
@@ -94,7 +61,10 @@
 						on:click={() => handleNotificationClick(notification)}
 					>
 						<div class="flex justify-between">
-							<div class="font-semibold">{notification.data.title}</div>
+							<div class="flex items-center gap-2">
+								<svelte:component this={$icons[getTypeIcon(notification.data.type)]} />
+								<div class="font-semibold">{notification.data.title}</div>
+							</div>
 							<div class="text-xs text-gray-500">{calculateTimeAgo(notification.created_at)}</div>
 						</div>
 						<div class="text-sm">{notification.data.message}</div>
