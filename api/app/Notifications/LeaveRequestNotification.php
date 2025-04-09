@@ -70,6 +70,20 @@ class LeaveRequestNotification extends Notification implements ShouldQueue
 
     public function toBroadcast($notifiable): BroadcastMessage
     {
-        return new BroadcastMessage($this->toDatabase($notifiable));
+        return new BroadcastMessage([
+            'id' => (string)now()->timestamp . rand(1000, 9999),
+            'type' => 'App\\Notifications\\LeaveRequestNotification',
+            'data' => [
+                'id' => (string)$this->leaveRequest->id,
+                'type' => 'leave_request',
+                'title' => $this->toDatabase($notifiable)['title'],
+                'message' => $this->toDatabase($notifiable)['message'],
+                'url' => $this->toDatabase($notifiable)['url'],
+                'comment' => $this->comment,
+                'action_type' => $this->type
+            ],
+            'read_at' => null,
+            'created_at' => now()->toIso8601String()
+        ]);
     }
 }

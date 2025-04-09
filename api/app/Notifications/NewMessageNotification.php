@@ -45,6 +45,21 @@ class NewMessageNotification extends Notification implements ShouldQueue
     public function toBroadcast($notifiable): BroadcastMessage
     {
         Log::info('toBroadcast called for notification');
-        return new BroadcastMessage($this->toDatabase($notifiable));
+
+        return new BroadcastMessage([
+            'id' => $this->message->id,
+            'type' => 'App\\Notifications\\NewMessageNotification',
+            'data' => [
+                'id' => $this->message->id,
+                'type' => 'message',
+                'title' => 'Nowa wiadomość',
+                'message' => "Od: {$this->message->author->first_name} {$this->message->author->last_name}",
+                'url' => '/home/messages/view-messages',
+                'comment' => null,
+                'action_type' => null
+            ],
+            'read_at' => null,
+            'created_at' => now()->toIso8601String()
+        ]);
     }
 }

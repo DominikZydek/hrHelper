@@ -22,7 +22,7 @@
 		}
 	}
 
-	$inspect($notifications);
+	$inspect($notifications[0]);
 
 	function getTypeIcon(type) {
 		if (type === 'message') return 'EmailOutline';
