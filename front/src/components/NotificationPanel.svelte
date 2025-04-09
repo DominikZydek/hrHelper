@@ -6,7 +6,7 @@
 	import { calculateTimeAgo } from '../utils/timeCalculation.js';
 	import { icons } from '../stores/icons.js';
 
-	export let togglePanel;
+	let { togglePanel } = $props();
 
 	function handleNotificationClick(notification) {
 		markAsRead(notification.id);
@@ -21,6 +21,8 @@
 			togglePanel();
 		}
 	}
+
+	$inspect($notifications);
 
 	function getTypeIcon(type) {
 		if (type === 'message') return 'EmailOutline';
@@ -49,11 +51,12 @@
 	</div>
 
 	<div class="max-h-96 overflow-y-auto">
-		{#if $notifications.length === 0}
+		{#if !$notifications || $notifications.length === 0}
 			<div class="p-4 text-center text-gray-500">Brak powiadomień</div>
 		{:else}
 			<ul class="divide-y divide-gray-200">
 				{#each $notifications as notification}
+					{@const notificationData = notification.data || {}}
 					<li
 						class="p-3 hover:bg-gray-50 cursor-pointer {notification.read_at
 							? 'bg-white'
@@ -62,14 +65,14 @@
 					>
 						<div class="flex justify-between gap-5">
 							<div class="flex items-center gap-2">
-								<svelte:component this={$icons[getTypeIcon(notification.data.type)]} />
-								<div class="font-semibold">{notification.data.title}</div>
+								<svelte:component this={$icons[getTypeIcon(notificationData.type)]} />
+								<div class="font-semibold">{notificationData.title || 'Powiadomienie'}</div>
 							</div>
 							<div class="text-xs text-gray-500">{calculateTimeAgo(notification.created_at)}</div>
 						</div>
-						<div class="text-sm">{notification.data.message}</div>
-						{#if notification.data.comment}
-							<div class="text-xs text-gray-600 mt-1">{notification.data.comment}</div>
+						<div class="text-sm">{notificationData.message || ''}</div>
+						{#if notificationData.comment}
+							<div class="text-xs text-gray-600 mt-1">{notificationData.comment}</div>
 						{/if}
 					</li>
 				{/each}

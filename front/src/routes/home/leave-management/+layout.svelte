@@ -9,14 +9,6 @@
 	let path = $derived(page.url.pathname.split('/')[3]);
 
 	let { data } = $props();
-
-	let notificationCounter = $state(0);
-
-	$effect(() => {
-		notificationCounter = data.leaveRequestsWhereUserIsApprover.filter(
-			(r) => r.isUserCurrentApprover
-		).length;
-	});
 </script>
 
 <div class="w-full h-full flex">
@@ -51,9 +43,7 @@
 			class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
                   {path === 'approvals' ? 'bg-auxiliary-gray' : ''}"
 		>
-			<IconWithNotificationBadge number={notificationCounter}>
-				<ClockTimeFourOutline slot="icon" size="1.75rem" />
-			</IconWithNotificationBadge>
+			<ClockTimeFourOutline slot="icon" size="1.75rem" />
 			<span>Rozpatrywane wnioski</span>
 		</a>
 	</div>
