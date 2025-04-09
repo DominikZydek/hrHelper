@@ -14,6 +14,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { getContext, onMount } from 'svelte';
 	import { getSearchbarMappers } from '../../../../utils/getSearchbarMappers.js';
+	import { convertUTCtoLocalTime } from '../../../../utils/timeCalculation.js';
 
 	let { data } = $props();
 
@@ -188,7 +189,7 @@
 
 									<li class="flex items-center gap-5 w-full">
 										<div class="min-w-[200px]">
-											<p>{new Date(step_history.date).toLocaleString()}</p>
+											<p>{new Date(convertUTCtoLocalTime(step_history.date)).toLocaleString()}</p>
 											<div class="{stepHistoryStatus.class} flex gap-2 items-center">
 												<p class="font-semibold">
 													{stepHistoryStatus.message}
