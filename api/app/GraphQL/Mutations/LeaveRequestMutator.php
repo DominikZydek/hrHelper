@@ -159,6 +159,15 @@ class LeaveRequestMutator
                 $user->pending_pto += $daysCount;
                 $user->save();
 
+                ApprovalStepsHistory::create([
+                    'leave_request_id' => $leaveRequest->id,
+                    'step' => 0,
+                    'status' => 'SENT',
+                    'approver_id' => null,
+                    'comment' => null,
+                    'date' => Carbon::now(),
+                ]);
+
                 $leaveRequest->update([
                     'status' => 'IN_PROGRESS',
                     'current_approval_step' => 1,
