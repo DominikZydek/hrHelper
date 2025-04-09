@@ -33,7 +33,7 @@
 	}
 </script>
 
-<div class="fixed left-24 bottom-4 w-80 bg-white shadow-xl rounded-lg overflow-hidden z-50">
+<div class="fixed left-24 bottom-4 bg-white shadow-xl rounded-lg overflow-hidden z-50">
 	<div class="flex justify-between items-center bg-main-app text-white p-3">
 		<h3 class="font-semibold">Powiadomienia ({$unreadCount} nowych)</h3>
 		<div class="flex gap-2">
@@ -60,7 +60,7 @@
 							: 'bg-blue-50'}"
 						on:click={() => handleNotificationClick(notification)}
 					>
-						<div class="flex justify-between">
+						<div class="flex justify-between gap-5">
 							<div class="flex items-center gap-2">
 								<svelte:component this={$icons[getTypeIcon(notification.data.type)]} />
 								<div class="font-semibold">{notification.data.title}</div>
