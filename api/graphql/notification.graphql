@@ -7,6 +7,7 @@ type Notification {
 }
 
 type NotificationData {
+    id: ID!
     type: String
     title: String
     message: String

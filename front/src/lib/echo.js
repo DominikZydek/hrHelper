@@ -58,6 +58,7 @@ export async function fetchNotifications() {
 									id,
 									type,
 									data {
+										id,
 										type,
 										title,
 										message,
