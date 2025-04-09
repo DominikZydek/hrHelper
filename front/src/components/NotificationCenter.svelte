@@ -11,7 +11,7 @@
 	} from '$lib/echo';
 	import { slide } from 'svelte/transition';
 	import Bell from 'svelte-material-icons/Bell.svelte';
-	import BellOutline from 'svelte-material-icons/BellOutline.svelte';
+	import BellRing from 'svelte-material-icons/BellRing.svelte';
 	import Close from 'svelte-material-icons/Close.svelte';
 	import CheckAll from 'svelte-material-icons/CheckAll.svelte';
 	import IconWithNotificationBadge from './IconWithNotificationBadge.svelte';
@@ -88,19 +88,21 @@
 
 <div class="relative">
 	<button on:click={togglePanel} class="relative">
-		<IconWithNotificationBadge number={$unreadCount}>
-			{#if $unreadCount > 0}
-				<Bell size="1.75rem" slot="icon" class="text-main-white" />
-			{:else}
-				<BellOutline size="1.75rem" slot="icon" class="text-main-white" />
-			{/if}
-		</IconWithNotificationBadge>
+		{#if $unreadCount === 0}
+			<IconWithNotificationBadge number={$unreadCount}>
+				<Bell size="2rem" slot="icon" class="text-main-white" />
+			</IconWithNotificationBadge>
+		{:else}
+			<IconWithNotificationBadge number={$unreadCount}>
+				<BellRing size="2rem" slot="icon" class="text-main-white" />
+			</IconWithNotificationBadge>
+		{/if}
 	</button>
 
-	{#if showPanel}
+	{#if !showPanel}
 		<div
 			transition:slide={{ duration: 200 }}
-			class="absolute right-0 mt-2 w-80 bg-white shadow-xl rounded-lg overflow-hidden z-50"
+			class="absolute left-16 bottom-0 w-80 bg-white shadow-xl rounded-lg overflow-hidden z-50"
 		>
 			<div class="flex justify-between items-center bg-main-app text-white p-3">
 				<h3 class="font-semibold">Powiadomienia ({$unreadCount} nowych)</h3>
