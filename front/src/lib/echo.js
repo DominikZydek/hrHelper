@@ -31,33 +31,23 @@ export function initEcho() {
 
 export function listenForNotifications(userId) {
 	if (!window.Echo) {
-		console.error('Echo nie jest zainicjalizowane');
+		console.error('Echo is not initialized');
 		return;
 	}
-
-	console.log(`Nasłuchiwanie na kanale: App.Models.User.${userId}`);
 
 	const channel = window.Echo.private(`App.Models.User.${userId}`);
 
 	channel.listen(
 		'.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated',
 		(notification) => {
-			console.log('Otrzymano powiadomienie:', notification);
 			notifications.update((n) => {
 				const newNotifications = [notification, ...n];
 				return newNotifications.slice(0, 50);
 			});
 
 			unreadCount.update((count) => count + 1);
-
-			showDesktopNotification(notification);
 		}
 	);
-
-	// Dodaj ogólne nasłuchiwanie na wszystkie wydarzenia na tym kanale
-	channel.listenForWhisper('*', (event) => {
-		console.log('Otrzymano whisper:', event);
-	});
 }
 
 export async function fetchNotifications() {
@@ -101,7 +91,7 @@ export async function fetchNotifications() {
 
 		unreadCount.set(res.data.unreadNotificationsCount || 0);
 	} catch (error) {
-		console.error('Błąd podczas pobierania powiadomień:', error);
+		console.error(error);
 	}
 }
 
@@ -154,50 +144,6 @@ export async function markAsRead(id = null) {
 			unreadCount.set(0);
 		}
 	} catch (error) {
-		console.error('Błąd podczas oznaczania jako przeczytane:', error);
+		console.error(error);
 	}
-}
-
-export async function checkNotificationPermission() {
-	if (!('Notification' in window)) {
-		console.warn('Ten system nie obsługuje powiadomień');
-		return false;
-	}
-
-	if (Notification.permission === 'granted') {
-		return true;
-	}
-
-	if (Notification.permission !== 'denied') {
-		const permission = await Notification.requestPermission();
-		return permission === 'granted';
-	}
-
-	return false;
-}
-
-export function showDesktopNotification(notification) {
-	if (!('Notification' in window) || Notification.permission !== 'granted') {
-		return;
-	}
-
-	const data =
-		typeof notification.data === 'string' ? JSON.parse(notification.data) : notification.data;
-
-	const notif = new Notification(data.title || 'Nowe powiadomienie', {
-		body: data.message || '',
-		icon: '/favicon.png',
-		tag: notification.id,
-		data: { url: data.url }
-	});
-
-	notif.onclick = function () {
-		window.focus();
-		if (this.data && this.data.url) {
-			window.location.href = this.data.url;
-		}
-		this.close();
-	};
-
-	setTimeout(notif.close.bind(notif), 5000);
 }
