@@ -12,6 +12,10 @@
 
 	let showNewGroupPopup = $state(false);
 	const toggleNewGroupPopup = () => {
+		selectedUsers = null;
+		selectedGroup = null;
+		selectedIcon = null;
+
 		showNewGroupPopup = !showNewGroupPopup;
 	};
 
@@ -37,6 +41,7 @@
 		selectedUsers = data.users.filter((u) =>
 			selectedGroup.users.some((groupUser) => groupUser.id === u.id)
 		);
+		selectedIcon = group.icon_name;
 		toggleEditGroupPopup();
 	};
 
@@ -106,73 +111,14 @@
 </div>
 
 {#if showNewGroupPopup}
-	<Popup title="Nowy zespół" togglePopup={toggleNewGroupPopup}></Popup>
+	<Popup title="Nowy zespół" togglePopup={toggleNewGroupPopup}>
+		{@render groupForm()}
+	</Popup>
 {/if}
 
 {#if showEditGroupPopup}
 	<Popup title="Edycja zespołu - {selectedGroup?.name}" togglePopup={toggleEditGroupPopup}>
-		<form action="?/editGroup" method="POST" class="flex flex-col max-w-2xl">
-			<label for="icon">Ikona</label>
-			<button
-				class="h-10 w-10 border border-main-gray flex justify-center items-center mb-2"
-				type="button"
-				onclick={toggleIconSelect}
-				bind:this={iconSelectTrigger}
-				id="icon"
-			>
-				<svelte:component
-					this={$icons[selectedIcon] || $icons[selectedGroup?.icon_name]}
-					size="2rem"
-					class="text-black"
-				/>
-			</button>
-
-			{#if showIconSelect}
-				<Dropdown toggleDropdown={toggleIconSelect} triggerElement={iconSelectTrigger}>
-					<div class="grid grid-cols-10">
-						{#each Object.keys($icons) as iconName}
-							<button
-								class="h-10 w-10 border border-main-gray flex justify-center items-center"
-								type="button"
-								onclick={() => handleIconSelect(iconName)}
-							>
-								<svelte:component this={$icons[iconName]} size="2rem" class="text-black" />
-							</button>
-						{/each}
-					</div>
-				</Dropdown>
-			{/if}
-
-			<label for="name">Nazwa zespołu</label>
-			<input
-				class="border border-main-gray p-1 mb-2"
-				type="text"
-				id="name"
-				name="name"
-				placeholder="Nazwa zespołu"
-				value={selectedGroup?.name}
-			/>
-			<label for="users">Członkowie zespołu</label>
-			<MultiSelect
-				options={data.users.map((user) => ({
-					value: user.id,
-					name: user.first_name + ' ' + user.last_name,
-					icon_name: 'Account'
-				}))}
-				selected={selectedUsers.map((u) => u.id)}
-				name="users"
-				id="users"
-				placeholder="Wybierz pracowników"
-				onChange={onUserSelectChange}
-			/>
-			<button
-				type="submit"
-				class="flex gap-1 items-center bg-accent-green text-main-white font-semibold h-8 px-4 self-end mt-5"
-			>
-				<Check />
-				Zatwierdź zmiany
-			</button>
-		</form>
+		{@render groupForm()}
 	</Popup>
 {/if}
 
@@ -180,3 +126,79 @@
 	<Popup title="Usuwanie zespołu - {selectedGroup?.name}" togglePopup={toggleRemoveGroupPopup}
 	></Popup>
 {/if}
+
+{#snippet groupForm()}
+	<form action="?/editGroup" method="POST" class="flex flex-col w-[33.333vw]">
+		<input type="hidden" id="mode" name="mode" value={showNewGroupPopup ? 'create' : 'edit'} />
+		<input type="hidden" id="icon_name" name="icon_name" value={selectedIcon} />
+		<input
+			type="hidden"
+			id="selected_users"
+			name="selected_users"
+			value={JSON.stringify(selectedUsers?.map((g) => g.id))}
+		/>
+
+		<label for="icon">Ikona</label>
+		<button
+			class="h-10 w-10 border border-main-gray flex justify-center items-center mb-2"
+			type="button"
+			onclick={toggleIconSelect}
+			bind:this={iconSelectTrigger}
+			id="icon"
+		>
+			<svelte:component
+				this={showNewGroupPopup
+					? $icons[selectedIcon] || $icons['HelpCircleOutline']
+					: $icons[selectedIcon] || $icons[selectedGroup?.icon_name]}
+				size="2rem"
+				class="text-black"
+			/>
+		</button>
+
+		{#if showIconSelect}
+			<Dropdown toggleDropdown={toggleIconSelect} triggerElement={iconSelectTrigger}>
+				<div class="grid grid-cols-10">
+					{#each Object.keys($icons) as iconName}
+						<button
+							class="h-10 w-10 border border-main-gray flex justify-center items-center"
+							type="button"
+							onclick={() => handleIconSelect(iconName)}
+						>
+							<svelte:component this={$icons[iconName]} size="2rem" class="text-black" />
+						</button>
+					{/each}
+				</div>
+			</Dropdown>
+		{/if}
+
+		<label for="name">Nazwa zespołu</label>
+		<input
+			class="border border-main-gray p-1 mb-2"
+			type="text"
+			id="name"
+			name="name"
+			placeholder="Nazwa zespołu"
+			value={selectedGroup?.name}
+		/>
+		<label for="users">Członkowie zespołu</label>
+		<MultiSelect
+			options={data.users.map((user) => ({
+				value: user.id,
+				name: user.first_name + ' ' + user.last_name,
+				icon_name: 'Account'
+			}))}
+			selected={selectedUsers?.map((u) => u.id)}
+			name="users"
+			id="users"
+			placeholder="Wybierz pracowników"
+			onChange={onUserSelectChange}
+		/>
+		<button
+			type="submit"
+			class="flex gap-1 items-center bg-accent-green text-main-white font-semibold h-8 px-4 self-end mt-5"
+		>
+			<Check />
+			{showNewGroupPopup ? 'Dodaj zespół' : 'Zatwierdź zmiany'}
+		</button>
+	</form>
+{/snippet}

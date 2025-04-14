@@ -9,3 +9,10 @@ type Group {
 extend type Query {
     groups: [Group!]! @field(resolver: "App\\GraphQL\\Queries\\GroupResolver@organizationGroups")
 }
+
+extend type Mutation {
+    createGroup(
+        name: String!
+        icon_name: String!
+        selected_users: [String]!) : Group! @field(resolver: "App\\GraphQL\\Mutations\\GroupMutator@createGroup")
+}
