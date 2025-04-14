@@ -56,6 +56,10 @@ const schema = z.object({
 	mode: z.string().min(1)
 });
 
+const removeSchema = z.object({
+	group: z.number().int()
+});
+
 export const actions = {
 	editGroup: async ({ request, fetch }) => {
 		const form = await superValidate(request, zod(schema));
@@ -101,5 +105,37 @@ export const actions = {
 		console.log(res.data ? res.data : res.errors);
 
 		return { form };
+	},
+	removeGroup: async ({ request, fetch }) => {
+		const form = await superValidate(request, zod(removeSchema));
+
+		console.log(form);
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		const query = `
+			mutation RemoveGroup($group: ID!) {
+				removeGroup(group: $group) {
+					id
+				}
+			}
+		`;
+
+		const { group } = form.data;
+
+		const variables = { group };
+
+		const res = await fetch(API_URL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify({ query, variables })
+		}).then((res) => res.json());
+
+		console.log(res.data ? res.data : res.errors);
 	}
 };

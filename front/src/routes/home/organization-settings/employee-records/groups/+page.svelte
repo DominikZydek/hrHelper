@@ -123,8 +123,19 @@
 {/if}
 
 {#if showRemoveGroupPopup}
-	<Popup title="Usuwanie zespołu - {selectedGroup?.name}" togglePopup={toggleRemoveGroupPopup}
-	></Popup>
+	<Popup title="Usuwanie zespołu - {selectedGroup?.name}" togglePopup={toggleRemoveGroupPopup}>
+		<p>Czy na pewno chcesz usunąć zespół {selectedGroup?.name}?</p>
+		<form action="?/removeGroup" method="POST" class="flex flex-col">
+			<input type="hidden" value={selectedGroup?.id} id="group" name="group" />
+			<button
+				type="submit"
+				class="flex gap-1 items-center bg-accent-red text-main-white font-semibold h-8 px-4 self-end mt-5"
+			>
+				<Close />
+				Usuń zespół
+			</button>
+		</form>
+	</Popup>
 {/if}
 
 {#snippet groupForm()}

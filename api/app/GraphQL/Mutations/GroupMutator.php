@@ -61,4 +61,24 @@ class GroupMutator
             throw new \Exception('Failed to update group: ' . $e->getMessage());
         }
     }
+
+    public function removeGroup($root, array $args)
+    {
+        $currentUser = Auth::user();
+
+        try {
+            DB::beginTransaction();
+
+            $group = Group::findOrFail($args['group']);
+
+            $group->users()->detach();
+            $group->delete();
+
+            DB::commit();
+            return $group;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Failed to update group: ' . $e->getMessage());
+        }
+    }
 }

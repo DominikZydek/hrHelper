@@ -21,4 +21,8 @@ extend type Mutation {
         name: String!
         icon_name: String!
         selected_users: [String]!) : Group! @field(resolver: "App\\GraphQL\\Mutations\\GroupMutator@editGroup")
+
+    removeGroup(
+        group: ID!
+    ) : Group! @field(resolver: "App\\GraphQL\\Mutations\\GroupMutator@removeGroup")
 }
