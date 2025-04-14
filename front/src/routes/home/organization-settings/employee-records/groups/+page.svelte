@@ -172,7 +172,7 @@
 				<div class="grid grid-cols-10">
 					{#each Object.keys($icons) as iconName}
 						<button
-							class="h-10 w-10 border border-main-gray flex justify-center items-center"
+							class="h-10 w-10 border border-main-gray flex justify-center items-center hover:bg-gray-100"
 							type="button"
 							onclick={() => handleIconSelect(iconName)}
 						>
