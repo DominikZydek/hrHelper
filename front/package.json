@@ -36,6 +36,8 @@
 	"dependencies": {
 		"choices.js": "^11.0.3",
 		"cookie": "^1.0.2",
+		"laravel-echo": "^2.0.2",
+		"pusher-js": "^8.4.0",
 		"svelte-material-icons": "^3.0.5",
 		"tesseract.js": "^6.0.0"
 	},

@@ -1,0 +1,29 @@
+type Notification {
+    id: ID!
+    type: String!
+    data: NotificationData
+    read_at: DateTime
+    created_at: DateTime!
+}
+
+type NotificationData {
+    id: ID!
+    type: String
+    title: String
+    message: String
+    url: String
+    comment: String
+    action_type: String
+}
+
+extend type Query {
+    userNotifications: [Notification]! @field(resolver: "App\\GraphQL\\Queries\\NotificationResolver@userNotifications")
+    unreadNotificationsCount: Int! @field(resolver: "App\\GraphQL\\Queries\\NotificationResolver@unreadNotificationsCount")
+}
+
+extend type Mutation {
+    markNotificationAsRead(id: ID!): Boolean! @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutator@markNotificationAsRead")
+    markAllNotificationsAsRead: Boolean! @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutator@markAllNotificationsAsRead")
+
+    addNotification: Message @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutator@addNotification")
+}

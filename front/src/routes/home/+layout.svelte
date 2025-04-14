@@ -6,9 +6,17 @@
 	import NewspaperVariantMultiple from 'svelte-material-icons/NewspaperVariantMultiple.svelte';
 	import Tune from 'svelte-material-icons/Tune.svelte';
 	import { page } from '$app/state';
+	import NotificationCenter from '../../components/NotificationCenter.svelte';
+	import NotificationPanel from '../../components/NotificationPanel.svelte';
 
 	// current path
 	let path = $derived(page.url.pathname.split('/')[2]);
+	let { data } = $props();
+
+	let showPanel = $state(false);
+	const togglePanel = () => {
+		showPanel = !showPanel;
+	};
 </script>
 
 <div class="h-screen">
@@ -131,8 +139,25 @@
 				</a>
 			</li>
 			<!-- messages -->
+			<li class="px-4 py-6 w-full relative mt-6">
+				<div class="flex flex-col items-center justify-center h-8 group cursor-pointer">
+					<div class="text-main-white absolute group-hover:-translate-y-3 transition-transform">
+						<NotificationCenter user={data.user} {togglePanel} />
+					</div>
+					<p
+						class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity"
+					>
+						Powiadomienia
+					</p>
+				</div>
+			</li>
 		</ul>
 	</nav>
+
+	{#if showPanel}
+		<NotificationPanel {togglePanel} />
+	{/if}
+
 	<div class="ml-20 relative h-full">
 		<slot />
 	</div>

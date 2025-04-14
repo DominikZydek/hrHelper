@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
+    use HasApiTokens, Notifiable;
     protected $fillable = [
         'organization_id', 'password',
         'first_name', 'last_name', 'sex', 'email', 'birth_date', 'phone_number',
@@ -161,6 +163,22 @@ class User extends Authenticatable
         }
 
         return true;
+    }
+
+    public function notifications()
+    {
+        return $this->morphMany(DatabaseNotification::class, 'notifiable')
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receiveBroadcastNotificationsOn()
+    {
+        return 'App.Models.User.' . $this->id;
     }
 }
 

@@ -19,7 +19,7 @@
 		bind:this={dropdownElement}
 		use:clickOutside
 		on:clickoutside={toggleDropdown}
-		class="fixed bg-white border shadow-2xl rounded-lg max-w-[600px] z-50 pointer-events-auto"
+		class="fixed bg-white border shadow-2xl rounded-lg max-h-[300px] max-w-[600px] z-50 pointer-events-auto overflow-y-auto"
 		style="top: {position.top}px; left: {position.left}px;"
 	>
 		<slot />
