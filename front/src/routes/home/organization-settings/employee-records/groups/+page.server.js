@@ -43,6 +43,7 @@ export const load = async ({ locals, request, fetch }) => {
 };
 
 const schema = z.object({
+	group: z.number().int(),
 	name: z.string().min(1),
 	icon_name: z.string().min(1),
 	selected_users: z.preprocess((val) => {
@@ -76,11 +77,17 @@ export const actions = {
 					}
 				}
 			`
-				: ``;
+				: `
+					mutation EditGroup($group: ID!, $name: String!, $icon_name: String!, $selected_users: [String]!) {
+						editGroup(group: $group, name: $name, icon_name: $icon_name, selected_users: $selected_users) {
+							id
+						}
+					}
+				`;
 
-		const { name, icon_name, selected_users } = form.data;
+		const { group, name, icon_name, selected_users } = form.data;
 
-		const variables = { name, icon_name, selected_users };
+		const variables = { group, name, icon_name, selected_users };
 
 		const res = await fetch(API_URL, {
 			method: 'POST',

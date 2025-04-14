@@ -129,6 +129,7 @@
 
 {#snippet groupForm()}
 	<form action="?/editGroup" method="POST" class="flex flex-col w-[33.333vw]">
+		<input type="hidden" id="group" name="group" value={selectedGroup?.id} />
 		<input type="hidden" id="mode" name="mode" value={showNewGroupPopup ? 'create' : 'edit'} />
 		<input type="hidden" id="icon_name" name="icon_name" value={selectedIcon} />
 		<input

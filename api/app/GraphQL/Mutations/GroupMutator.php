@@ -34,4 +34,31 @@ class GroupMutator
             throw new \Exception('Failed to create group: ' . $e->getMessage());
         }
     }
+
+    public function editGroup($root, array $args)
+    {
+        $currentUser = Auth::user();
+
+        try {
+            DB::beginTransaction();
+
+            $group = Group::findOrFail($args['group']);
+
+            $group->update([
+                'name' => $args['name'],
+                'icon_name' => $args['icon_name'],
+            ]);
+
+            if (isset($args['selected_users'])) {
+                $group->users()->sync($args['selected_users']);
+            }
+
+            DB::commit();
+            return $group;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Failed to update group: ' . $e->getMessage());
+        }
+    }
 }
