@@ -18,6 +18,18 @@
 					<AccountGroup size="1.5rem" />
 					<p class="text-xl font-semibold">Pracownicy</p>
 				</div>
+				<ul class="text-main-gray">
+					<li>
+						<a href="/home/organization-settings/employee-records/groups">Ustawienia zespołów</a>
+					</li>
+					<li>
+						<a href="/home/organization-settings/employee-records/contracts">Ustawienia umów</a>
+					</li>
+					<li>
+						<a href="/home/organization-settings/employee-records/roles">Ustawienia ról/uprawnień</a
+						>
+					</li>
+				</ul>
 			</div>
 
 			<div class="p-6 border rounded-xl shadow">
@@ -32,6 +44,18 @@
 					<CalendarMultiselect size="1.5rem" />
 					<p class="text-xl font-semibold">Nieobecności</p>
 				</div>
+				<ul class="text-main-gray">
+					<li>
+						<a href="/home/organization-settings/leave-management/leave-types"
+							>Ustawienia typów urlopu</a
+						>
+					</li>
+					<li>
+						<a href="/home/organization-settings/leave-management/company-holidays"
+							>Ustawienia dni wolnych</a
+						>
+					</li>
+				</ul>
 			</div>
 
 			<div class="p-6 border rounded-xl shadow">
@@ -46,6 +70,14 @@
 					<NewspaperVariantMultiple size="1.5rem" />
 					<p class="text-xl font-semibold">Wiadomości</p>
 				</div>
+				<ul class="text-main-gray">
+					<li>
+						<a href="/home/organization-settings/messages/categories">Ustawienia kategorii</a>
+					</li>
+					<li>
+						<a href="/home/organization-settings/messages/templates">Ustawienia szablonów</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

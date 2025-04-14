@@ -7,5 +7,5 @@ type Group {
 }
 
 extend type Query {
-    groups: [Group!]! @all
+    groups: [Group!]! @field(resolver: "App\\GraphQL\\Queries\\GroupResolver@organizationGroups")
 }
