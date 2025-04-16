@@ -8,6 +8,13 @@ type Role {
 }
 
 extend type Query {
-    roles: [Role!]! @all
+    roles: [Role]! @field(resolver: "App\\GraphQL\\Queries\\RoleResolver@organizationRoles")
     role(id: ID! @eq): Role @find
+}
+
+extend type Mutation {
+    editRole(
+        role: ID!
+        permissions: [String]!
+    ) : Role! @field(resolver: "App\\GraphQL\\Mutations\\RoleMutator@editRole")
 }

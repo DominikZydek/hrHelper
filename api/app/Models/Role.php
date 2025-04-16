@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     protected $fillable = [
-        'name', 'display_name', 'description',
+        'name', 'display_name', 'description', 'organization_id'
     ];
 
     public function permissions()
