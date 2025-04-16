@@ -28,4 +28,24 @@ class RoleMutator
             throw new \Exception('Failed to update role: ' . $e->getMessage());
         }
     }
+
+    public function grantRole($root, array $args)
+    {
+        $currentUser = Auth::user();
+
+        try {
+            DB::beginTransaction();
+
+            $role = Role::findOrFail($args['role']);
+
+            $role->users()->sync($args['selected_users']);
+
+            DB::commit();
+            return $role;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Failed to grant role: ' . $e->getMessage());
+        }
+    }
 }

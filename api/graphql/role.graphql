@@ -17,4 +17,9 @@ extend type Mutation {
         role: ID!
         permissions: [String]!
     ) : Role! @field(resolver: "App\\GraphQL\\Mutations\\RoleMutator@editRole")
+
+    grantRole(
+        role: ID!
+        selected_users: [String]!
+    ) : Role! @field(resolver: "App\\GraphQL\\Mutations\\RoleMutator@grantRole")
 }
