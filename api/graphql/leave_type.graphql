@@ -5,8 +5,34 @@ type LeaveType {
     requires_replacement: Boolean!
     min_notice_days: Int!
     can_be_cancelled: Boolean!
+    leave_requests: [LeaveRequest!]!
 }
 
 extend type Query {
-    leaveTypes: [LeaveType!]! @all
+    leaveTypes: [LeaveType!]! @field(resolver: "App\\GraphQL\\Queries\\LeaveTypeResolver@organizationLeaveTypes")
+}
+
+extend type Mutation {
+    createLeaveType(
+        leave_type: ID!
+        name: String!
+        limit_per_year: Int!
+        requires_replacement: Boolean!
+        min_notice_days: Int!
+        can_be_cancelled: Boolean
+    ) : LeaveType! @field(resolver: "App\\GraphQL\\Mutations\\LeaveTypeMutator@createLeaveType")
+
+    editLeaveType(
+        leave_type: ID!
+        name: String!
+        limit_per_year: Int!
+        requires_replacement: Boolean!
+        min_notice_days: Int!
+        can_be_cancelled: Boolean
+    ) : LeaveType! @field(resolver: "App\\GraphQL\\Mutations\\LeaveTypeMutator@editLeaveType")
+
+    removeLeaveType(
+        leave_type: ID!
+    ) : LeaveType! @field(resolver: "App\\GraphQL\\Mutations\\LeaveTypeMutator@removeLeaveType")
+
 }

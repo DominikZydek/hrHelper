@@ -18,6 +18,8 @@ return new class extends Migration
             $table->boolean('requires_replacement');
             $table->integer('min_notice_days');
             $table->boolean('can_be_cancelled');
+            $table->boolean('is_deleted')->default(false);
+            $table->foreignId('organization_id')->constrained('organizations');
             $table->timestamps();
         });
     }

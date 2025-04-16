@@ -2,7 +2,7 @@
 	import Plus from 'svelte-material-icons/Plus.svelte';
 	import { icons } from '../../../../../stores/icons.js';
 	import Pencil from 'svelte-material-icons/Pencil.svelte';
-	import Close from 'svelte-material-icons/Close.svelte';
+	import Delete from 'svelte-material-icons/Delete.svelte';
 	import Popup from '../../../../../components/Popup.svelte';
 	import MultiSelect from '../../../../../components/MultiSelect.svelte';
 	import Dropdown from '../../../../../components/Dropdown.svelte';
@@ -98,7 +98,7 @@
 										handleRemoveGroupClick(group);
 									}}
 								>
-									<Close class="text-accent-red" size="1.25rem" />
+									<Delete class="text-accent-red" size="1.25rem" />
 								</button>
 							</div>
 						</div>
@@ -131,7 +131,7 @@
 				type="submit"
 				class="flex gap-1 items-center bg-accent-red text-main-white font-semibold h-8 px-4 self-end mt-5"
 			>
-				<Close />
+				<Delete />
 				Usuń zespół
 			</button>
 		</form>

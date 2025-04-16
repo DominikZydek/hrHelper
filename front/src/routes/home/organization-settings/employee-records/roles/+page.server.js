@@ -50,11 +50,6 @@ export const load = async ({ locals, request, fetch }) => {
 		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
 
-	const schemaFields = {};
-	res.data.permissions.forEach((permission) => {
-		schemaFields[permission.name] = z.boolean().optional().default(false);
-	});
-
 	return res.data;
 };
 
