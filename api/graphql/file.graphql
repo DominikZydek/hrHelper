@@ -1,0 +1,8 @@
+type File {
+    id: ID!
+    file: Upload!
+}
+
+extend type Mutation {
+    uploadFile(file: Upload!) : File! @field(resolver: "App\\GraphQL\\Mutations\\UserMutator@uploadFile")
+}

@@ -8,6 +8,7 @@ use App\Models\User;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -179,5 +180,15 @@ class UserMutator
         }
 
         return $user;
+    }
+
+    // TODO: DELETE, TEMPORARY
+    public function uploadFile($root, array $args)
+    {
+        $file = $args['file'];
+
+        Log::error($file);
+
+        return null;
     }
 }
