@@ -161,7 +161,6 @@
 			id="date"
 			name="date"
 			placeholder="Data"
-			disabled={showAddNewHoliday ? 'disabled' : ''}
 			value={selectedHoliday?.date || selectedDate}
 		/>
 		<div class="flex gap-2 mb-2">
