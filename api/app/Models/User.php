@@ -7,10 +7,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, InteractsWithMedia;
     protected $fillable = [
         'organization_id', 'password',
         'first_name', 'last_name', 'sex', 'email', 'birth_date', 'phone_number',
