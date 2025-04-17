@@ -10,3 +10,23 @@ extend type Query {
     company_holidays: [CompanyHoliday!]! @field(resolver: "App\\GraphQL\\Queries\\CompanyHolidayResolver@company_holidays")
     holidays: [CompanyHoliday!]! @all
 }
+
+extend type Mutation {
+    createCompanyHoliday(
+        name: String!
+        date: Date!
+        recurring_yearly: Boolean!
+    ) : CompanyHoliday! @field(resolver: "App\\GraphQL\\Mutations\\CompanyHolidayMutator@createCompanyHoliday")
+
+    editCompanyHoliday(
+        holiday: ID!
+        name: String!
+        date: Date!
+        recurring_yearly: Boolean!
+    ) : CompanyHoliday! @field(resolver: "App\\GraphQL\\Mutations\\CompanyHolidayMutator@editCompanyHoliday")
+
+    removeCompanyHoliday(
+        holiday: ID!
+    ) : CompanyHoliday! @field(resolver: "App\\GraphQL\\Mutations\\CompanyHolidayMutator@removeCompanyHoliday")
+
+}

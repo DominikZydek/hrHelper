@@ -5,10 +5,13 @@ export function clickOutside(node) {
 		}
 	};
 
-	document.addEventListener('click', handleClick, true);
+	let timeoutId = setTimeout(() => {
+		document.addEventListener('click', handleClick, true);
+	}, 0);
 
 	return {
 		destroy() {
+			clearTimeout(timeoutId);
 			document.removeEventListener('click', handleClick, true);
 		}
 	};
