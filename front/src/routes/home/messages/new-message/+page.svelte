@@ -13,6 +13,12 @@
 	let selectedUsers = $state([]);
 	let recipients = $state([]);
 
+	let selectedTemplate = $state(null);
+	const handleTemplateSelect = (e) => {
+		selectedTemplate = data.message_templates.find((t) => t.id === e.target.value);
+		messagePriority = selectedTemplate.priority?.toString();
+	};
+
 	let chooseMode = $state('groups'); // 'employees'
 	const handleChooseModeChange = (e) => {
 		chooseMode = e.target.value;
@@ -206,7 +212,7 @@
 						type="range"
 						min="1"
 						max="3"
-						value="2"
+						value={selectedTemplate?.priority || '2'}
 						step="1"
 						onchange={(e) => {
 							messagePriority = e.target.value;
@@ -244,16 +250,25 @@
 				</div>
 			</div>
 			<div>
-				<input id="require_confirmation" name="require_confirmation" type="checkbox" />
+				<input
+					id="require_confirmation"
+					name="require_confirmation"
+					type="checkbox"
+					checked={selectedTemplate?.require_confirmation}
+				/>
 				<label class="font-semibold" for="require_confirmation">Wymagaj potwierdzenia odbioru</label
 				>
 			</div>
 		</div>
 
 		<div class="p-6 border rounded-xl shadow col-span-9">
-			<!-- TODO: populate message on change -->
 			<p class="font-bold text-lg mb-2">Wybierz szablon</p>
-			<select class="w-full border border-main-gray p-2" name="template" id="template">
+			<select
+				class="w-full border border-main-gray p-2"
+				name="template"
+				id="template"
+				onchange={(e) => handleTemplateSelect(e)}
+			>
 				<option selected>Wybierz szablon</option>
 				{#each data.message_templates as template}
 					<option value={template.id}>{template.name}</option>
@@ -271,11 +286,15 @@
 						id="subject"
 						name="subject"
 						placeholder="Temat wiadomości"
+						value={selectedTemplate?.subject}
 					/>
 					<select class="w-max border border-main-gray p-2" name="category" id="category">
 						<option disabled selected>Wybierz kategorię</option>
 						{#each data.message_categories as category}
-							<option value={category.id}>{category.name}</option>
+							<option
+								selected={selectedTemplate?.category?.id === category.id ? 'selected' : ''}
+								value={category.id}>{category.name}</option
+							>
 						{/each}
 					</select>
 				</div>
@@ -284,8 +303,8 @@
 					id="content"
 					name="content"
 					rows="10"
-					placeholder="Treść wiadomości"
-				/>
+					placeholder="Treść wiadomości">{selectedTemplate?.content}</textarea
+				>
 				<div class="flex justify-between">
 					<div>
 						<p>Dodaj załącznik(i)</p>
