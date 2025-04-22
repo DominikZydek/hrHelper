@@ -2,9 +2,11 @@
 
 namespace App\GraphQL\Queries;
 
+use App\Models\MediaCollection;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class FileResolver
 {
@@ -22,6 +24,11 @@ class FileResolver
         return null;
     }
 
+    public function getMediaCollection($media)
+    {
+        return MediaCollection::where('name', $media->collection_name)->first();
+    }
+
     public function organizationFiles($root, array $args)
     {
         $currentUser = Auth::user();
@@ -33,8 +40,17 @@ class FileResolver
 
             foreach ($users as $user) {
                 $userFiles = $user->files;
+
+                if (isset($args['collection'])) {
+                    $collectionPrefix = $args['collection'];
+                    $userFiles = $userFiles->filter(function ($file) use ($collectionPrefix) {
+                        return strpos($file->collection_name, $collectionPrefix) === 0;
+                    });
+                }
+
                 $allFiles = $allFiles->merge($userFiles);
             }
+
             return $allFiles;
 
         } catch (\Exception $e) {

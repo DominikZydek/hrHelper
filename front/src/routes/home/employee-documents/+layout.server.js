@@ -1,8 +1,16 @@
 import { API_URL } from '$env/static/private';
 
 export const load = async ({ locals, request, fetch }) => {
+	const url = request.url.split('/');
+	let path = url[url.length - 1];
+
+	if (path === 'all') {
+		path = null;
+	}
+	console.log(path);
+
 	const query = `
-			query ($organization: ID!) {
+			query ($organization: ID!, $collection: String) {
 			me {
 				organization {
 					media_collections {
@@ -12,7 +20,7 @@ export const load = async ({ locals, request, fetch }) => {
 					}
 				}
 			}
-			files(organization: $organization) {
+			files(organization: $organization, collection: $collection) {
 				id
 				name
 				url
@@ -20,7 +28,11 @@ export const load = async ({ locals, request, fetch }) => {
 				size
 				created_at
 				custom_properties
-				collection_name
+				collection {
+					id
+					name
+					display_name
+				}
 				user {
 					id
 					first_name
@@ -40,7 +52,8 @@ export const load = async ({ locals, request, fetch }) => {
 	const { user } = locals;
 
 	const variables = {
-		organization: user.organization.id
+		organization: user.organization.id,
+		collection: path
 	};
 
 	const res = await fetch(API_URL, {

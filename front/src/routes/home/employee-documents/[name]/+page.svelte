@@ -20,7 +20,7 @@
 <div class="flex-1 p-4">
 	<div class="flex items-start gap-8 mb-4">
 		<p class="font-semibold text-2xl text-main-app">
-			{data.collections.find((c) => c.name === path).display_name}
+			{data.collections.find((c) => c.name === path)?.display_name || 'Wszystkie pliki'}
 		</p>
 		<div class="flex-1">
 			<Searchbar
@@ -78,7 +78,7 @@
 							</div>
 						</td>
 						<td class="px-4 py-3">{file.name}</td>
-						<td class="px-4 py-3">{file.collection_name}</td>
+						<td class="px-4 py-3">{file.collection.display_name}</td>
 						<td class="px-4 py-3">
 							{new Date(file.created_at).toLocaleDateString()}
 						</td>

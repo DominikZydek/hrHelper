@@ -4,14 +4,14 @@ type File {
     name: String!
     url: String @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getUrl")
     mime_type: String!
-    collection_name: String!
+    collection: MediaCollection! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getMediaCollection")
     size: Int!
     created_at: DateTime!
     custom_properties: JSON!
 }
 
 extend type Query {
-    files(organization: ID!) : [File]! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@organizationFiles")
+    files(organization: ID!, collection: String) : [File]! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@organizationFiles")
 }
 
 extend type Mutation {

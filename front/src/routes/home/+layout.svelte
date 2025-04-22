@@ -73,7 +73,7 @@
 			>
 				<a
 					class="flex flex-col items-center justify-center h-8 group"
-					href="/home/employee-documents"
+					href="/home/employee-documents/all"
 				>
 					<FileDocumentMultiple
 						class="text-main-white absolute group-hover:-translate-y-3 transition-transform"
