@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\MediaCollection;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +15,10 @@ class FileMutator
         try {
             $user = User::findOrFail($args['user']);
 
+            $collection = MediaCollection::findOrFail($args['collection']);
+
             $media = $user->addMedia($file)
-                ->toMediaCollection($args['collection']);
+                ->toMediaCollection($collection->name);
 
             return [
                 'id' => $media->id,

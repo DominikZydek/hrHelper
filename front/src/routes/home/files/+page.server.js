@@ -1,5 +1,34 @@
 import { API_URL } from '$env/static/private';
 
+export const load = async ({ request, fetch }) => {
+	const query = `
+		{
+			me {
+				organization {
+					media_collections {
+						id
+						display_name
+						name
+					}
+				}
+			}
+		}
+	`;
+
+	const res = await fetch(API_URL, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({ query })
+	}).then((res) => res.json());
+
+	console.log(res);
+
+	return res.data;
+};
+
 export const actions = {
 	default: async ({ request, fetch }) => {
 		const formData = await request.formData();
@@ -7,7 +36,7 @@ export const actions = {
 
 		const operations = JSON.stringify({
 			query: `
-        mutation UploadFile($file: Upload!, $user: ID!, $collection: String!) {
+        mutation UploadFile($file: Upload!, $user: ID!, $collection: ID!) {
           uploadFile(file: $file, user: $user, collection: $collection) {
             id
           }

@@ -1,0 +1,6 @@
+type MediaCollection {
+    id: ID!
+    name: String!
+    display_name: String!
+    organization: Organization!
+}

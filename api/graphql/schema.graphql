@@ -22,5 +22,6 @@ scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload
 #import message_category.graphql
 #import message_template.graphql
 #import file.graphql
+#import media_collection.graphql
 
 #import notification.graphql

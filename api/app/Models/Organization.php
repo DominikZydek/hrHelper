@@ -18,4 +18,9 @@ class Organization extends Model
     public function holidays() {
         return $this->hasMany(CompanyHoliday::class);
     }
+
+    public function media_collections()
+    {
+        return $this->hasMany(MediaCollection::class);
+    }
 }

@@ -3,4 +3,5 @@ type Organization {
     alias: String!
     name: String!
     holidays: [CompanyHoliday!]!
+    media_collections: [MediaCollection!]!
 }
