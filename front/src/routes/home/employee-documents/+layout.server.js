@@ -1,19 +1,47 @@
 import { API_URL } from '$env/static/private';
 
-export const load = async ({ request, fetch }) => {
+export const load = async ({ locals, request, fetch }) => {
 	const query = `
-   {
-    me {
-     organization {
-      media_collections {
-       id
-       display_name
-       name
-      }
-     }
-    }
-   }
+			query ($organization: ID!) {
+			me {
+				organization {
+					media_collections {
+						id
+						name
+						display_name
+					}
+				}
+			}
+			files(organization: $organization) {
+				id
+				name
+				url
+				mime_type
+				size
+				created_at
+				custom_properties
+				collection_name
+				user {
+					id
+					first_name
+					last_name
+					email
+					job_title
+					groups {
+						id
+						name
+						icon_name
+					}
+				}
+			}
+		}
   `;
+
+	const { user } = locals;
+
+	const variables = {
+		organization: user.organization.id
+	};
 
 	const res = await fetch(API_URL, {
 		method: 'POST',
@@ -21,13 +49,12 @@ export const load = async ({ request, fetch }) => {
 			'Content-Type': 'application/json'
 		},
 		credentials: 'include',
-		body: JSON.stringify({ query })
+		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
 
-	console.log(res.data.me.organization);
-
 	return {
-		collections: getCollectionsWithHierarchy(res.data.me.organization.media_collections)
+		collections: getCollectionsWithHierarchy(res.data.me.organization.media_collections),
+		files: res.data.files
 	};
 };
 

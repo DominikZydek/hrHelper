@@ -18,12 +18,16 @@ class FileMutator
             $collection = MediaCollection::findOrFail($args['collection']);
 
             $media = $user->addMedia($file)
+                ->usingName($args['file_name'])
+                ->withCustomProperties([
+                    'date_from' => $args['date_from'],
+                    'date_to' => $args['date_to'],
+                    'date_archive' => $args['date_archive'],
+                ])
                 ->toMediaCollection($collection->name);
 
-            return [
-                'id' => $media->id,
-                'file' => $media->file_name
-            ];
+            return $media;
+
         } catch (\Exception $e) {
             throw new \Exception('Could not upload file: ' . $e->getMessage());
         }

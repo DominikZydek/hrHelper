@@ -106,6 +106,11 @@ class User extends Authenticatable implements HasMedia
         return $query->orderBy('priority', 'DESC')->orderBy('publication_date', 'DESC');
     }
 
+    public function files()
+    {
+        return $this->media();
+    }
+
     /**
      * Checks if user has a specific permission
      */
