@@ -23,6 +23,11 @@ class MediaCollectionSeeder extends Seeder
                 'name' => 'files',
                 'display_name' => 'Pliki',
                 'organization_id' => 1,
+            ],
+            [
+                'name' => 'documents/a',
+                'display_name' => 'Dokumenty A',
+                'organization_id' => 1,
             ]
         ];
 

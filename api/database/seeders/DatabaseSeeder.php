@@ -42,6 +42,8 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,               // Zależne od users i message_categories
             MessageRecipientSeeder::class,      // Zależne od messages i users
             MessageTemplateSeeder::class,       // Zależne od categories
+
+            MediaCollectionSeeder::class,
         ]);
     }
 }
