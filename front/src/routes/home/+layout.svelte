@@ -82,7 +82,7 @@
 					<p
 						class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity"
 					>
-						Dokumentacja
+						Dokumenty
 					</p>
 				</a>
 			</li>
