@@ -181,14 +181,4 @@ class UserMutator
 
         return $user;
     }
-
-    // TODO: DELETE, TEMPORARY
-    public function uploadFile($root, array $args)
-    {
-        $file = $args['file'];
-
-        Log::error($file);
-
-        return null;
-    }
 }

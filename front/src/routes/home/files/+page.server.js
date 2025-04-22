@@ -3,27 +3,36 @@ import { API_URL } from '$env/static/private';
 export const actions = {
 	default: async ({ request, fetch }) => {
 		const formData = await request.formData();
+		const file = formData.get('file');
 
-		const query = `
-			mutation UploadFile($file: Upload!) {
-				uploadFile(file: $file) {
-					id
-				}
+		const operations = JSON.stringify({
+			query: `
+        mutation UploadFile($file: Upload!, $user: ID!, $collection: String!) {
+          uploadFile(file: $file, user: $user, collection: $collection) {
+            id
+          }
+        }
+      `,
+			variables: {
+				file: null,
+				user: formData.get('user'),
+				collection: formData.get('collection')
 			}
-		`;
+		});
 
-		// TODO: Fix, this doesn't get sent !!
-		const variables = {
-			file: formData.get('file')
-		};
+		const map = JSON.stringify({
+			0: ['variables.file']
+		});
 
-		const res = await fetch(API_URL, {
+		const uploadFormData = new FormData();
+		uploadFormData.append('operations', operations);
+		uploadFormData.append('map', map);
+		uploadFormData.append('0', file);
+
+		const res = await fetch(`${API_URL}`, {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
 			credentials: 'include',
-			body: JSON.stringify({ query, variables })
+			body: uploadFormData
 		}).then((res) => res.json());
 
 		console.log(res);
