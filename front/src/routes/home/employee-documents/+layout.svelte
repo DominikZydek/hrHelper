@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import Folder from 'svelte-material-icons/Folder.svelte';
 
-	let path = $derived(page.url.pathname.split('/')[3]);
+	let path = $derived(page.url.pathname.split('/').slice(3).join('/'));
 
 	let { data } = $props();
 

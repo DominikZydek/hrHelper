@@ -1,10 +1,10 @@
 <script>
-	import Searchbar from '../../../../../components/Searchbar.svelte';
+	import Searchbar from '../../../../components/Searchbar.svelte';
 	import { page } from '$app/state';
-	import { icons } from '../../../../../stores/icons.js';
-	import GroupBadge from '../../../../../components/GroupBadge.svelte';
+	import { icons } from '../../../../stores/icons.js';
+	import GroupBadge from '../../../../components/GroupBadge.svelte';
 	import Plus from 'svelte-material-icons/Plus.svelte';
-	import Popup from '../../../../../components/Popup.svelte';
+	import Popup from '../../../../components/Popup.svelte';
 
 	let { data } = $props();
 	let path = $derived(page.url.pathname.split('/')[3]);
