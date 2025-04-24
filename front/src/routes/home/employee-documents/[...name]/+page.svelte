@@ -12,7 +12,7 @@
 
 	const onClick = () => {};
 
-	let showUploadDocument = $state(true);
+	let showUploadDocument = $state(false);
 	const toggleUploadDocument = () => {
 		showUploadDocument = !showUploadDocument;
 	};
@@ -125,10 +125,10 @@
 			<input type="hidden" id="date_archive" name="date_archive" />
 
 			<label class="font-bold text-main-gray" for="file">WYBIERZ PLIK</label>
-			<input class="w-full" type="file" id="file" name="file" />
+			<input class="w-full mb-2" type="file" id="file" name="file" />
 
 			<label class="font-bold text-main-gray" for="user">WYBIERZ PRACOWNIKA</label>
-			<select class="w-full border border-main-gray px-1" name="user" id="user">
+			<select class="w-full border border-main-gray px-1 mb-2" name="user" id="user">
 				<option disabled selected>Wybierz pracownika</option>
 				{#each data.users as user}
 					<option value={user.id}>{user.first_name} {user.last_name}</option>
@@ -137,7 +137,7 @@
 
 			<label class="font-bold text-main-gray" for="file_name">NAZWA PLIKU</label>
 			<input
-				class="w-full border border-main-gray px-1"
+				class="w-full border border-main-gray px-1 mb-2"
 				type="text"
 				id="file_name"
 				name="file_name"
@@ -146,23 +146,28 @@
 
 			<label class="font-bold text-main-gray" for="date_from">DATA ROZPOCZĘCIA OBOWIĄZYWANIA</label>
 			<input
-				class="w-full border border-main-gray px-1"
+				class="w-full border border-main-gray px-1 mb-2"
 				type="date"
 				id="date_from"
 				name="date_from"
 			/>
 
 			<label class="font-bold text-main-gray" for="date_to">DATA WAŻNOŚCI</label>
-			<input class="w-full border border-main-gray px-1" type="date" id="date_to" name="date_to" />
+			<input
+				class="w-full border border-main-gray px-1 mb-2"
+				type="date"
+				id="date_to"
+				name="date_to"
+			/>
 
 			<label class="font-bold text-main-gray" for="archive_period">OKRES ARCHIWIZACJI</label>
-			<div class="flex gap-2 w-full">
+			<div class="flex gap-2 w-full mb-2">
 				<input class="border border-main-gray px-1 w-12" type="text" id="archive_period" />
 				<p>lat(a) od zakończenia roku kalendarzowego, w którym mija data ważności</p>
 			</div>
 
 			<label class="font-bold text-main-gray" for="collection">FOLDER ZAPISU</label>
-			<select class="w-full border border-main-gray px-1" name="collection" id="collection">
+			<select class="w-full border border-main-gray px-1 mb-5" name="collection" id="collection">
 				{#each data.collections as collection}
 					{#if collection.children && collection.children.length > 0}
 						<option value={collection.id}>{collection.display_name || collection.name}</option>
