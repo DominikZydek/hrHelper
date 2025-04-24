@@ -53,6 +53,11 @@ export const load = async ({ locals, request, fetch }) => {
 					}
 				}
 			}
+			users(organization: $organization) {
+				id
+				first_name
+				last_name
+			}
 		}
   `;
 
@@ -76,7 +81,8 @@ export const load = async ({ locals, request, fetch }) => {
 
 	return {
 		collections: getCollectionsWithHierarchy(res.data.me.organization.media_collections),
-		files: res.data.files
+		files: res.data.files,
+		users: res.data.users
 	};
 };
 
