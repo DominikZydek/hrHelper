@@ -147,6 +147,8 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/laravel-medialibrary" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/laravel-package-tools" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/temporary-directory" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/mll-lab/graphql-php-scalars" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/regex" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

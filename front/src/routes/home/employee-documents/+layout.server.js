@@ -2,11 +2,18 @@ import { API_URL } from '$env/static/private';
 
 export const load = async ({ locals, request, fetch }) => {
 	const url = request.url.split('/');
-	let path = url[url.length - 1];
+	let path = '';
+
+	if (url[url.length - 2] === 'employee-documents') {
+		path = url[url.length - 1];
+	} else {
+		path = url[url.length - 2] + '/' + url[url.length - 1];
+	}
 
 	if (path === 'all') {
 		path = null;
 	}
+
 	console.log(path);
 
 	const query = `
@@ -64,6 +71,8 @@ export const load = async ({ locals, request, fetch }) => {
 		credentials: 'include',
 		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
+
+	console.log(res.data.files);
 
 	return {
 		collections: getCollectionsWithHierarchy(res.data.me.organization.media_collections),

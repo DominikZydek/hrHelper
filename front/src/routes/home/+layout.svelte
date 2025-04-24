@@ -72,6 +72,7 @@
 					: ''}"
 			>
 				<a
+					data-sveltekit-reload
 					class="flex flex-col items-center justify-center h-8 group"
 					href="/home/employee-documents/all"
 				>

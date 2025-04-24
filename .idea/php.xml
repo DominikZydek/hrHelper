@@ -158,6 +158,8 @@
       <path value="$PROJECT_DIR$/api/vendor/spatie/laravel-package-tools" />
       <path value="$PROJECT_DIR$/api/vendor/spatie/temporary-directory" />
       <path value="$PROJECT_DIR$/api/vendor/maennchen/zipstream-php" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/regex" />
+      <path value="$PROJECT_DIR$/api/vendor/mll-lab/graphql-php-scalars" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
