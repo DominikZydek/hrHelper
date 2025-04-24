@@ -6,6 +6,8 @@
 	import Plus from 'svelte-material-icons/Plus.svelte';
 	import Popup from '../../../../components/Popup.svelte';
 	import ContentSave from 'svelte-material-icons/ContentSave.svelte';
+	import { getDocumentStatus, getDaysUntilExpiration } from '../../../../utils/timeCalculation.js';
+	import { getStatusInfo } from '../../../../utils/getStatusInfo.js';
 
 	let { data } = $props();
 	let path = $derived(page.url.pathname.split('/')[3]);
@@ -66,6 +68,9 @@
 			<tbody class="divide-y divide-main-gray">
 				{#each data.files as file}
 					{@const custom_properties = JSON.parse(file.custom_properties)}
+					{@const statusInfo = getStatusInfo(getDocumentStatus(custom_properties.date_to), {
+						days: getDaysUntilExpiration(custom_properties.date_to)
+					})}
 					<tr class="cursor-pointer hover:bg-auxiliary-gray">
 						<!--						on:click={() => onClick(leaveRequest)}-->
 						<!--					>-->
@@ -100,10 +105,9 @@
 						</td>
 						<td class="px-4 py-3">
 							<div class="flex items-center justify-center">
-								<div class="flex gap-2 items-center px-3 py-1 rounded-full text-accent-green">
-									<!-- TODO: make status functional or remove -->
-									<p class="font-semibold">Aktywny</p>
-									<svelte:component this={$icons['CheckboxMarkedCircleOutline']} size="1.5rem" />
+								<div class="flex gap-2 items-center px-3 py-1 rounded-full {statusInfo.class}">
+									<p class="font-semibold">{statusInfo.message}</p>
+									<svelte:component this={$icons[statusInfo.icon]} size="1.5rem" />
 								</div>
 							</div>
 						</td>
