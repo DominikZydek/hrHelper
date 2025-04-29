@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/state';
 	import Folder from 'svelte-material-icons/Folder.svelte';
+	import Archive from 'svelte-material-icons/Archive.svelte';
 
 	let path = $derived(page.url.pathname.split('/').slice(3).join('/'));
 
@@ -43,6 +44,15 @@
 				</a>
 			{/each}
 		{/each}
+		<a
+			data-sveltekit-reload
+			href="/home/employee-documents/archive"
+			class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
+										{path === 'archive' ? 'bg-auxiliary-gray' : ''}"
+		>
+			<Archive size="1.75rem" />
+			<span>Archiwum</span>
+		</a>
 	</div>
 	<slot />
 </div>

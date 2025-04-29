@@ -24,6 +24,10 @@ class FileResolver
         return null;
     }
 
+    public function getThumbnail($media)
+    {
+        return $media->getUrl('preview');
+    }
     public function getMediaCollection($media)
     {
         return MediaCollection::where('name', $media->collection_name)->first();

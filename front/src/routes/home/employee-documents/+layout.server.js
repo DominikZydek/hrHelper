@@ -31,6 +31,7 @@ export const load = async ({ locals, request, fetch }) => {
 				id
 				name
 				url
+				thumbnail
 				mime_type
 				size
 				created_at

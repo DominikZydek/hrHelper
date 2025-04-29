@@ -3,6 +3,7 @@ type File {
     user: User! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getUser")
     name: String!
     url: String @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getUrl")
+    thumbnail: String @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getThumbnail")
     mime_type: String!
     collection: MediaCollection! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getMediaCollection")
     size: Int!

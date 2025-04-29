@@ -8,15 +8,34 @@
 	import ContentSave from 'svelte-material-icons/ContentSave.svelte';
 	import { getDocumentStatus, getDaysUntilExpiration } from '../../../../utils/timeCalculation.js';
 	import { getStatusInfo } from '../../../../utils/getStatusInfo.js';
+	import DotsHorizontal from 'svelte-material-icons/DotsHorizontal.svelte';
+	import Dropdown from '../../../../components/Dropdown.svelte';
+	import Eye from 'svelte-material-icons/Eye.svelte';
+	import Delete from 'svelte-material-icons/Delete.svelte';
+	import Download from 'svelte-material-icons/Download.svelte';
+	import Pencil from 'svelte-material-icons/Pencil.svelte';
+	import Archive from 'svelte-material-icons/Archive.svelte';
 
 	let { data } = $props();
 	let path = $derived(page.url.pathname.split('/')[3]);
+	$inspect(data.files);
 
-	const onClick = () => {};
+	let optionButton = $state(null);
+	let showOptions = $state(false);
+
+	const toggleOptions = () => {
+		showOptions = !showOptions;
+	};
+
+	let selectedDocument = $state(null);
 
 	let showUploadDocument = $state(false);
 	const toggleUploadDocument = () => {
 		showUploadDocument = !showUploadDocument;
+	};
+
+	const onClick = (document) => {
+		selectedDocument ? (selectedDocument = null) : (selectedDocument = document);
 	};
 
 	const calculateArchiveDate = (e) => {
@@ -71,9 +90,7 @@
 					{@const statusInfo = getStatusInfo(getDocumentStatus(custom_properties.date_to), {
 						days: getDaysUntilExpiration(custom_properties.date_to)
 					})}
-					<tr class="cursor-pointer hover:bg-auxiliary-gray">
-						<!--						on:click={() => onClick(leaveRequest)}-->
-						<!--					>-->
+					<tr class="cursor-pointer hover:bg-auxiliary-gray" onclick={() => onClick(file)}>
 						<td class="px-4 py-3">
 							<div class="flex items-center gap-5">
 								<img class="h-16 w-16" src="/favicon.png" alt="" />
@@ -193,5 +210,68 @@
 				Zapisz dokument
 			</button>
 		</form>
+	</Popup>
+{/if}
+
+{#if selectedDocument}
+	<Popup
+		title="{selectedDocument.user.first_name} {selectedDocument.user
+			.last_name} - {selectedDocument.name}"
+		togglePopup={() => onClick(selectedDocument)}
+	>
+		<svelte:fragment slot="header-right">
+			<button type="button" bind:this={optionButton} onclick={() => toggleOptions()}>
+				<DotsHorizontal class="text-main-gray" size="2rem" />
+			</button>
+		</svelte:fragment>
+
+		<div></div>
+
+		{#if showOptions}
+			<Dropdown triggerElement={optionButton} toggleDropdown={toggleOptions}>
+				<div class="flex flex-col py-2">
+					<button
+						onclick={() => {}}
+						type="button"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app"
+					>
+						<Eye size="1.25rem" />
+						<span>Zobacz dokument</span>
+					</button>
+					<button
+						onclick={() => {}}
+						type="button"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app"
+					>
+						<Download size="1.25rem" />
+						<span>Pobierz dokument</span>
+					</button>
+					<button
+						onclick={() => {}}
+						type="button"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-orange"
+					>
+						<Pencil size="1.25rem" />
+						<span>Edytuj dokument</span>
+					</button>
+					<button
+						onclick={() => {}}
+						type="button"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red"
+					>
+						<Archive size="1.25rem" />
+						<span>Archiwizuj dokument</span>
+					</button>
+					<button
+						onclick={() => {}}
+						type="button"
+						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red"
+					>
+						<Delete size="1.25rem" />
+						<span>Usuń dokument</span>
+					</button>
+				</div>
+			</Dropdown>
+		{/if}
 	</Popup>
 {/if}

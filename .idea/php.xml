@@ -160,6 +160,7 @@
       <path value="$PROJECT_DIR$/api/vendor/maennchen/zipstream-php" />
       <path value="$PROJECT_DIR$/api/vendor/spatie/regex" />
       <path value="$PROJECT_DIR$/api/vendor/mll-lab/graphql-php-scalars" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/pdf-to-image" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
