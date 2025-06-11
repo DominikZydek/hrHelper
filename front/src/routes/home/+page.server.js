@@ -1,4 +1,5 @@
 import { API_URL } from '$env/static/private';
+import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals, request, fetch }) => {
 	const query = `
@@ -348,7 +349,35 @@ export const load = async ({ locals, request, fetch }) => {
 		body: JSON.stringify({ query, variables })
 	}).then((res) => res.json());
 
-	console.log(res.data.users);
-
 	return res.data;
+};
+
+export const actions = {
+	logout: async ({ request, fetch, cookies }) => {
+		const query = `
+      mutation {
+        logout {
+          id
+        }
+      }
+    `;
+
+		const res = await fetch(API_URL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify({ query })
+		}).then((res) => res.json());
+
+		console.log(res);
+
+		if (res.data && res.data.logout) {
+			cookies.delete('laravel_session', { path: '/' });
+			cookies.delete('XSRF-TOKEN', { path: '/' });
+
+			throw redirect(302, '/');
+		}
+	}
 };

@@ -2,7 +2,7 @@
 	import AccountGroup from 'svelte-material-icons/AccountGroup.svelte';
 	import FileDocumentMultiple from 'svelte-material-icons/FileDocumentMultiple.svelte';
 	import CalendarMultiselect from 'svelte-material-icons/CalendarMultiselect.svelte';
-	import AccountMultiplePlus from 'svelte-material-icons/AccountMultiplePlus.svelte';
+	import LogoutVariant from 'svelte-material-icons/LogoutVariant.svelte';
 	import NewspaperVariantMultiple from 'svelte-material-icons/NewspaperVariantMultiple.svelte';
 	import Tune from 'svelte-material-icons/Tune.svelte';
 	import { page } from '$app/state';
@@ -33,11 +33,11 @@
 				href="/home/organization-settings"
 			>
 				<Tune
-					class="text-main-white absolute group-hover:-translate-y-4 transition-transform"
+					class="text-main-white absolute group-hover:-translate-y-3 transition-transform"
 					size="2rem"
 				/>
 				<p
-					class="text-white text-xs absolute translate-y-4 opacity-0 group-hover:opacity-100 transition-opacity text-center"
+					class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity text-center"
 				>
 					Ustawienia organizacji
 				</p>
@@ -109,20 +109,6 @@
 				</a>
 			</li>
 			<!-- leave management -->
-			<li class="px-4 py-6 w-full relative {path === 'recruitment' ? 'bg-auxiliary-darkblue' : ''}">
-				<a class="flex flex-col items-center justify-center h-8 group" href="/home/recruitment">
-					<AccountMultiplePlus
-						class="text-main-white absolute group-hover:-translate-y-3 transition-transform"
-						size="2rem"
-					/>
-					<p
-						class="text-white text-xs absolute translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity"
-					>
-						Rekrutacje
-					</p>
-				</a>
-			</li>
-			<!-- recruitment -->
 			<li class="px-4 py-6 w-full relative {path === 'messages' ? 'bg-auxiliary-darkblue' : ''}">
 				<a
 					class="flex flex-col items-center justify-center h-8 group"
@@ -152,6 +138,7 @@
 					</p>
 				</div>
 			</li>
+			<!-- notifications -->
 		</ul>
 	</nav>
 
