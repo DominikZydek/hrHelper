@@ -21,7 +21,7 @@
 
 <div class="h-screen">
 	<nav class="fixed h-full w-20 bg-main-app flex flex-col items-center py-5">
-		<a class="mb-5" href="/home"><img class="h-10 w-10" src="/favicon.png" alt="logo" /></a>
+		<a class="mb-5" href="/home"><img class="h-10 w-10" src="/logo-white.png" alt="logo" /></a>
 
 		<div
 			class="px-4 py-6 w-full relative {path === 'organization-settings'

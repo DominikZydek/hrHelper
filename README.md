@@ -6,3 +6,4 @@
 - archiwizacja żeby działała
 - dashboard hrowy dokończyć
 - wylogowanie
+- dodać avatary
