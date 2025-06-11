@@ -43,6 +43,30 @@ export const calculateTimeAgo = (dateTime) => {
 	}
 };
 
+export const getDocumentStatus = (dueDateTime) => {
+	const dueDate = convertUTCtoLocalTime(dueDateTime);
+	const now = new Date();
+	const diffMs = dueDate - now;
+	const diffDay = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+	if (diffMs < 0) {
+		return 'EXPIRED';
+	} else if (diffDay >= 30) {
+		return 'ACTIVE';
+	} else if (diffDay > 0) {
+		return 'EXPIRING_SOON';
+	} else {
+		return 'LAST_DAY';
+	}
+};
+
+export const getDaysUntilExpiration = (dueDateTime) => {
+	const dueDate = convertUTCtoLocalTime(dueDateTime);
+	const now = new Date();
+	const diffMs = dueDate - now;
+	return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+};
+
 export const formatLocalDateTime = (dateTime) => {
 	const date = convertUTCtoLocalTime(dateTime);
 

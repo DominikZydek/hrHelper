@@ -21,80 +21,12 @@
 	let newUserRoles = [];
 	let newUserGroups = [];
 
-	let chosenScan = null;
-	let recognizedText = '';
-	let isProcessingOcr = false;
-	let progress = 0;
-	let worker = null;
-	let scanPreviewSrc = '';
-
 	onMount(async () => {
 		// if no user is sent, let's create a new one
 		if (!user) {
 			toggleCreateMode();
 		}
 	});
-
-	let showFile;
-	const toggleShowFile = () => {
-		showFile = !showFile;
-	};
-
-	async function processOcr(imageSrc) {
-		worker = await createWorker('pol');
-
-		if (!worker) {
-			console.error('Tesseract worker not initialized');
-			return;
-		}
-
-		try {
-			isProcessingOcr = true;
-			progress = 0;
-
-			console.log('Starting OCR processing...');
-			const { data } = await worker.recognize(imageSrc);
-			recognizedText = data.text;
-			console.log('OCR completed:', recognizedText);
-
-			// TODO: create a function to look for and fill the data
-		} catch (error) {
-			console.error('Error during OCR processing:', error);
-		} finally {
-			isProcessingOcr = false;
-		}
-
-		await worker.terminate();
-	}
-
-	const handleFileSelect = async () => {
-		if (chosenScan && chosenScan.files[0]) {
-			try {
-				scanPreviewSrc = await getFileSrc(chosenScan.files[0]);
-				toggleShowFile();
-
-				await processOcr(scanPreviewSrc);
-			} catch (error) {
-				console.error('Error loading file:', error);
-			}
-		}
-	};
-
-	function getFileSrc(file) {
-		return new Promise((resolve, reject) => {
-			if (!file) {
-				reject(new Error('No file provided'));
-				return;
-			}
-
-			let reader = new FileReader();
-			reader.readAsDataURL(file);
-
-			reader.onloadstart = () => console.log('Started loading');
-			reader.onloadend = (e) => resolve(e.target.result);
-			reader.onerror = (err) => reject(err);
-		});
-	}
 
 	let showEditMode = false;
 	const toggleEditMode = () => {
@@ -157,28 +89,6 @@
 		{/if}
 		{#if !showCreateMode}
 			<img class="h-8 w-8" src="/favicon.png" alt="" />
-		{:else}
-			<label
-				for="choose_scan"
-				class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4 cursor-pointer"
-			>
-				<FileDocumentPlus />
-				Wypełnij za pomocą skanu umowy
-			</label>
-			<input
-				bind:this={chosenScan}
-				class="hidden"
-				name="choose_scan"
-				id="choose_scan"
-				type="file"
-				accept="image/*,.pdf"
-				on:change={handleFileSelect}
-			/>
-		{/if}
-		{#if showFile && scanPreviewSrc}
-			<Popup title="Podgląd skanu" togglePopup={toggleShowFile}>
-				<img src={scanPreviewSrc} alt="Skan dokumentu" />
-			</Popup>
 		{/if}
 	</svelte:fragment>
 

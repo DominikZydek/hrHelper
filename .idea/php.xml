@@ -150,6 +150,17 @@
       <path value="$PROJECT_DIR$/api/vendor/mll-lab/laravel-graphiql" />
       <path value="$PROJECT_DIR$/api/vendor/laravel/telescope" />
       <path value="$PROJECT_DIR$/api/vendor/laravel/sanctum" />
+      <path value="$PROJECT_DIR$/api/vendor/paragonie/sodium_compat" />
+      <path value="$PROJECT_DIR$/api/vendor/pusher/pusher-php-server" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/image-optimizer" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/image" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/laravel-medialibrary" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/laravel-package-tools" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/temporary-directory" />
+      <path value="$PROJECT_DIR$/api/vendor/maennchen/zipstream-php" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/regex" />
+      <path value="$PROJECT_DIR$/api/vendor/mll-lab/graphql-php-scalars" />
+      <path value="$PROJECT_DIR$/api/vendor/spatie/pdf-to-image" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

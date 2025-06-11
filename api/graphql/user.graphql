@@ -28,6 +28,7 @@ type User {
     health_and_safety_training_expired_by: Date!
     activation_token: String
     leave_requests: [LeaveRequest!]!
+    files: [File!]! @hasMany(model: "Spatie\\MediaLibrary\\MediaCollections\\Models\\Media")
 
     hasPermission(name: String!): Boolean! @method
     visibleMessages: [Message]! @hasMany

@@ -42,4 +42,13 @@ class AuthMutator
 
         return $user;
     }
+
+    public function logout($root, array $args)
+    {
+        $user  = Auth::user();
+
+        Auth::user()->tokens()->delete();
+
+        return $user;
+    }
 }

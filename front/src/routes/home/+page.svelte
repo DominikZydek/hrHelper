@@ -1,9 +1,9 @@
 <script>
 	import UserDashboard from '../../components/UserDashboard.svelte';
-	import ManagerDashboard from '../../components/ManagerDashboard.svelte';
 	import HRDashboard from '../../components/HRDashboard.svelte';
 	import Popup from '../../components/Popup.svelte';
 	import LeaveRequestDetails from '../../components/LeaveRequestDetails.svelte';
+	import Logout from 'svelte-material-icons/Logout.svelte';
 
 	export let data;
 
@@ -28,37 +28,40 @@
 			<p>Witaj,</p>
 			<img class="h-10 w-10" src="/favicon.png" alt="" />
 			<p>{data.me.first_name} {data.me.last_name}</p>
+
+			<form action="?/logout" method="POST">
+				<button
+					type="submit"
+					class="flex gap-1 items-center text-main-app font-semibold h-8 px-4 text-lg"
+				>
+					<Logout />
+					Wyloguj się
+				</button>
+			</form>
 		</div>
-		<div class="flex border shadow rounded text-lg">
-			<button
-				on:click={() => changeMode('user')}
-				class="p-2 rounded-l border {mode === 'user' ? 'bg-main-app text-main-white' : ''}"
-			>
-				User</button
-			>
-			<button
-				on:click={() => changeMode('manager')}
-				class="p-2 border {mode === 'manager' ? 'bg-main-app text-main-white' : ''}"
-			>
-				Manager</button
-			>
-			<button
-				on:click={() => changeMode('hr')}
-				class="p-2 rounded-r border {mode === 'hr' ? 'bg-main-app text-main-white' : ''}"
-			>
-				HR</button
-			>
-		</div>
+
+		{#if data.me.roles && data.me.roles.some((role) => role.name === 'hr')}
+			<div class="flex border shadow rounded text-lg">
+				<button
+					on:click={() => changeMode('user')}
+					class="p-2 rounded-l border {mode === 'user' ? 'bg-main-app text-main-white' : ''}"
+				>
+					User</button
+				>
+				<button
+					on:click={() => changeMode('hr')}
+					class="p-2 rounded-r border {mode === 'hr' ? 'bg-main-app text-main-white' : ''}"
+				>
+					HR</button
+				>
+			</div>
+		{/if}
 	</div>
 
 	<!-- MAIN SECTION -->
 	<div class="mt-5 grid grid-cols-12 grid-auto-rows gap-5">
 		{#if mode === 'user'}
 			<UserDashboard {data} {selectedLeaveRequest} {toggleLeaveDetails} {onLeaveRequestClick} />
-		{/if}
-
-		{#if mode === 'manager'}
-			<ManagerDashboard {data} />
 		{/if}
 
 		{#if mode === 'hr'}

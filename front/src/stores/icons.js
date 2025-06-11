@@ -29,6 +29,8 @@ import CloseCircleOutline from 'svelte-material-icons/CloseCircleOutline.svelte'
 import BlockHelper from 'svelte-material-icons/BlockHelper.svelte';
 import SendOutline from 'svelte-material-icons/SendOutline.svelte';
 import HelpCircleOutline from 'svelte-material-icons/HelpCircleOutline.svelte';
+import AlertCircleOutline from 'svelte-material-icons/AlertCircleOutline.svelte';
+import ClockAlertOutline from 'svelte-material-icons/ClockAlertOutline.svelte';
 
 // Komunikacja
 import MessageText from 'svelte-material-icons/MessageText.svelte';
@@ -383,6 +385,8 @@ export const icons = writable({
 	InformationOutline,
 	BlockHelper,
 	HelpCircleOutline,
+	AlertCircleOutline,
+	ClockAlertOutline,
 
 	// Zarządzanie i Przywództwo
 	Crown,

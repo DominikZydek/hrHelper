@@ -1,0 +1,27 @@
+type File {
+    id: ID!
+    user: User! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getUser")
+    name: String!
+    url: String @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getUrl")
+    thumbnail: String @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getThumbnail")
+    mime_type: String!
+    collection: MediaCollection! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@getMediaCollection")
+    size: Int!
+    created_at: DateTime!
+    custom_properties: JSON!
+}
+
+extend type Query {
+    files(organization: ID!, collection: String) : [File]! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@organizationFiles")
+}
+
+extend type Mutation {
+    uploadFile(
+        file: Upload!
+        user: ID!
+        file_name: String!
+        date_from: Date!
+        date_to: Date!
+        date_archive: Date!
+        collection: ID!) : File! @field(resolver: "App\\GraphQL\\Mutations\\FileMutator@uploadFile")
+}

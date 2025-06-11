@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/api/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/api/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/brianium/paratest" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/carbonphp/carbon-doctrine-types" />
@@ -140,6 +141,15 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/thecodingmachine/safe" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/webonyx/graphql-php" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/laravel/sanctum" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/maennchen/zipstream-php" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/image" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/image-optimizer" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/laravel-medialibrary" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/laravel-package-tools" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/temporary-directory" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/mll-lab/graphql-php-scalars" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/regex" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/spatie/pdf-to-image" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

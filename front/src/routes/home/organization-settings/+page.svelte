@@ -37,6 +37,11 @@
 					<FileDocumentMultiple size="1.5rem" />
 					<p class="text-xl font-semibold">Dokumentacja</p>
 				</div>
+				<ul class="text-main-gray">
+					<li>
+						<a href="/home/organization-settings/employee-documents/folders">Ustawienia folderów</a>
+					</li>
+				</ul>
 			</div>
 
 			<div class="p-6 border rounded-xl shadow">
@@ -56,13 +61,6 @@
 						>
 					</li>
 				</ul>
-			</div>
-
-			<div class="p-6 border rounded-xl shadow">
-				<div class="flex gap-2 items-center text-main-app mb-2">
-					<AccountMultiplePlus size="1.5rem" />
-					<p class="text-xl font-semibold">Rekrutacje</p>
-				</div>
 			</div>
 
 			<div class="p-6 border rounded-xl shadow">

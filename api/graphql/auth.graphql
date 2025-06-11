@@ -4,6 +4,8 @@ extend type Mutation {
         email: String!
         password: String!
     ) : User @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@login")
+
+    logout: User @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@logout")
 }
 
 extend type Query {
