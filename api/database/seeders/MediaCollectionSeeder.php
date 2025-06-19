@@ -28,6 +28,11 @@ class MediaCollectionSeeder extends Seeder
                 'name' => 'documents/a',
                 'display_name' => 'Dokumenty A',
                 'organization_id' => 1,
+            ],
+            [
+                'name' => 'archive',
+                'display_name' => 'Archiwum',
+                'organization_id' => 1,
             ]
         ];
 

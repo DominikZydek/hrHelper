@@ -23,26 +23,28 @@
 			<span>Wszystkie pliki</span>
 		</a>
 		{#each data.collections as collection}
-			<a
-				data-sveltekit-reload
-				href="/home/employee-documents/{collection.name}"
-				class="pl-10 flex items-center gap-2 pr-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
-										{path === collection.name ? 'bg-auxiliary-gray' : ''}"
-			>
-				<Folder size="1.75rem" />
-				<span>{collection.display_name}</span>
-			</a>
-			{#each collection.children as subcollection}
+			{#if collection.name !== 'archive'}
 				<a
 					data-sveltekit-reload
-					href="/home/employee-documents/{collection.name}/{subcollection.name}"
-					class="pl-20 flex items-center gap-2 pr-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
-										{path === collection.name + '/' + subcollection.name ? 'bg-auxiliary-gray' : ''}"
+					href="/home/employee-documents/{collection.name}"
+					class="pl-10 flex items-center gap-2 pr-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
+										{path === collection.name ? 'bg-auxiliary-gray' : ''}"
 				>
 					<Folder size="1.75rem" />
-					<span>{subcollection.display_name}</span>
+					<span>{collection.display_name}</span>
 				</a>
-			{/each}
+				{#each collection.children as subcollection}
+					<a
+						data-sveltekit-reload
+						href="/home/employee-documents/{collection.name}/{subcollection.name}"
+						class="pl-20 flex items-center gap-2 pr-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-gray text-xl
+										{path === collection.name + '/' + subcollection.name ? 'bg-auxiliary-gray' : ''}"
+					>
+						<Folder size="1.75rem" />
+						<span>{subcollection.display_name}</span>
+					</a>
+				{/each}
+			{/if}
 		{/each}
 		<a
 			data-sveltekit-reload

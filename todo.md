@@ -5,5 +5,3 @@
 - dokumenty opcje pobierania wyświetlania itp
 - archiwizacja żeby działała
 - dashboard hrowy dokończyć
-- wylogowanie
-- dodać avatary
