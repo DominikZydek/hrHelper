@@ -37,6 +37,12 @@
 
 	const onClick = (document) => {
 		selectedDocument ? (selectedDocument = null) : (selectedDocument = document);
+		toggleDocumentDetails();
+	};
+
+	let showDocumentDetails = $state(false);
+	const toggleDocumentDetails = () => {
+		showDocumentDetails = !showDocumentDetails;
 	};
 
 	const calculateArchiveDate = (e) => {
@@ -49,6 +55,15 @@
 		archiveDate.setFullYear(archiveDate.getFullYear() + archivePeriod);
 
 		e.target.date_archive.value = archiveDate.toISOString();
+	};
+
+	const showDocument = (document) => {
+		window.open(document.url, '_blank');
+	};
+
+	const editDocument = () => {
+		toggleDocumentDetails();
+		toggleUploadDocument();
 	};
 </script>
 
@@ -137,23 +152,48 @@
 </div>
 
 {#if showUploadDocument}
-	<Popup title="Dodaj dokument" togglePopup={toggleUploadDocument}>
+	{@const customProperties = selectedDocument
+		? JSON.parse(selectedDocument.custom_properties)
+		: null}
+	<Popup
+		title={selectedDocument ? 'Edytuj dokument' : 'Dodaj dokument'}
+		togglePopup={toggleUploadDocument}
+	>
 		<form
 			class="flex flex-col"
 			method="POST"
+			action="?/upload"
 			enctype="multipart/form-data"
 			onsubmit={(e) => calculateArchiveDate(e)}
 		>
-			<input type="hidden" id="date_archive" name="date_archive" />
+			<input type="hidden" id="mode" name="mode" value={selectedDocument ? 'edit' : 'create'} />
 
-			<label class="font-bold text-main-gray" for="file">WYBIERZ PLIK</label>
-			<input class="w-full mb-2" type="file" id="file" name="file" />
+			<input
+				type="hidden"
+				id="date_archive"
+				name="date_archive"
+				value={customProperties?.date_archive || ''}
+			/>
+			{#if selectedDocument}
+				<input type="hidden" name="document_id" value={selectedDocument.id} />
+			{/if}
+
+			<label class="font-bold text-main-gray" for="file">
+				{selectedDocument ? 'ZMIEŃ PLIK (opcjonalne)' : 'WYBIERZ PLIK'}
+			</label>
+			<input class="w-full mb-2" type="file" id="file" name="file" required={!selectedDocument} />
 
 			<label class="font-bold text-main-gray" for="user">WYBIERZ PRACOWNIKA</label>
 			<select class="w-full border border-main-gray px-1 mb-2" name="user" id="user">
-				<option disabled selected>Wybierz pracownika</option>
+				<option disabled>Wybierz pracownika</option>
 				{#each data.users as user}
-					<option value={user.id}>{user.first_name} {user.last_name}</option>
+					<option
+						value={user.id}
+						selected={selectedDocument && selectedDocument.user.id === user.id}
+					>
+						{user.first_name}
+						{user.last_name}
+					</option>
 				{/each}
 			</select>
 
@@ -164,6 +204,7 @@
 				id="file_name"
 				name="file_name"
 				placeholder="Nazwa pliku"
+				value={selectedDocument?.name || ''}
 			/>
 
 			<label class="font-bold text-main-gray" for="date_from">DATA ROZPOCZĘCIA OBOWIĄZYWANIA</label>
@@ -172,6 +213,9 @@
 				type="date"
 				id="date_from"
 				name="date_from"
+				value={customProperties?.date_from
+					? new Date(customProperties.date_from).toISOString().split('T')[0]
+					: ''}
 			/>
 
 			<label class="font-bold text-main-gray" for="date_to">DATA WAŻNOŚCI</label>
@@ -180,11 +224,25 @@
 				type="date"
 				id="date_to"
 				name="date_to"
+				value={customProperties?.date_to
+					? new Date(customProperties.date_to).toISOString().split('T')[0]
+					: ''}
 			/>
 
 			<label class="font-bold text-main-gray" for="archive_period">OKRES ARCHIWIZACJI</label>
 			<div class="flex gap-2 w-full mb-2">
-				<input class="border border-main-gray px-1 w-12" type="text" id="archive_period" />
+				<input
+					class="border border-main-gray px-1 w-12"
+					type="text"
+					id="archive_period"
+					value={customProperties
+						? (() => {
+								const archiveDate = new Date(customProperties.date_archive);
+								const dateTo = new Date(customProperties.date_to);
+								return archiveDate.getFullYear() - dateTo.getFullYear();
+							})()
+						: ''}
+				/>
 				<p>lat(a) od zakończenia roku kalendarzowego, w którym mija data ważności</p>
 			</div>
 
@@ -192,14 +250,27 @@
 			<select class="w-full border border-main-gray px-1 mb-5" name="collection" id="collection">
 				{#each data.collections as collection}
 					{#if collection.children && collection.children.length > 0}
-						<option value={collection.id}>{collection.display_name || collection.name}</option>
+						<option
+							value={collection.id}
+							selected={selectedDocument && selectedDocument.collection.id === collection.id}
+						>
+							{collection.display_name || collection.name}
+						</option>
 						{#each collection.children as childCollection}
-							<option value={childCollection.id}
-								>&nbsp;&nbsp;— {childCollection.display_name || childCollection.name}</option
+							<option
+								value={childCollection.id}
+								selected={selectedDocument && selectedDocument.collection.id === childCollection.id}
 							>
+								&nbsp;&nbsp;— {childCollection.display_name || childCollection.name}
+							</option>
 						{/each}
 					{:else}
-						<option value={collection.id}>{collection.display_name || collection.name}</option>
+						<option
+							value={collection.id}
+							selected={selectedDocument && selectedDocument.collection.id === collection.id}
+						>
+							{collection.display_name || collection.name}
+						</option>
 					{/if}
 				{/each}
 			</select>
@@ -208,13 +279,13 @@
 				class="flex gap-1 items-center bg-main-app text-main-white font-semibold h-8 px-4 self-end"
 			>
 				<ContentSave />
-				Zapisz dokument
+				{selectedDocument ? 'Zapisz zmiany' : 'Zapisz dokument'}
 			</button>
 		</form>
 	</Popup>
 {/if}
 
-{#if selectedDocument}
+{#if showDocumentDetails}
 	<Popup
 		title="{selectedDocument.user.first_name} {selectedDocument.user
 			.last_name} - {selectedDocument.name}"
@@ -226,13 +297,15 @@
 			</button>
 		</svelte:fragment>
 
-		<div></div>
+		<div class="w-full h-full flex items-center justify-center">
+			<img src={selectedDocument.thumbnail} alt="preview" />
+		</div>
 
 		{#if showOptions}
 			<Dropdown triggerElement={optionButton} toggleDropdown={toggleOptions}>
 				<div class="flex flex-col py-2">
 					<button
-						onclick={() => {}}
+						onclick={() => showDocument(selectedDocument)}
 						type="button"
 						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app"
 					>
@@ -240,37 +313,42 @@
 						<span>Zobacz dokument</span>
 					</button>
 					<button
-						onclick={() => {}}
-						type="button"
-						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-main-app"
-					>
-						<Download size="1.25rem" />
-						<span>Pobierz dokument</span>
-					</button>
-					<button
-						onclick={() => {}}
+						onclick={() => editDocument()}
 						type="button"
 						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-orange"
 					>
 						<Pencil size="1.25rem" />
 						<span>Edytuj dokument</span>
 					</button>
-					<button
-						onclick={() => {}}
-						type="button"
-						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red"
+					<form method="POST" action="?/archive">
+						<input type="hidden" name="document_id" value={selectedDocument.id} />
+						<button
+							type="submit"
+							class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red"
+						>
+							<Archive size="1.25rem" />
+							<span>Archiwizuj dokument</span>
+						</button>
+					</form>
+
+					<form
+						method="POST"
+						action="?/delete"
+						onsubmit={(e) => {
+							if (!confirm(`Czy na pewno chcesz usunąć dokument "${selectedDocument.name}"?`)) {
+								e.preventDefault();
+							}
+						}}
 					>
-						<Archive size="1.25rem" />
-						<span>Archiwizuj dokument</span>
-					</button>
-					<button
-						onclick={() => {}}
-						type="button"
-						class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red"
-					>
-						<Delete size="1.25rem" />
-						<span>Usuń dokument</span>
-					</button>
+						<input type="hidden" name="document_id" value={selectedDocument.id} />
+						<button
+							type="submit"
+							class="flex items-center gap-2 px-4 py-2 hover:bg-auxiliary-gray w-full text-left text-accent-red"
+						>
+							<Delete size="1.25rem" />
+							<span>Usuń dokument</span>
+						</button>
+					</form>
 				</div>
 			</Dropdown>
 		{/if}

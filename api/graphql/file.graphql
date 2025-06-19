@@ -23,5 +23,35 @@ extend type Mutation {
         date_from: Date!
         date_to: Date!
         date_archive: Date!
-        collection: ID!) : File! @field(resolver: "App\\GraphQL\\Mutations\\FileMutator@uploadFile")
+        collection: ID!
+    ) : File! @field(resolver: "App\\GraphQL\\Mutations\\FileMutator@uploadFile")
+
+    updateFile(
+        id: ID!
+        user: ID!
+        file_name: String!
+        date_from: Date!
+        date_to: Date!
+        date_archive: Date!
+        collection: ID!
+    ) : File! @field(resolver: "App\\GraphQL\\Mutations\\FileMutator@updateFile")
+
+    updateFileWithNewFile(
+        id: ID!
+        file: Upload!
+        user: ID!
+        file_name: String!
+        date_from: Date!
+        date_to: Date!
+        date_archive: Date!
+        collection: ID!
+    ) : File! @field(resolver: "App\\GraphQL\\Mutations\\FileMutator@updateFileWithNewFile")
+
+    deleteFile(
+        id: ID!
+    ) : Boolean! @field(resolver: "App\\GraphQL\\Mutations\\FileMutator@deleteFile")
+
+    archiveFile(
+        id: ID!
+    ) : File! @field(resolver: "App\\GraphQL\\Mutations\\FileMutator@archiveFile")
 }
