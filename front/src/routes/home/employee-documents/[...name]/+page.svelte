@@ -65,6 +65,32 @@
 		toggleDocumentDetails();
 		toggleUploadDocument();
 	};
+
+	let displayedFiles = $state(data.files);
+
+	const handleFilteredDataChange = (filteredData) => {
+		displayedFiles = filteredData;
+	};
+
+	const searchMapper = (file) => {
+		let groups = [];
+
+		file.user.groups.forEach((g) => {
+			groups.push(g.name);
+		});
+
+		return {
+			first_name: file.user.first_name,
+			last_name: file.user.last_name,
+			full_name: file.user.first_name + ' ' + file.user.last_name,
+			email: file.user.email,
+			job_title: file.user.job_title,
+			groups: groups,
+			name: file.name,
+			created_at: file.created_at,
+			date_to: JSON.parse(file.custom_properties).date_to
+		};
+	};
 </script>
 
 <div class="flex-1 p-4">
@@ -74,9 +100,16 @@
 		</p>
 		<div class="flex-1">
 			<Searchbar
-				placeholderText="Szukaj dokumentu..."
-				searchData={[]}
-				onFilteredDataChange={() => {}}
+				placeholderText="Szukaj dokumentów..."
+				searchData={data.files}
+				onFilteredDataChange={handleFilteredDataChange}
+				{searchMapper}
+				filterableFields={['full_name', 'job_title', 'groups']}
+				fieldLabels={{
+					full_name: 'Imię i nazwisko',
+					job_title: 'Stanowisko',
+					groups: 'Zespół'
+				}}
 			/>
 		</div>
 		<button
@@ -101,7 +134,7 @@
 				</tr>
 			</thead>
 			<tbody class="divide-y divide-main-gray">
-				{#each data.files as file}
+				{#each displayedFiles as file}
 					{@const custom_properties = JSON.parse(file.custom_properties)}
 					{@const statusInfo = getStatusInfo(getDocumentStatus(custom_properties.date_to), {
 						days: getDaysUntilExpiration(custom_properties.date_to)
