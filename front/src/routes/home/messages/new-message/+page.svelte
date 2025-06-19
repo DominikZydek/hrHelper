@@ -169,7 +169,7 @@
 								checked={groupJoinMode === 'sum'}
 								onchange={handleGroupJoinModeChange}
 							/>
-							<label for="groups-join-sum">Suma (roboczo)</label>
+							<label for="groups-join-sum">Pracownicy we wszystkich wybranych zespołach</label>
 						</div>
 						<div>
 							<input
@@ -180,7 +180,9 @@
 								checked={groupJoinMode === 'intersection'}
 								onchange={handleGroupJoinModeChange}
 							/>
-							<label for="groups-join-intersection">Część wspólna (roboczo)</label>
+							<label for="groups-join-intersection"
+								>Pracownicy przynależący do każdego z wybranych zespołów</label
+							>
 						</div>
 					</div>
 				</div>
