@@ -15,6 +15,7 @@
 	import { getContext, onMount } from 'svelte';
 	import { getSearchbarMappers } from '../../../../utils/getSearchbarMappers.js';
 	import { convertUTCtoLocalTime } from '../../../../utils/timeCalculation.js';
+	import Avatar from '../../../../components/Avatar.svelte';
 
 	let { data } = $props();
 
@@ -198,7 +199,10 @@
 											</div>
 										</div>
 										<div class="flex items-center gap-5 flex-1">
-											<img class="h-16 w-16" src="/favicon.png" alt="" />
+											<Avatar
+												fullName="{approver.first_name} {approver.last_name}"
+												variant="large"
+											/>
 											<div class="flex-1">
 												<div class="flex gap-10 items-start w-full">
 													<div>

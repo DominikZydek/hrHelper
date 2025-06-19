@@ -4,6 +4,7 @@
 	import Popup from '../../components/Popup.svelte';
 	import LeaveRequestDetails from '../../components/LeaveRequestDetails.svelte';
 	import Logout from 'svelte-material-icons/Logout.svelte';
+	import Avatar from '../../components/Avatar.svelte';
 
 	export let data;
 
@@ -26,7 +27,7 @@
 	<div class="flex justify-between">
 		<div class="flex gap-1 items-center text-3xl">
 			<p>Witaj,</p>
-			<img class="h-10 w-10" src="/favicon.png" alt="" />
+			<Avatar fullName={data.me.first_name + ' ' + data.me.last_name} />
 			<p>{data.me.first_name} {data.me.last_name}</p>
 
 			<form action="?/logout" method="POST">

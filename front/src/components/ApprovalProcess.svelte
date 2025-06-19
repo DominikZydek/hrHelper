@@ -4,6 +4,7 @@
 	import Check from 'svelte-material-icons/Check.svelte';
 	import CircleOutline from 'svelte-material-icons/CircleOutline.svelte';
 	import GroupBadge from './GroupBadge.svelte';
+	import Avatar from './Avatar.svelte';
 	export let user;
 </script>
 
@@ -14,7 +15,7 @@
 			<Circle class="text-main-black" size="2rem" />
 		</div>
 		<div class="flex items-center gap-5 flex-1">
-			<img class="h-16 w-16" src="/favicon.png" alt="" />
+			<Avatar fullName="{user.first_name} {user.last_name}" variant="large" />
 			<div class="flex-1">
 				<div class="flex justify-between items-start">
 					<div>
@@ -49,7 +50,7 @@
 				<CircleOutline class="text-main-black" size="2rem" />
 			</div>
 			<div class="flex items-center gap-5 flex-1">
-				<img class="h-16 w-16" src="/favicon.png" alt="" />
+				<Avatar fullName="{step.approver.first_name} {step.approver.last_name}" variant="large" />
 				<div class="flex-1">
 					<div class="flex justify-between items-start">
 						<div>
@@ -85,7 +86,12 @@
 				<Check class="text-main-black" size="2rem" />
 			</div>
 			<div class="flex items-center gap-5 flex-1">
-				<img class="h-16 w-16" src="/favicon.png" alt="" />
+				<Avatar
+					fullName="{user.approval_process.steps[user.approval_process.steps.length - 1].approver
+						.first_name} {user.approval_process.steps[user.approval_process.steps.length - 1]
+						.approver.last_name}"
+					variant="large"
+				/>
 				<div class="flex-1">
 					<div class="flex justify-between items-start">
 						<div>

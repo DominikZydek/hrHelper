@@ -4,6 +4,7 @@
 	import GroupBadge from './GroupBadge.svelte';
 	import IconWithNotificationBadge from './IconWithNotificationBadge.svelte';
 	import { onMount } from 'svelte';
+	import Avatar from './Avatar.svelte';
 	export let leaveRequests;
 	export let onClick;
 
@@ -99,10 +100,17 @@
 								<div class="flex items-center gap-5">
 									{#if leaveRequest.id === redirectedViaId}
 										<IconWithNotificationBadge>
-											<img class="h-16 w-16" src="/favicon.png" alt="" slot="icon" />
+											<Avatar
+												fullName="{leaveRequest.user.first_name} {leaveRequest.user.last_name}"
+												variant="large"
+												slot="icon"
+											/>
 										</IconWithNotificationBadge>
 									{:else}
-										<img class="h-16 w-16" src="/favicon.png" alt="" />
+										<Avatar
+											fullName="{leaveRequest.user.first_name} {leaveRequest.user.last_name}"
+											variant="large"
+										/>
 									{/if}
 									<div class="flex-1">
 										<div class="flex gap-5 items-start">

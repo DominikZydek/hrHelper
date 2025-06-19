@@ -13,6 +13,7 @@
 	import History from 'svelte-material-icons/History.svelte';
 	import Pencil from 'svelte-material-icons/Pencil.svelte';
 	import DotsHorizontal from 'svelte-material-icons/DotsHorizontal.svelte';
+	import Avatar from '../../../../components/Avatar.svelte';
 
 	let { data } = $props();
 	let showPopup = $state(false);
@@ -268,7 +269,10 @@
 											</div>
 										</div>
 										<div class="flex items-center gap-5 flex-1">
-											<img class="h-16 w-16" src="/favicon.png" alt="" />
+											<Avatar
+												fullName="{approver.first_name} {approver.last_name}"
+												variant="large"
+											/>
 											<div class="flex-1">
 												<div class="flex gap-10 items-start w-full">
 													<div>

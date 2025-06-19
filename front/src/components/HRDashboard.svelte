@@ -9,6 +9,7 @@
 	import Eye from 'svelte-material-icons/Eye.svelte';
 	import CalendarAccount from 'svelte-material-icons/CalendarAccount.svelte';
 	import { getSearchbarMappers } from '../utils/getSearchbarMappers';
+	import Avatar from './Avatar.svelte';
 
 	export let data;
 	export let onLeaveRequestClick;
@@ -78,7 +79,10 @@
 			{#each absentEmployees as absentEmployee}
 				<div class="flex py-2 justify-between">
 					<div class="flex items-center gap-5 w-2/3">
-						<img class="h-16 w-16" src="/favicon.png" alt="" />
+						<Avatar
+							fullName="{absentEmployee.first_name} {absentEmployee.last_name}"
+							variant="large"
+						/>
 						<div class="flex-1">
 							<div class="flex gap-10 items-start">
 								<div>

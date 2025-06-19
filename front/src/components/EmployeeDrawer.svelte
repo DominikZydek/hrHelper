@@ -11,6 +11,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import FileDocumentPlus from 'svelte-material-icons/FileDocumentPlus.svelte';
 	import { createWorker } from 'tesseract.js';
+	import Avatar from './Avatar.svelte';
 
 	export let user;
 	export let toggleDrawer;
@@ -88,7 +89,7 @@
 			</button>
 		{/if}
 		{#if !showCreateMode}
-			<img class="h-8 w-8" src="/favicon.png" alt="" />
+			<Avatar fullName="{user?.first_name} {user?.last_name}" variant="small" />
 		{/if}
 	</svelte:fragment>
 

@@ -9,6 +9,7 @@
 	import GroupBadge from './GroupBadge.svelte';
 	import Dropdown from './Dropdown.svelte';
 	import { getStatusInfo, STATUS_ICONS } from '../utils/getStatusInfo.js';
+	import Avatar from './Avatar.svelte';
 	export let leaveRequest;
 	export let user;
 
@@ -73,7 +74,11 @@
 							<div class="p-4">
 								<p class="font-semibold">Wniosek odrzucony przez:</p>
 								<div class="flex items-center gap-5 flex-1">
-									<img class="h-16 w-16" src="/favicon.png" alt="" />
+									<Avatar
+										fullName="{rejectionStep.approver.first_name} {rejectionStep.approver
+											.last_name}"
+										variant="large"
+									/>
 									<div class="flex-1">
 										<div class="flex gap-10 items-start">
 											<div>
@@ -140,7 +145,11 @@
 								<div class="p-4">
 									<p class="font-semibold">Osoba wyznaczona do zastępstwa:</p>
 									<div class="flex items-center gap-5 flex-1">
-										<img class="h-16 w-16" src="/favicon.png" alt="" />
+										<Avatar
+											fullName="{leaveRequest.replacement.user.first_name} {leaveRequest.replacement
+												.user.last_name}"
+											variant="large"
+										/>
 										<div class="flex-1">
 											<div class="flex gap-10 items-start">
 												<div>
@@ -180,7 +189,7 @@
 			on:pointerenter={() => onUserHoverStart(user)}
 			on:pointerleave={() => onUserHoverEnd()}
 		>
-			<img class="h-10 w-10" src="/favicon.png" alt="" />
+			<Avatar fullName="{user.first_name} {user.last_name}" variant="medium" />
 			<p>{user.first_name} {user.last_name}</p>
 			<div class="flex gap-2 text-main-app items-center">
 				<p class="font-semibold">Wysłany</p>
@@ -192,7 +201,7 @@
 			<Dropdown triggerElement={userTrigger} toggleDropdown={() => toggleDropdown(user.id)}>
 				<div class="p-4">
 					<div class="flex items-center gap-5 flex-1">
-						<img class="h-16 w-16" src="/favicon.png" alt="" />
+						<Avatar fullName="{user.first_name} {user.last_name}" variant="large" />
 						<div class="flex-1">
 							<div class="flex gap-10 items-start">
 								<div>
@@ -227,7 +236,7 @@
 				on:pointerenter={() => onUserHoverStart(step.approver)}
 				on:pointerleave={() => onUserHoverEnd()}
 			>
-				<img class="h-10 w-10" src="/favicon.png" alt="" />
+				<Avatar fullName="{step.approver.first_name} {step.approver.last_name}" variant="medium" />
 				<p>{step.approver.first_name} {step.approver.last_name}</p>
 
 				{#if stepHistory && stepStatusInfo}
@@ -250,7 +259,10 @@
 				>
 					<div class="p-4">
 						<div class="flex items-center gap-5 flex-1">
-							<img class="h-16 w-16" src="/favicon.png" alt="" />
+							<Avatar
+								fullName="{step.approver.first_name} {step.approver.last_name}"
+								variant="large"
+							/>
 							<div class="flex-1">
 								<div class="flex gap-10 items-start">
 									<div>

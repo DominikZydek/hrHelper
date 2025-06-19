@@ -15,6 +15,7 @@
 	import Download from 'svelte-material-icons/Download.svelte';
 	import Pencil from 'svelte-material-icons/Pencil.svelte';
 	import Archive from 'svelte-material-icons/Archive.svelte';
+	import Avatar from '../../../../components/Avatar.svelte';
 
 	let { data } = $props();
 	let path = $derived(page.url.pathname.split('/')[3]);
@@ -93,7 +94,7 @@
 					<tr class="cursor-pointer hover:bg-auxiliary-gray" onclick={() => onClick(file)}>
 						<td class="px-4 py-3">
 							<div class="flex items-center gap-5">
-								<img class="h-16 w-16" src="/favicon.png" alt="" />
+								<Avatar fullName="{file.user.first_name} {file.user.last_name}" variant="large" />
 								<div class="flex-1">
 									<div class="flex gap-5 items-start">
 										<div>

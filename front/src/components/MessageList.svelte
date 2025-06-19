@@ -3,6 +3,7 @@
 	import { getMessagePriorityInfo } from '../utils/getMessagePriorityInfo.js';
 	import Eye from 'svelte-material-icons/Eye.svelte';
 	import { formatLocalDateTime, calculateTimeAgo } from '../utils/timeCalculation.js';
+	import Avatar from './Avatar.svelte';
 
 	let { messages } = $props();
 	$inspect(messages);
@@ -13,7 +14,10 @@
 		<li class="p-6 border rounded-xl shadow">
 			<div class="flex mb-4">
 				<div class="flex items-center gap-5 flex-1">
-					<img class="h-16 w-16 flex-shrink-0" src="/favicon.png" alt="" />
+					<Avatar
+						fullName="{message.author.first_name} {message.author.last_name}"
+						variant="large"
+					/>
 					<div class="flex-1">
 						<div class="flex w-full">
 							<div class="min-w-48 w-auto">
