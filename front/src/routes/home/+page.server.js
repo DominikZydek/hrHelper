@@ -310,6 +310,23 @@ export const load = async ({ locals, request, fetch }) => {
 						}
 						}
 					},
+					filesExpiringSoon(organization: $organization) {
+						id,
+						user {
+							id,
+							first_name,
+							last_name,
+							email,
+							groups {
+								icon_name,
+								name
+							},
+							job_title
+						},
+						name,
+						thumbnail,
+						custom_properties
+					},
 					users(organization: $organization) {
 						id
 						first_name

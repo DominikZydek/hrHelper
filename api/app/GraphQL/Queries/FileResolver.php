@@ -5,6 +5,7 @@ namespace App\GraphQL\Queries;
 use App\Models\MediaCollection;
 use App\Models\Organization;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -59,6 +60,48 @@ class FileResolver
 
         } catch (\Exception $e) {
             throw new \Exception('Could not get files: ' . $e->getMessage());
+        }
+    }
+
+    public function filesExpiringSoon($root, array $args)
+    {
+        $currentUser = Auth::user();
+
+        try {
+            $organization = Organization::findOrFail($currentUser->organization_id);
+            $users = $organization->users;
+            $allFiles = collect();
+
+            $oneMonthFromNow = Carbon::now()->addMonth();
+
+            foreach ($users as $user) {
+                $userFiles = $user->files;
+
+                if (isset($args['collection'])) {
+                    $collectionPrefix = $args['collection'];
+                    $userFiles = $userFiles->filter(function ($file) use ($collectionPrefix) {
+                        return strpos($file->collection_name, $collectionPrefix) === 0;
+                    });
+                }
+
+                $userFiles = $userFiles->filter(function ($file) use ($oneMonthFromNow) {
+                    $customProperties = $file->custom_properties;
+
+                    if (isset($customProperties['date_to'])) {
+                        $dateTo = Carbon::parse($customProperties['date_to']);
+                        return $dateTo->lt($oneMonthFromNow);
+                    }
+
+                    return false;
+                });
+
+                $allFiles = $allFiles->merge($userFiles);
+            }
+
+            return $allFiles;
+
+        } catch (\Exception $e) {
+            throw new \Exception('Could not get files expiring soon: ' . $e->getMessage());
         }
     }
 }

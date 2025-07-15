@@ -13,6 +13,7 @@ type File {
 
 extend type Query {
     files(organization: ID!, collection: String) : [File]! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@organizationFiles")
+    filesExpiringSoon(organization: ID!) : [File]! @field(resolver: "App\\GraphQL\\Queries\\FileResolver@filesExpiringSoon")
 }
 
 extend type Mutation {

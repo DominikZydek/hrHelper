@@ -4,12 +4,16 @@
 	import CalendarMultiselect from 'svelte-material-icons/CalendarMultiselect.svelte';
 	import Searchbar from './Searchbar.svelte';
 	import AccountClock from 'svelte-material-icons/AccountClock.svelte';
+	import Calendar from 'svelte-material-icons/Calendar.svelte';
 	import GroupBadge from './GroupBadge.svelte';
 	import { MeterChart } from '@carbon/charts-svelte';
 	import Eye from 'svelte-material-icons/Eye.svelte';
 	import CalendarAccount from 'svelte-material-icons/CalendarAccount.svelte';
 	import { getSearchbarMappers } from '../utils/getSearchbarMappers';
 	import Avatar from './Avatar.svelte';
+	import { getStatusInfo } from '../utils/getStatusInfo.js';
+	import { getDaysUntilExpiration, getDocumentStatus } from '../utils/timeCalculation.js';
+	import { icons } from '../stores/icons.js';
 
 	export let data;
 	export let onLeaveRequestClick;
@@ -126,31 +130,58 @@
 	</div>
 </div>
 <div class="rounded border shadow col-span-5 p-4">
-	<div class="flex gap-2 items-center text-main-app mb-2">
-		<CalendarAccount size="1.5rem" />
-		<p class="text-xl font-semibold">Dane pracowników // informacje // ??</p>
-	</div>
-	<div class="max-h-[30vh] overflow-auto divide-y divide-main-black">
-		<!-- TODO: this should be handled in the grid -->
-		{#each data.users as employee}
-			<div>
-				<p>{employee.first_name}</p>
-				<p>{employee.last_name}</p>
-				<p>{employee.email}</p>
-				<p>{employee.job_title}</p>
-				<p>{employee.groups}</p>
-				<p>{employee.paid_time_off_days}</p>
-				<p>{employee.working_time}</p>
-				<p>{employee.available_pto}</p>
-				<p>{employee.pending_pto}</p>
-				<p>{employee.transferred_pto}</p>
-				<p>{employee.transferred_pto_expired_by}</p>
-				<p>{employee.health_check_expired_by}</p>
-				<p>{employee.health_and_safety_training_expired_by}</p>
-				<p>{employee.working_to}</p>
-				<p>{employee.type_of_employment}</p>
-			</div>
-		{/each}
+	<div>
+		<div class="flex gap-2 items-center text-main-app mb-2">
+			<Calendar size="1.5rem" />
+			<p class="text-xl font-semibold">Zbliżające się daty ważności</p>
+		</div>
+		<div class="divide-y divide-main-black">
+			{#each data.filesExpiringSoon as file}
+				{@const custom_properties = JSON.parse(file.custom_properties)}
+				{@const statusInfo = getStatusInfo(getDocumentStatus(custom_properties.date_to), {
+					days: getDaysUntilExpiration(custom_properties.date_to)
+				})}
+
+				<div class="flex py-2 justify-between">
+					<div class="flex items-center gap-5 w-2/3">
+						<Avatar fullName="{file.user.first_name} {file.user.last_name}" variant="large" />
+						<div class="flex-1">
+							<div class="flex gap-10 items-start">
+								<div>
+									<p>{file.user.first_name} {file.user.last_name}</p>
+									<p>{file.user.email}</p>
+								</div>
+								<div class="text-right">
+									<p>{file.user.job_title}</p>
+									<div class="flex gap-2 justify-end">
+										{#each file.user.groups as group}
+											<GroupBadge {group} />
+										{/each}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex flex-col gap-2 w-1/3">
+						<div class="flex items-center gap-3 mb-2">
+							<p class="font-medium text-gray-900">{file.name}</p>
+							<p class="text-sm text-gray-600">
+								{new Date(custom_properties.date_to).toLocaleDateString()}
+							</p>
+						</div>
+						<div class="flex justify-center">
+							<div
+								class="flex items-center gap-2 px-3 py-1 rounded-full border-2 {statusInfo.class}"
+								style="border-color: {statusInfo.color};"
+							>
+								<p class="font-semibold text-sm">{statusInfo.message}</p>
+								<svelte:component this={$icons[statusInfo.icon]} size="1.25rem" />
+							</div>
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
 	</div>
 </div>
 <div class="rounded border shadow col-span-12 p-4">
@@ -175,11 +206,5 @@
 			mode="manage"
 			fullHeight={false}
 		/>
-	</div>
-</div>
-<div class="rounded border shadow col-span-12 p-4">
-	<div class="flex gap-2 items-center text-main-app mb-2">
-		<AccountCircle size="1.5rem" />
-		<p class="text-xl font-semibold">Raporty i analityka HR</p>
 	</div>
 </div>
